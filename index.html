@@ -216,11 +216,18 @@ p { margin: 0; }
 .wd-save { background: var(--scene-glass); border: 1px solid var(--scene-line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .wd-save .nm { font-weight: 600; font-size: 13.5px; }
 .wd-save p { font-size: 11.5px; color: var(--scene-muted); line-height: 1.4; }
-.wd-colors { display: flex; flex-direction: column; gap: 6px; }
+.wd-mode { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--scene-glass-2); border-radius: 8px; padding: 2px; flex: none; }
+.wd-mode button { border: 0; background: none; color: var(--scene-muted); font-size: 11.5px; font-weight: 600; padding: 5px 4px; border-radius: 6px; }
+.wd-mode button[aria-pressed="true"] { background: rgba(227,184,104,.16); color: var(--scene-accent); }
+.wd-mode button:disabled { opacity: .35; cursor: default; }
+.wd-mode .free { font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+.wd-colors { display: flex; flex-direction: column; gap: 7px; flex: 1; min-height: 0; overflow-y: auto; padding: 4px 2px; }
+.wd-colors[hidden] { display: none !important; }
+.wd-colors .none { font-size: 12px; color: var(--scene-muted); padding: 6px 2px; }
 .wd-colors:empty { display: none; }
 .wd-colors .cl { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--scene-muted); font-weight: 600; }
-.wd-colors .sws { display: flex; flex-wrap: wrap; gap: 5px; }
-.wd-colors button { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,.28); padding: 0; }
+.wd-colors .sws { display: flex; flex-wrap: wrap; gap: 6px; }
+.wd-colors button { width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,.28); padding: 0; }
 .wd-colors button[aria-pressed="true"] { outline: 2px solid var(--scene-accent); outline-offset: 2px; }
 .wd-colors button.orig { background: conic-gradient(#E3B868 0 25%, #24364F 0 50%, #B0392D 0 75%, #2F5D4E 0); }
 .btn-save { margin-top: 4px; border: 0; border-radius: 8px; padding: 8px 10px; font-weight: 600; font-size: 13px; background: var(--scene-accent); color: #1B1408; display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -565,8 +572,20 @@ body { margin: 0; }
 img { max-width: 100%; }
 .splash { min-height: 100dvh; display: grid; place-items: center; font-family: var(--font-display); font-size: 18px; color: var(--muted); }
 .login { min-height: 100dvh; display: grid; place-items: center; padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.login-card { width: min(420px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 16px; }
-.login-card h1 { font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.15; }
+.login { background: radial-gradient(ellipse at 50% 0%, rgba(215,172,94,.10), transparent 60%), var(--bg); }
+.login-card { width: min(430px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); display: flex; flex-direction: column; overflow: hidden; }
+.login-top { background: #16212C; padding: 26px 28px 22px; display: flex; justify-content: center; border-bottom: 3px solid var(--manila-fill); }
+.caja-logo { width: 210px; height: 74px; display: block; }
+.caja-logo { --lc-mark: #D7AC5E; --lc-word: #F4F1EA; }
+.login-body { padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 16px; }
+.login-id { display: flex; gap: 14px; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.login-id .brand-badge { width: 48px; height: 48px; }
+.login-sub { font-size: 12.5px; color: var(--muted); }
+.login-btn { padding: 11px 14px; font-size: 14px; margin-top: 4px; }
+.topbar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: -6px; }
+.top-caja { width: 118px; height: 40px; display: block; --lc-mark: var(--manila-fill); --lc-word: var(--ink); }
+@media (max-width: 900px) { .topbar { margin-bottom: 0; } .top-caja { width: 100px; height: 34px; } }
+.login-card h1 { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 1.1; }
 .login-err { color: var(--stamp); font-size: 13px; font-weight: 600; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 13px; z-index: 50; max-width: calc(100vw - 32px); box-shadow: var(--shadow); }
 .toast.err { background: var(--stamp); color: #fff; }
@@ -589,6 +608,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <symbol id="logo-caja" viewBox="80 95 2270 795"><g class="lc-mark" fill="var(--lc-mark, currentColor)"><path fill-rule="evenodd" d="M138 330H706A40 40 0 0 1 746 370V759A30 30 0 0 1 716 789H610V694A12 12 0 0 0 598 682H242A12 12 0 0 0 230 694V789H128A30 30 0 0 1 98 759V370A40 40 0 0 1 138 330Z M244 443H596A14 14 0 0 1 610 457V541A14 14 0 0 1 596 555H244A14 14 0 0 1 230 541V457A14 14 0 0 1 244 443Z"/><circle cx="420" cy="190" r="79"/><rect x="98" y="849" width="647" height="22"/></g><path class="lc-word" fill="var(--lc-word, currentColor)" stroke="var(--lc-word, currentColor)" d="M926.22 336.62L926.22 336.62Q961.23 336.62 974.87 302.00L974.87 302.00L1008.56 314.53Q997.68 340.88 976.64 353.73Q955.59 366.58 926.22 366.58L926.22 366.58Q881.64 366.58 857.32 341.72Q833 316.85 833 272.16L833 272.16Q833 227.34 856.47 203.31Q879.94 179.29 924.52 179.29L924.52 179.29Q957.03 179.29 977.49 192.14Q997.94 204.99 1006.20 229.92L1006.20 229.92L972.11 239.09Q967.79 225.40 955.13 217.33Q942.48 209.25 925.30 209.25L925.30 209.25Q899.08 209.25 885.51 225.27Q871.94 241.29 871.94 272.16L871.94 272.16Q871.94 303.55 885.90 320.08Q899.87 336.62 926.22 336.62ZM1202.74 364L1164.46 364L1148.07 317.50L1077.66 317.50L1061.27 364L1022.59 364L1089.98 182L1135.61 182L1202.74 364ZM1115.55 218.94L1112.80 210.03L1112.01 212.87Q1110.70 217.52 1108.86 223.46Q1107.03 229.41 1086.31 288.82L1086.31 288.82L1139.41 288.82L1121.19 236.51L1115.55 218.94ZM1278.53 366.58L1278.53 366.58Q1249.81 366.58 1234.41 354.31Q1219.00 342.04 1213.89 314.66L1213.89 314.66L1252.30 309.10Q1254.66 323.18 1261.09 329.96Q1267.51 336.75 1278.79 336.75L1278.79 336.75Q1290.33 336.75 1296.29 329.12Q1302.26 321.50 1302.26 307.29L1302.26 307.29L1302.26 211.84L1265.42 211.84L1265.42 182L1340.81 182L1340.81 306.39Q1340.81 334.81 1324.42 350.70Q1308.03 366.58 1278.53 366.58ZM1546 364L1507.71 364L1491.33 317.50L1420.92 317.50L1404.53 364L1365.85 364L1433.24 182L1478.87 182L1546 364ZM1458.81 218.94L1456.06 210.03L1455.27 212.87Q1453.96 217.52 1452.12 223.46Q1450.29 229.41 1429.57 288.82L1429.57 288.82L1482.67 288.82L1464.45 236.51L1458.81 218.94Z M1031.28 620L996.29 620L996.29 509.69Q996.29 505.94 996.35 502.20Q996.42 498.45 997.62 470.03L997.62 470.03Q988.14 504.78 983.60 518.47L983.60 518.47L949.67 620L921.62 620L887.69 518.47L873.39 470.03Q875.00 500.00 875.00 509.69L875.00 509.69L875.00 620L840 620L840 438L892.76 438L926.42 539.79L929.36 549.60L935.78 574.02L944.19 544.82L978.79 438L1031.28 438L1031.28 620ZM1146.16 622.58L1146.16 622.58Q1107.29 622.58 1086.65 604.24Q1066.01 585.90 1066.01 551.80L1066.01 551.80L1066.01 438L1105.42 438L1105.42 548.83Q1105.42 570.40 1116.04 581.57Q1126.66 592.75 1147.23 592.75L1147.23 592.75Q1168.33 592.75 1179.69 581.06Q1191.04 569.37 1191.04 547.54L1191.04 547.54L1191.04 438L1230.45 438L1230.45 549.86Q1230.45 584.48 1208.34 603.53Q1186.23 622.58 1146.16 622.58ZM1426.27 620L1380.06 620L1298.04 479.85Q1300.44 500.26 1300.44 512.66L1300.44 512.66L1300.44 620L1265.45 620L1265.45 438L1310.46 438L1393.68 579.31Q1391.28 559.81 1391.28 543.79L1391.28 543.79L1391.28 438L1426.27 438L1426.27 620ZM1502.41 620L1463.01 620L1463.01 438L1502.41 438L1502.41 620ZM1626.91 592.62L1626.91 592.62Q1662.57 592.62 1676.46 558.00L1676.46 558.00L1710.79 570.53Q1699.71 596.88 1678.27 609.73Q1656.83 622.58 1626.91 622.58L1626.91 622.58Q1581.49 622.58 1556.71 597.72Q1531.93 572.85 1531.93 528.16L1531.93 528.16Q1531.93 483.34 1555.84 459.31Q1579.75 435.29 1625.17 435.29L1625.17 435.29Q1658.30 435.29 1679.14 448.14Q1699.97 460.99 1708.39 485.92L1708.39 485.92L1673.66 495.09Q1669.25 481.40 1656.36 473.33Q1643.47 465.25 1625.97 465.25L1625.97 465.25Q1599.26 465.25 1585.43 481.27Q1571.61 497.29 1571.61 528.16L1571.61 528.16Q1571.61 559.55 1585.83 576.08Q1600.06 592.62 1626.91 592.62ZM1775.98 620L1736.57 620L1736.57 438L1775.98 438L1775.98 620ZM1967.40 495.61L1967.40 495.61Q1967.40 513.18 1959.12 527.00Q1950.83 540.82 1935.41 548.38Q1919.98 555.93 1898.74 555.93L1898.74 555.93L1851.99 555.93L1851.99 620L1812.58 620L1812.58 438L1897.14 438Q1930.93 438 1949.16 453.05Q1967.40 468.10 1967.40 495.61ZM1927.72 496.26L1927.72 496.26Q1927.72 467.58 1892.73 467.58L1892.73 467.58L1851.99 467.58L1851.99 526.61L1893.80 526.61Q1910.09 526.61 1918.91 518.80Q1927.72 510.98 1927.72 496.26ZM2167.10 620L2128.09 620L2111.39 573.50L2039.66 573.50L2022.97 620L1983.56 620L2052.22 438L2098.70 438L2167.10 620ZM2078.27 474.94L2075.46 466.03L2074.66 468.87Q2073.32 473.52 2071.45 479.46Q2069.58 485.41 2048.48 544.82L2048.48 544.82L2102.58 544.82L2084.01 492.51L2078.27 474.94ZM2333 620L2192.61 620L2192.61 438L2232.02 438L2232.02 590.55L2333 590.55L2333 620Z M882.06 869L842 869L842 687L882.06 687L882.06 869ZM1008.62 841.62L1008.62 841.62Q1044.87 841.62 1058.99 807.00L1058.99 807.00L1093.89 819.53Q1082.62 845.88 1060.83 858.73Q1039.03 871.58 1008.62 871.58L1008.62 871.58Q962.45 871.58 937.26 846.72Q912.07 821.85 912.07 777.16L912.07 777.16Q912.07 732.34 936.38 708.31Q960.68 684.29 1006.85 684.29L1006.85 684.29Q1040.53 684.29 1061.71 697.14Q1082.89 709.99 1091.45 734.92L1091.45 734.92L1056.14 744.09Q1051.66 730.40 1038.56 722.33Q1025.45 714.25 1007.67 714.25L1007.67 714.25Q980.51 714.25 966.45 730.27Q952.40 746.29 952.40 777.16L952.40 777.16Q952.40 808.55 966.86 825.08Q981.32 841.62 1008.62 841.62ZM1295 869L1255.35 869L1238.38 822.50L1165.46 822.50L1148.48 869L1108.42 869L1178.22 687L1225.47 687L1295 869ZM1204.70 723.94L1201.85 715.03L1201.03 717.87Q1199.67 722.52 1197.77 728.46Q1195.87 734.41 1174.42 793.82L1174.42 793.82L1229.41 793.82L1210.54 741.51L1204.70 723.94Z" stroke-width="7" stroke-linejoin="round"/></symbol>
     <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
     <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.5h8.5A1.5 1.5 0 0 1 21 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></symbol>
     <symbol id="i-id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16c.6-1.6 1.8-2.4 3.2-2.4s2.6.8 3.2 2.4"/><path d="M15 10h3.5M15 13.5h3.5"/></symbol>
@@ -612,22 +632,26 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
 <div class="splash" id="splash">Cargando Brújula P&amp;C…</div>
 <div class="login" id="login" hidden>
   <form class="login-card" id="loginForm" autocomplete="on">
-    <div class="brand" style="padding:0">
-      <svg class="brand-badge" viewBox="0 0 40 40" aria-hidden="true">
-        <path d="M20 2 34 8v11c0 9-6 15.5-14 19C12 34.5 6 28 6 19V8z" fill="var(--ink)"/>
-        <path d="M20 6.5 30.5 11v8.2c0 6.8-4.4 11.8-10.5 14.6C13.9 31 9.5 26 9.5 19.2V11z" fill="none" stroke="var(--manila-fill)" stroke-width="1.4"/>
-        <circle cx="20" cy="19" r="8" fill="none" stroke="var(--manila-fill)" stroke-width="1.6"/>
-        <path d="m20 12.6 2.6 6.4-2.6 6.4-2.6-6.4z" fill="var(--manila-fill)"/>
-        <circle cx="20" cy="19" r="1.2" fill="var(--ink)"/>
-      </svg>
-      <div><div class="brand-name">Brújula P&amp;C</div><div class="brand-sub">Planeamiento Financiero<br>y Control de Gestión</div></div>
+    <div class="login-top">
+      <svg class="caja-logo" aria-label="Caja Municipal Ica" role="img"><use href="#logo-caja"/></svg>
     </div>
-    <h1>Entra a la agencia</h1>
-    <div class="field"><label for="loginWho">¿Quién eres?</label><select id="loginWho"></select></div>
-    <div class="field"><label for="loginPw">Contraseña</label><div class="pw-wrap"><input id="loginPw" type="password" autocomplete="current-password" required><button class="pw-eye" type="button" data-for="loginPw" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
-    <button class="btn primary" type="submit" id="loginBtn">Entrar</button>
-    <p class="login-err" id="loginErr" role="alert" hidden></p>
-    <p class="note">¿Olvidaste tu contraseña? Pídele a Alvaro que la restablezca.</p>
+    <div class="login-body">
+      <div class="login-id">
+        <svg class="brand-badge" viewBox="0 0 40 40" aria-hidden="true">
+          <path d="M20 2 34 8v11c0 9-6 15.5-14 19C12 34.5 6 28 6 19V8z" fill="var(--ink)"/>
+          <path d="M20 6.5 30.5 11v8.2c0 6.8-4.4 11.8-10.5 14.6C13.9 31 9.5 26 9.5 19.2V11z" fill="none" stroke="var(--manila-fill)" stroke-width="1.4"/>
+          <circle cx="20" cy="19" r="8" fill="none" stroke="var(--manila-fill)" stroke-width="1.6"/>
+          <path d="m20 12.6 2.6 6.4-2.6 6.4-2.6-6.4z" fill="var(--manila-fill)"/>
+          <circle cx="20" cy="19" r="1.2" fill="var(--ink)"/>
+        </svg>
+        <div><div class="eyebrow">Ingreso</div><h1>Brújula P&amp;C</h1><div class="login-sub">Planeamiento Financiero y Control de Gestión</div></div>
+      </div>
+      <div class="field"><label for="loginWho">Perfil</label><select id="loginWho"></select></div>
+      <div class="field"><label for="loginPw">Contraseña</label><div class="pw-wrap"><input id="loginPw" type="password" autocomplete="current-password" required><button class="pw-eye" type="button" data-for="loginPw" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
+      <button class="btn primary login-btn" type="submit" id="loginBtn">Entrar a la agencia</button>
+      <p class="login-err" id="loginErr" role="alert" hidden></p>
+      <p class="note">¿Olvidaste tu contraseña? Pídele a Alvaro que la restablezca.</p>
+    </div>
   </form>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
@@ -675,6 +699,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
   </aside>
 
   <main class="main" id="main">
+    <div class="topbar"><svg class="top-caja" aria-label="Caja Municipal Ica" role="img"><use href="#logo-caja"/></svg></div>
 
     <!-- CUARTEL GENERAL -->
     <section class="view" id="v-cuartel" data-view="cuartel">
@@ -715,6 +740,8 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
             <button role="tab" data-slot="acc" aria-selected="false">Accesorio</button>
           </div>
           <div class="wd-list">
+            <div class="wd-mode" role="group" aria-label="Qué elegir"><button type="button" data-mode="items" aria-pressed="true">Modelos</button><button type="button" data-mode="colors" aria-pressed="false">Colores <span class="free">gratis</span></button></div>
+            <div class="wd-colors" id="wdColors" hidden></div>
             <button class="wd-arrow" id="wdUp" aria-label="Opciones anteriores"><svg><use href="#i-up"/></svg></button>
             <div class="wd-opts" id="wdOpts"></div>
             <button class="wd-arrow" id="wdDown" aria-label="Más opciones"><svg><use href="#i-down"/></svg></button>
@@ -722,7 +749,6 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
           <div class="wd-save">
             <div class="nm" id="wdSelName"></div>
             <p id="wdSelDesc"></p>
-            <div class="wd-colors" id="wdColors"></div>
             <button class="btn-save" id="wdSave"></button>
           </div>
         </div>
@@ -2070,12 +2096,13 @@ function errStep() {
 /* =========================================================
    VESTIDOR
    ========================================================= */
-let wdSlot = 'outfit', wdOffset = 0, preview = null;
+let wdSlot = 'outfit', wdOffset = 0, preview = null, wdMode = 'items';
 const WD_VISIBLE = 4;
 function viewerLook() { return lookOf(S.viewer); }
 function currentLook() { return preview || viewerLook(); }
 function wardrobeSync() { preview = null; wdOffset = Math.max(0, WARDROBE[wdSlot].findIndex(o => o.id === viewerLook()[wdSlot]) - 1); renderWardrobe(); if (window.__scene) { window.__scene.setLook(currentLook()); window.__scene.applyDesk(viewerLook().desk); } }
 function renderWardrobe() {
+  if (!(SLOT_COLORS[wdSlot] || []).length && wdMode === 'colors') wdMode = 'items';
   const list = WARDROBE[wdSlot];
   const look = currentLook();
   const rIdx = rankIdx(S.viewer);
@@ -2093,15 +2120,19 @@ function renderWardrobe() {
   }).join('');
   $('#wdUp').disabled = wdOffset <= 0;
   $('#wdDown').disabled = wdOffset >= maxOff;
+  $('#wdUp').hidden = $('#wdDown').hidden = wdMode === 'colors';
   document.querySelectorAll('#wdTabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.slot === wdSlot)));
   const sel = list.find(o => o.id === look[wdSlot]) || list[0];
   $('#wdSelName').textContent = sel.name;
   const keys = SLOT_COLORS[wdSlot] || [];
   const showCol = keys.length && !((wdSlot === 'glasses' || wdSlot === 'hat' || wdSlot === 'acc') && look[wdSlot] === 'none');
   const cols = look.colors || {};
-  $('#wdColors').innerHTML = showCol ? keys.map(k => `<div class="cl">${PALETTES[k].label}</div><div class="sws" data-key="${k}">
+  const colorMode = wdMode === 'colors';
+  document.querySelectorAll('.wd-mode button').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.mode === wdMode)); if (b.dataset.mode === 'colors') b.disabled = !keys.length; });
+  $('#wdColors').hidden = !colorMode; $('#wdOpts').hidden = colorMode;
+  $('#wdColors').innerHTML = !colorMode ? '' : showCol ? keys.map(k => `<div class="cl">${PALETTES[k].label}</div><div class="sws" data-key="${k}">
       <button class="orig" data-c="" aria-pressed="${!cols[k]}" title="Color original" aria-label="Color original"></button>
-      ${PALETTES[k].c.map(c => `<button data-c="${c}" style="background:${c}" aria-pressed="${cols[k] === c}" aria-label="Color ${c}" title="Gratis"></button>`).join('')}</div>`).join('') : '';
+      ${PALETTES[k].c.map(c => `<button data-c="${c}" style="background:${c}" aria-pressed="${cols[k] === c}" aria-label="Color ${c}"></button>`).join('')}</div>`).join('') : `<p class="none">Primero elige un${wdSlot === 'glasses' ? 'os lentes' : wdSlot === 'hat' ? ' sombrero' : ' accesorio'} en Modelos.</p>`;
   const dirty = preview && (SLOTS.some(k => preview[k] !== viewerLook()[k]) || JSON.stringify(preview.colors || {}) !== JSON.stringify(viewerLook().colors || {}));
   $('#wdSelDesc').textContent = dirty ? sel.desc + ' Es una vista previa: guarda para conservarla.' : sel.desc + ' Así te ven en el Cuartel.';
   const btn = $('#wdSave');
@@ -2115,6 +2146,7 @@ $('#wdOpts').addEventListener('click', e => {
   renderWardrobe();
   if (window.__scene) window.__scene.setLook(currentLook());
 });
+document.querySelector('.wd-mode').addEventListener('click', e => { const b = e.target.closest('button[data-mode]'); if (!b || b.disabled) return; wdMode = b.dataset.mode; renderWardrobe(); });
 $('#wdColors').addEventListener('click', e => {
   const b = e.target.closest('button[data-c]'); if (!b) return;
   const key = b.closest('[data-key]').dataset.key;
@@ -3544,12 +3576,12 @@ $('#loginForm').addEventListener('submit', async e => {
   if (res.error || !res.data || !res.data.session) {
     const m = String(res.error && res.error.message || '');
     er.textContent = /invalid login/i.test(m) ? 'La contraseña no es correcta, o tu usuario todavía no fue creado.' : 'No se pudo conectar con el servidor. Revisa tu internet e intenta de nuevo.';
-    er.hidden = false; btn.disabled = false; btn.textContent = 'Entrar'; return;
+    er.hidden = false; btn.disabled = false; btn.textContent = 'Entrar a la agencia'; return;
   }
   try { localStorage.setItem('brujula-who', key); } catch (x) {}
   $('#loginPw').value = ''; $('#loginPw').type = 'password';
   const ok = await enterApp(res.data.session);
-  btn.disabled = false; btn.textContent = 'Entrar';
+  btn.disabled = false; btn.textContent = 'Entrar a la agencia';
   if (!ok) return;
 });
 document.addEventListener('click', e => {
