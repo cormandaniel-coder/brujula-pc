@@ -123,6 +123,10 @@ p { margin: 0; }
 
 .who { border-top: 1px solid var(--line); padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 10px; }
 .who-row { display: flex; align-items: center; gap: 10px; }
+.avatar.has-photo { background-size: cover; background-position: center 22%; font-size: 0; }
+.badge-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; position: relative; z-index: 1; }
+.photo-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 6px; }
+.photo-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .avatar {
   width: 36px; height: 36px; border-radius: 50%; flex: none;
   display: grid; place-items: center;
@@ -318,7 +322,7 @@ p { margin: 0; }
 }
 .badge-top { background: var(--ink); color: var(--bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-display); letter-spacing: .08em; font-size: 13px; }
 .badge-body { padding: 18px 16px; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; }
-.badge-photo { width: 96px; height: 116px; border-radius: 6px; display: grid; place-items: center; font-family: var(--font-display); font-size: 34px; color: #fff; position: relative; overflow: hidden; }
+.badge-photo { width: 96px; height: 120px; border-radius: 6px; display: grid; place-items: center; font-family: var(--font-display); font-size: 34px; color: #fff; position: relative; overflow: hidden; }
 .badge-photo::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px); }
 .badge-alias { font-family: var(--font-display); font-size: 21px; line-height: 1.15; }
 .badge-field { font-size: 12px; color: var(--muted); margin-top: 8px; }
@@ -1093,7 +1097,7 @@ const EMAIL_DOMAIN = 'brujula-pc.com';   // cada persona entra como <clave>@bruj
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const S = { viewer: null, uid: null, month: null, filter: 'all' };
-const D = { profiles: {}, cps: [], ideas: [], progress: {}, floors: {}, plays: [], questions: [], migrated: true };
+const D = { profiles: {}, cps: [], ideas: [], progress: {}, floors: {}, plays: [], questions: [], migrated: true, photos: {}, photosReady: false };
 let CHECKPOINTS = [];            // reportes del mes que se está viendo
 let busy = false;
 
@@ -1276,9 +1280,59 @@ function dueText(c) {
 }
 function pendingFor(id) { return CHECKPOINTS.filter(c => c.resp === id && (cpStatus(c) === 'pendiente' || cpStatus(c) === 'curso')); }
 function avatar(id, size) {
-  const m = M(id);
-  return `<span class="avatar" style="background:${m.color}${size ? `;width:${size}px;height:${size}px` : ''}">${m.ini}</span>`;
+  const m = M(id), ph = D.photos[id];
+  const dim = size ? `;width:${size}px;height:${size}px` : '';
+  if (ph) return `<span class="avatar has-photo" style="background-color:${m.color};background-image:url('${esc(ph)}')${dim}" role="img" aria-label="${esc(m.nombre)}"></span>`;
+  return `<span class="avatar" style="background:${m.color}${dim}">${m.ini}</span>`;
 }
+
+/* ---------- Fotos del equipo (Supabase Storage, carpeta privada «fotos») ---------- */
+let photoTimer = null;
+async function fetchPhotos() {
+  try {
+    const paths = MEMBERS.map(m => m.id + '.jpg');
+    const { data, error } = await sb.storage.from('fotos').createSignedUrls(paths, 3600);
+    if (error) { D.photosReady = false; return; }
+    D.photosReady = true; D.photos = {};
+    (data || []).forEach(r => { if (r && r.signedUrl && !r.error) D.photos[r.path.replace('.jpg', '')] = r.signedUrl; });
+  } catch (e) { D.photosReady = false; }
+  clearTimeout(photoTimer); photoTimer = setTimeout(async () => { await fetchPhotos(); renderAll(); }, 50 * 60 * 1000);
+}
+/* Recorta al centro en formato 4:5 y comprime a JPG (~60 KB) antes de subir */
+function photoBlob(file) {
+  return new Promise((res, rej) => {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { rej(new Error('formato')); return; }
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const W = 480, H = 600, r = Math.max(W / img.width, H / img.height);
+      const sw = W / r, sh = H / r, sx = (img.width - sw) / 2, sy = Math.max(0, (img.height - sh) * .25);
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+      URL.revokeObjectURL(url);
+      c.toBlob(b => b ? res(b) : rej(new Error('blob')), 'image/jpeg', .86);
+    };
+    img.onerror = () => rej(new Error('img')); img.src = url;
+  });
+}
+async function uploadPhoto(key, file) {
+  let blob;
+  try { blob = await photoBlob(file); } catch (e) { toast('Usa una foto en JPG, PNG o WEBP.', true); return; }
+  busy = true;
+  const { error } = await sb.storage.from('fotos').upload(key + '.jpg', blob, { upsert: true, contentType: 'image/jpeg', cacheControl: '60' });
+  busy = false;
+  if (error) { toast(/row-level|permission|policy|unauthor/i.test(error.message || '') ? 'No tienes permiso para cambiar esa foto.' : 'No se pudo subir la foto. Revisa que esté hecha la actualización 3.', true); return; }
+  await fetchPhotos(); renderAll(); toast('Foto actualizada');
+}
+async function removePhoto(key) {
+  busy = true; const { error } = await sb.storage.from('fotos').remove([key + '.jpg']); busy = false;
+  if (error) { toast('No se pudo quitar la foto.', true); return; }
+  await fetchPhotos(); renderAll(); toast('Foto quitada');
+}
+document.addEventListener('change', e => {
+  const inp = e.target.closest('input[type=file][data-photo]'); if (!inp || !inp.files || !inp.files[0]) return;
+  uploadPhoto(inp.dataset.photo, inp.files[0]); inp.value = '';
+});
+document.addEventListener('click', e => { const b = e.target.closest('[data-photo-del]'); if (b) removePhoto(b.dataset.photoDel); });
 const nombre = id => M(id).nombre;
 const label = id => M(id).nombre + ' (' + M(id).rol + ')';
 function person(id) { return `<span class="person">${avatar(id)}<span><b>${esc(nombre(id))}</b> <span class="role">(${esc(M(id).rol)})</span></span></span>`; }
@@ -1291,7 +1345,7 @@ const $ = s => document.querySelector(s);
 
 function renderShell() {
   const v = S.viewer, m = M(v);
-  $('#whoAv').outerHTML = `<div class="avatar" id="whoAv" style="background:${m.color}">${m.ini}</div>`;
+  $('#whoAv').outerHTML = avatar(v, 36).replace('<span class="avatar', '<span id="whoAv" class="avatar');
   $('#whoName').textContent = m.nombre + ' (' + m.rol + ')';
   $('#whoRole').textContent = m.clase + ' · ' + rankName(v);
   const pend = pendingFor(v).length;
@@ -1410,7 +1464,7 @@ function renderCredencial() {
   const badge = `<div class="badge">
     <div class="badge-top"><span>BRÚJULA P&amp;C</span><span>CREDENCIAL</span></div>
     <div class="badge-body">
-      <div class="badge-photo" style="background:${m.color}">${m.ini}</div>
+      <div class="badge-photo" style="background:${m.color}">${D.photos[v] ? `<img src="${esc(D.photos[v])}" alt="Foto de ${esc(m.nombre)}">` : m.ini}</div>
       <div style="min-width:0">
         <div class="badge-alias">${esc(m.nombre)}</div>
         <div class="badge-field">Alias<b>${esc(alias(v))}</b></div>
@@ -1422,6 +1476,7 @@ function renderCredencial() {
     <div class="badge-foot">
       <div class="row"><span class="badge-no">PLACA ${m.placa}</span><span class="mono" style="color:var(--manila)">${m.comisario ? '' : xp.total + ' XP'}</span></div>
       ${nr && !m.comisario ? `<div class="meter"><span style="width:${Math.round(nr.progress * 100)}%"></span></div><div class="note">Siguiente rango: ${esc(nr.next.name)}</div>` : ''}
+      ${D.photosReady ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px"><label class="btn small photo-btn">${D.photos[v] ? 'Cambiar mi foto' : 'Subir mi foto'}<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${v}"></label>${D.photos[v] ? `<button class="btn small" type="button" data-photo-del="${v}">Quitar</button>` : ''}</div>` : ''}
     </div>
   </div>`;
 
@@ -1637,6 +1692,11 @@ function renderAdmin() {
       </form>
       ${D.questions.length ? `<div class="table-wrap" style="margin-top:14px"><table class="adm"><thead><tr><th>Pregunta</th><th>Respuesta</th><th>Autor</th><th></th></tr></thead><tbody>${D.questions.map(q => `<tr><td style="min-width:260px">${esc(q.q)}</td><td>${esc(q.o[q.a])}</td><td>${esc(nombre(q.by))}</td><td>${delBtn('q:' + q.id)}</td></tr>`).join('')}</tbody></table></div>` : ''}`
       : '<p class="note"><b>Falta la actualización 2 de la base de datos.</b> Ejecuta <span class="mono">supabase/actualizacion-2.sql</span> en Supabase para activar penalidades, rango protegido y minijuegos con XP.</p>'}
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><div class="eyebrow">Fotos del equipo</div><h2>Foto de cada credencial</h2></div><span class="note">Se guardan en un espacio privado: solo se ven con sesión iniciada</span></div>
+      ${D.photosReady ? `<div class="team">${MEMBERS.map(t => `<div class="team-card" style="flex-direction:column;align-items:flex-start;gap:8px">${avatar(t.id, 56)}<div class="team-name">${esc(t.nombre)}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><label class="btn small photo-btn">${D.photos[t.id] ? 'Cambiar' : 'Subir'}<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${t.id}"></label>${D.photos[t.id] ? `<button class="btn small" type="button" data-photo-del="${t.id}">Quitar</button>` : ''}</div></div>`).join('')}</div>`
+        : '<p class="note"><b>Falta la actualización 3.</b> Ejecuta <span class="mono">supabase/actualizacion-3.sql</span> en Supabase para activar las fotos.</p>'}
     </div>
     <div class="panel">
       <div class="panel-head"><div><div class="eyebrow">Cuentas</div><h2>Quién ya tiene usuario</h2></div></div>
@@ -3556,6 +3616,7 @@ async function enterApp(session) {
   if (!me) { await sb.auth.signOut(); showLogin('Tu usuario no está vinculado a ningún integrante del equipo. Avísale a Alvaro.'); return false; }
   S.viewer = me.member_key;
   try { await syncFloors(); } catch (e) {}
+  await fetchPhotos();
   $('#splash').hidden = true; $('#login').hidden = true; $('.app').hidden = false;
   renderAll(); wardrobeSync(); route();
   startScene(); startPolling();
