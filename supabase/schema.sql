@@ -2,6 +2,7 @@
 -- Brújula P&C · esquema de base de datos
 -- Pegar completo en Supabase → SQL Editor → New query → Run
 -- Es seguro ejecutarlo más de una vez.
+-- Después ejecutar también actualizacion-2.sql (penalidades y minijuegos).
 -- =====================================================================
 
 -- ---------- Perfiles (uno por persona del equipo) ----------
@@ -23,7 +24,7 @@ create table if not exists public.checkpoints (
   resp        text not null check (resp in ('jefe','lider','analista','auxiliar','asistente')),
   co          text not null check (co   in ('jefe','lider','analista','auxiliar','asistente')),
   status      text not null default 'pendiente'
-              check (status in ('ok','obs','tarde','curso','pendiente')),
+              check (status in ('ok','obs','tarde','error','tarde_error','curso','pendiente')),
   created_at  timestamptz not null default now()
 );
 
