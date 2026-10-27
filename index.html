@@ -3103,7 +3103,7 @@ function initScene() {
 
   // Estante con libros (pared derecha)
   const shelf = new T.Group(); shelf.position.set(4.95, 0, -1.2); shelf.rotation.y = -Math.PI / 2; scene.add(shelf);
-  const sb = new T.Mesh(new T.BoxGeometry(1.6, 2.1, .4), mat(0x2E1F15, { roughness: .7 })); sb.position.y = 1.05; shelf.add(sb);
+  const shelfBody = new T.Mesh(new T.BoxGeometry(1.6, 2.1, .4), mat(0x2E1F15, { roughness: .7 })); shelfBody.position.y = 1.05; shelf.add(shelfBody);
   const bookCols = [0x7A2E2A, 0x2D4B5E, 0x5C5A3A, 0x8A6A3C, 0x3A2F4A, 0x4D6B5C, 0xB08B54];
   for (let r = 0; r < 4; r++) {
     let x = -.72;
@@ -3474,7 +3474,7 @@ function initScene() {
   function loop() {
     raf = 0;
     if (!active || document.hidden) return;
-    const now = performance.now(), dt = Math.min(.05, (now - last) / 1000); last = now;
+    const now = performance.now(), dt = Math.min(.2, (now - last) / 1000); last = now;
     const t = now / 1000;
     let moving = false;
     if (camAnim) {
