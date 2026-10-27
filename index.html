@@ -1,0 +1,2215 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Brújula P&amp;C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Special+Elite&display=swap">
+<style>
+/* Layout: panel lateral fijo + área principal; la portada es una escena 3D oscura (oficina de detectives) con un vestidor a la derecha, como Admin Rally. */
+:root {
+  --bg: #E8ECF0;
+  --surface: #FFFFFF;
+  --surface-2: #F3F5F8;
+  --ink: #16212C;
+  --muted: #586777;
+  --line: #D2D9E1;
+  --manila: #94651B;
+  --manila-soft: #F4E6C8;
+  --manila-fill: #D7AC5E;
+  --stamp: #B0392D;
+  --ok: #2A7655;
+  --ok-soft: #DCEFE5;
+  --warn: #9C6312;
+  --warn-soft: #F6E8CC;
+  --info: #2D5A86;
+  --info-soft: #DDE7F2;
+  --shadow: 0 1px 2px rgba(22,33,44,.06), 0 10px 28px rgba(22,33,44,.07);
+
+  --scene-bg: #0D1218;
+  --scene-glass: rgba(13,18,25,.74);
+  --scene-glass-2: rgba(255,255,255,.06);
+  --scene-line: rgba(255,255,255,.13);
+  --scene-ink: #EEF2F6;
+  --scene-muted: #9AA8B6;
+  --scene-accent: #E3B868;
+
+  --font-display: "Special Elite", "Courier New", Courier, monospace;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E141B; --surface: #151E28; --surface-2: #1B2633; --ink: #E5EAF0; --muted: #93A2B2; --line: #283646;
+    --manila: #E2B766; --manila-soft: #3A2E1A; --manila-fill: #C99A45; --stamp: #E46B5F;
+    --ok: #5FC594; --ok-soft: #173528; --warn: #E6AA4E; --warn-soft: #3A2B12; --info: #82B2E2; --info-soft: #172B3F;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E141B; --surface: #151E28; --surface-2: #1B2633; --ink: #E5EAF0; --muted: #93A2B2; --line: #283646;
+  --manila: #E2B766; --manila-soft: #3A2E1A; --manila-fill: #C99A45; --stamp: #E46B5F;
+  --ok: #5FC594; --ok-soft: #173528; --warn: #E6AA4E; --warn-soft: #3A2B12; --info: #82B2E2; --info-soft: #172B3F;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--manila); outline-offset: 2px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+/* ---------- Shell ---------- */
+.app {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  gap: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px;
+  max-width: 1480px;
+  margin: 0 auto;
+}
+.side {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  align-self: start;
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.brand { display: flex; align-items: center; gap: 10px; padding: 18px 16px 14px; }
+.brand-badge { width: 40px; height: 40px; flex: none; }
+.brand-name { font-family: var(--font-display); font-size: 18px; line-height: 1.1; letter-spacing: .02em; }
+.brand-sub { font-size: 11px; color: var(--muted); line-height: 1.3; }
+.proto { margin: 0 16px 10px; font-size: 11px; color: var(--manila); background: var(--manila-soft); border-radius: 999px; padding: 3px 10px; align-self: flex-start; font-weight: 600; }
+
+.nav { display: flex; flex-direction: column; gap: 2px; padding: 4px 10px; overflow-y: auto; flex: 1; }
+.nav-group { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 14px 8px 6px; }
+.nav a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--r-sm);
+  color: var(--ink); text-decoration: none; font-weight: 500; font-size: 13.5px;
+}
+.nav a svg { width: 17px; height: 17px; flex: none; color: var(--muted); }
+.nav a:hover { background: var(--surface-2); }
+.nav a[aria-current="page"] { background: var(--manila-soft); color: var(--manila); font-weight: 600; }
+.nav a[aria-current="page"] svg { color: var(--manila); }
+.nav a .count { margin-left: auto; font-family: var(--font-mono); font-size: 11px; background: var(--stamp); color: #fff; border-radius: 999px; padding: 0 7px; line-height: 18px; }
+
+.who { border-top: 1px solid var(--line); padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.who-row { display: flex; align-items: center; gap: 10px; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: #fff;
+}
+.who-name { font-weight: 600; font-size: 13px; line-height: 1.25; }
+.who-role { font-size: 12px; color: var(--muted); line-height: 1.25; }
+.who label { font-size: 11px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+.who select { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 6px 8px; font-size: 13px; }
+
+.main { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.view[hidden] { display: none !important; }
+.view { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 4px 2px 0; }
+.page-head h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 3vw, 32px); line-height: 1.1; letter-spacing: .01em; }
+.page-head p { color: var(--muted); max-width: 62ch; margin-top: 4px; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px; min-width: 0; }
+.panel h2 { font-size: 15px; font-weight: 600; }
+.panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.panel-head .eyebrow { margin-bottom: 2px; }
+
+/* ---------- Scene ---------- */
+.scene {
+  position: relative;
+  background: var(--scene-bg);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  max-height: 660px;
+  min-height: 420px;
+  width: 100%;
+  color: var(--scene-ink);
+  box-shadow: var(--shadow);
+}
+.scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; }
+.scene canvas:active { cursor: grabbing; }
+.stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 45% 55%, transparent 55%, rgba(0,0,0,.45) 100%);
+}
+.scene-top { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: center; z-index: 2; pointer-events: none; }
+.scene-top > * { pointer-events: auto; }
+.chip-dark {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--scene-glass); border: 1px solid var(--scene-line);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: var(--scene-ink);
+}
+.chip-dark svg { width: 15px; height: 15px; }
+.bell { position: relative; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--scene-glass); border: 1px solid var(--scene-line); color: var(--scene-ink); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.bell svg { width: 17px; height: 17px; }
+.bell .dot { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; border-radius: 999px; background: #C9473A; color: #fff; font-family: var(--font-mono); font-size: 11px; display: grid; place-items: center; padding: 0 5px; }
+.bell .dot[hidden] { display: none !important; }
+.scene-caption { position: absolute; left: 18px; bottom: 16px; z-index: 2; pointer-events: none; }
+.scene-caption .cap-alias { font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 28px); line-height: 1.1; color: var(--scene-ink); text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+.scene-caption .cap-meta { font-size: 12.5px; color: var(--scene-muted); margin-top: 4px; }
+.scene-caption .cap-meta b { color: var(--scene-accent); font-weight: 600; }
+.scene-hint { position: absolute; left: 50%; transform: translateX(-50%); bottom: 14px; font-size: 11.5px; color: var(--scene-muted); z-index: 2; pointer-events: none; letter-spacing: .03em; }
+.scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: var(--scene-muted); z-index: 1; }
+
+.wardrobe {
+  position: absolute; z-index: 3;
+  right: 14px; top: 64px; bottom: 14px;
+  width: 252px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.wd-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--scene-glass); border: 1px solid var(--scene-line); border-radius: 10px; padding: 3px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.wd-tabs button { background: none; border: 0; color: var(--scene-muted); font-size: 11px; font-weight: 600; padding: 6px 2px; border-radius: 7px; }
+.wd-tabs button[aria-selected="true"] { background: rgba(227,184,104,.16); color: var(--scene-accent); }
+.wd-list { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 6px; background: var(--scene-glass); border: 1px solid var(--scene-line); border-radius: 12px; padding: 8px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.wd-arrow { align-self: center; width: 28px; height: 22px; border-radius: 999px; border: 1px solid var(--scene-line); background: var(--scene-glass-2); color: var(--scene-ink); display: grid; place-items: center; flex: none; }
+.wd-arrow:disabled { opacity: .3; cursor: default; }
+.wd-arrow svg { width: 14px; height: 14px; }
+.wd-opts { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+.wd-opt {
+  text-align: left; border: 1px solid transparent; background: var(--scene-glass-2); color: var(--scene-ink);
+  border-radius: 9px; padding: 9px 10px 10px; display: flex; flex-direction: column; gap: 2px; position: relative;
+}
+.wd-opt:hover:not(:disabled) { border-color: var(--scene-line); }
+.wd-opt .lbl { font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--scene-muted); font-weight: 600; }
+.wd-opt .nm { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.wd-opt .sw { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(255,255,255,.25); flex: none; }
+.wd-opt .bar { position: absolute; left: 10px; right: 10px; bottom: 4px; height: 2px; border-radius: 2px; background: transparent; }
+.wd-opt[aria-pressed="true"] { border-color: rgba(227,184,104,.55); background: rgba(227,184,104,.10); }
+.wd-opt[aria-pressed="true"] .bar { background: var(--scene-accent); }
+.wd-opt.locked { opacity: .55; cursor: not-allowed; }
+.wd-opt .lock { font-size: 11px; color: var(--scene-muted); display: flex; align-items: center; gap: 4px; }
+.wd-opt .lock svg { width: 11px; height: 11px; }
+.wd-save { background: var(--scene-glass); border: 1px solid var(--scene-line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.wd-save .nm { font-weight: 600; font-size: 13.5px; }
+.wd-save p { font-size: 11.5px; color: var(--scene-muted); line-height: 1.4; }
+.btn-save { margin-top: 4px; border: 0; border-radius: 8px; padding: 8px 10px; font-weight: 600; font-size: 13px; background: var(--scene-accent); color: #1B1408; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-save.saved { background: rgba(126,214,165,.18); color: #8FE0B4; }
+.btn-save svg { width: 14px; height: 14px; }
+
+/* ---------- Cards & common ---------- */
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.stat-big { font-family: var(--font-mono); font-size: 28px; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat-sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.meter { height: 8px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+.meter > span { display: block; height: 100%; background: var(--manila-fill); border-radius: 999px; }
+.meter.ok > span { background: var(--ok); }
+.seg { display: flex; gap: 4px; }
+.seg span { flex: 1; height: 8px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--line); }
+.seg span.ok { background: var(--ok); border-color: var(--ok); }
+.seg span.obs { background: var(--warn); border-color: var(--warn); }
+.seg span.tarde { background: var(--stamp); border-color: var(--stamp); }
+.seg span.curso { background: var(--info-soft); border-color: var(--info); }
+
+.pill { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.obs { background: var(--warn-soft); color: var(--warn); }
+.pill.tarde { background: transparent; color: var(--stamp); border: 1px solid var(--stamp); }
+.pill.curso { background: var(--info-soft); color: var(--info); }
+.pill.pendiente { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+.pill.manila { background: var(--manila-soft); color: var(--manila); }
+
+.person { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; min-width: 0; }
+.person .avatar { width: 24px; height: 24px; font-size: 10px; }
+.person > span:last-child { line-height: 1.3; }
+.person b { font-weight: 600; }
+.role { color: var(--muted); font-weight: 400; }
+.team { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.team-card { display: flex; gap: 10px; align-items: center; background: var(--surface-2); border-radius: var(--r-md); padding: 10px 12px; border: 1px solid transparent; }
+.team-card.me { border-color: var(--manila-fill); background: var(--manila-soft); }
+.team-name { font-weight: 600; font-size: 13.5px; line-height: 1.3; }
+@media (max-width: 1180px) { .team { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
+
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r-sm); padding: 7px 12px; font-weight: 600; font-size: 13px; }
+.btn:hover { background: var(--surface-2); }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn.danger { color: var(--stamp); border-color: var(--stamp); }
+.toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; background: var(--surface); }
+.toggle button { border: 0; background: none; padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+/* ---------- Casos ---------- */
+.case-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; }
+.case-file { font-family: var(--font-display); font-size: 22px; line-height: 1.15; }
+.stamp {
+  font-family: var(--font-display); color: var(--stamp); border: 2px solid var(--stamp);
+  padding: 6px 12px; border-radius: 4px; transform: rotate(-4deg); font-size: 15px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; opacity: .9;
+}
+.stamp.won { color: var(--ok); border-color: var(--ok); }
+.stamp.lost { color: var(--muted); border-color: var(--muted); }
+.cp-list { display: flex; flex-direction: column; }
+.cp {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) 150px 56px;
+  gap: 14px; align-items: center;
+  padding: 12px 4px; border-top: 1px solid var(--line);
+}
+.cp:first-child { border-top: 0; }
+.cp.head { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-block: 0 8px; }
+.cp-date { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.3; }
+.cp-date small { display: block; color: var(--muted); font-size: 11px; }
+.cp-date small.late { color: var(--stamp); }
+.cp-name { font-weight: 600; font-size: 13.5px; }
+.cp-desc { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+.cp-xp { font-family: var(--font-mono); text-align: right; font-size: 13px; color: var(--manila); font-weight: 500; }
+.cp.mine { background: linear-gradient(90deg, var(--manila-soft), transparent 40%); }
+.rules { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; font-size: 13px; }
+.rules .pill { justify-self: start; }
+.rules .x { font-family: var(--font-mono); color: var(--manila); text-align: right; font-weight: 500; }
+
+/* ---------- Credencial ---------- */
+.badge-wrap { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.badge {
+  border-radius: 14px; overflow: hidden; border: 1px solid var(--line);
+  background: var(--surface); box-shadow: var(--shadow);
+}
+.badge-top { background: var(--ink); color: var(--bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-display); letter-spacing: .08em; font-size: 13px; }
+.badge-body { padding: 18px 16px; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; }
+.badge-photo { width: 96px; height: 116px; border-radius: 6px; display: grid; place-items: center; font-family: var(--font-display); font-size: 34px; color: #fff; position: relative; overflow: hidden; }
+.badge-photo::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 2px, transparent 2px 4px); }
+.badge-alias { font-family: var(--font-display); font-size: 21px; line-height: 1.15; }
+.badge-field { font-size: 12px; color: var(--muted); margin-top: 8px; }
+.badge-field b { display: block; color: var(--ink); font-weight: 600; font-size: 13.5px; }
+.badge-foot { border-top: 1px dashed var(--line); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.badge-foot .row { display: flex; justify-content: space-between; font-size: 12.5px; }
+.badge-no { font-family: var(--font-mono); font-size: 12px; letter-spacing: .05em; }
+.stats4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stats4 > div { background: var(--surface-2); border-radius: var(--r-md); padding: 12px; }
+.stats4 .stat-big { font-size: 22px; }
+.insignias { display: flex; flex-wrap: wrap; gap: 8px; }
+.insignia { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px 5px 6px; font-size: 12.5px; font-weight: 500; background: var(--surface); }
+.insignia .ic { width: 20px; height: 20px; border-radius: 50%; background: var(--manila-soft); color: var(--manila); display: grid; place-items: center; }
+.insignia .ic svg { width: 12px; height: 12px; }
+.insignia.taught .ic { background: var(--manila-fill); color: #fff; }
+.field { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--muted); font-weight: 500; }
+.field input, .field textarea, .field select { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 8px 10px; font-size: 14px; color: var(--ink); width: 100%; }
+.inline-form { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+.inline-form .field { flex: 1; min-width: 180px; }
+.req-list { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.req-list div { display: flex; align-items: center; gap: 8px; }
+.req-list svg { width: 15px; height: 15px; flex: none; }
+.req-list .met { color: var(--ok); }
+.req-list .unmet { color: var(--muted); }
+
+/* ---------- Academia ---------- */
+.tree { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.branch { background: var(--surface-2); border-radius: var(--r-md); padding: 14px; display: flex; flex-direction: column; gap: 0; }
+.branch h3 { font-size: 13px; font-weight: 600; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.node { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; position: relative; padding-bottom: 16px; }
+.node:last-child { padding-bottom: 0; }
+.node::before { content: ""; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: var(--line); }
+.node:last-child::before { display: none; }
+.node.unlocked::before { background: var(--manila-fill); }
+.node-ic { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--line); background: var(--surface); color: var(--muted); }
+.node-ic svg { width: 16px; height: 16px; }
+.node.unlocked .node-ic { background: var(--manila-fill); border-color: var(--manila-fill); color: #fff; }
+.node.progress .node-ic { border-color: var(--info); color: var(--info); }
+.node-name { font-weight: 600; font-size: 13.5px; }
+.node-course { font-size: 12.5px; color: var(--muted); }
+.node-state { margin-top: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.node-state .meter { width: 110px; height: 6px; }
+.node-state .meter > span { background: var(--info); }
+.course-row { display: grid; grid-template-columns: minmax(0, 1fr) 160px 70px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+.course-row:first-child { border-top: 0; }
+.team-skill { display: grid; grid-template-columns: minmax(0, 180px) minmax(0, 1fr) 90px; gap: 14px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.team-skill:first-child { border-top: 0; }
+.dots { display: flex; gap: 5px; flex-wrap: wrap; }
+.dots span { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); }
+.dots span.on { background: var(--manila-fill); border-color: var(--manila-fill); }
+.dots span.half { border-color: var(--info); }
+
+/* ---------- Ideas ---------- */
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.col { background: var(--surface-2); border-radius: var(--r-md); padding: 10px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.col-head { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 4px; font-size: 12.5px; font-weight: 600; }
+.col-head .n { font-family: var(--font-mono); color: var(--muted); font-weight: 400; }
+.col-sub { font-size: 11.5px; color: var(--muted); padding: 0 4px 2px; margin-top: -6px; }
+.idea { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.idea-title { font-weight: 600; font-size: 13.5px; line-height: 1.35; }
+.idea-desc { font-size: 12.5px; color: var(--muted); }
+.idea-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 2px; }
+.idea-h { font-family: var(--font-mono); font-size: 12px; color: var(--manila); white-space: nowrap; }
+.col.done { background: var(--ok-soft); }
+.col.done .idea { border-color: transparent; }
+
+/* ---------- Escalafón ---------- */
+.ladder { display: flex; flex-direction: column; }
+.rung { display: grid; grid-template-columns: 44px minmax(0, 220px) minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+.rung:first-child { border-top: 0; }
+.rung-n { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); }
+.rung-n svg { width: 20px; height: 20px; }
+.rung.has .rung-n { background: var(--manila-soft); border-color: var(--manila-fill); color: var(--manila); }
+.rung-name { font-family: var(--font-display); font-size: 18px; line-height: 1.15; }
+.rung-req { font-size: 12.5px; color: var(--muted); }
+.rung-people { display: flex; gap: 10px; flex-wrap: wrap; }
+.rung-person { display: flex; align-items: center; gap: 8px; background: var(--surface-2); border-radius: 999px; padding: 4px 12px 4px 4px; font-size: 12.5px; font-weight: 500; }
+.rung-person .avatar { width: 28px; height: 28px; font-size: 10.5px; }
+.prog-list { display: flex; flex-direction: column; gap: 14px; }
+.prog { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 16px; align-items: center; }
+.prog-text { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
+
+/* ---------- Admin ---------- */
+.table-wrap { overflow-x: auto; }
+table.adm { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+table.adm th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 0 10px 8px 0; }
+table.adm td { padding: 9px 10px 9px 0; border-top: 1px solid var(--line); vertical-align: middle; }
+table.adm select { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 5px 8px; font-size: 13px; }
+.note { font-size: 12.5px; color: var(--muted); }
+.lockbox { text-align: center; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.lockbox svg { width: 28px; height: 28px; color: var(--muted); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1180px) {
+  .cp { grid-template-columns: 64px minmax(0, 1fr) 140px 48px; }
+  .cp .c-resp, .cp .c-co { display: none; }
+  .cp .c-people-mobile { display: flex !important; }
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .badge-wrap { grid-template-columns: minmax(0, 1fr); }
+}
+.c-people-mobile { display: none !important; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+@media (max-width: 900px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side { position: static; max-height: none; }
+  .brand { padding-bottom: 8px; }
+  .nav { flex-direction: row; overflow-x: auto; padding: 4px 10px 10px; gap: 4px; }
+  .nav-group { display: none; }
+  .nav a { white-space: nowrap; flex: none; }
+  .who { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  .grid-3, .kpis { grid-template-columns: minmax(0, 1fr); }
+  .grid-2, .tree { grid-template-columns: minmax(0, 1fr); }
+  .scene { aspect-ratio: auto; max-height: none; min-height: 0; display: flex; flex-direction: column; }
+  .scene .stage { position: relative; aspect-ratio: 4 / 5; max-height: 70vh; width: 100%; }
+  .wardrobe { position: static; width: auto; padding: 12px; }
+  .wd-opts { flex-direction: row; overflow-x: auto; }
+  .wd-opt { min-width: 150px; }
+  .wd-arrow { display: none; }
+  .scene-hint { bottom: auto; top: 58px; }
+  .stats4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rung { grid-template-columns: 44px minmax(0, 1fr); }
+  .rung-people { grid-column: 1 / -1; }
+  .prog { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .course-row { grid-template-columns: minmax(0, 1fr) 70px; }
+  .course-row .c-state { grid-column: 1 / -1; }
+  .team-skill { grid-template-columns: minmax(0, 1fr) 70px; }
+  .team-skill .dots { grid-column: 1 / -1; order: 3; }
+}
+@media (min-width: 901px) { .scene .stage { position: absolute; inset: 0; } }
+@media (max-width: 560px) {
+  .board { grid-template-columns: minmax(0, 1fr); }
+  .cp { grid-template-columns: minmax(0, 1fr) auto; }
+  .cp .c-date-col { grid-column: 1 / -1; display: flex; gap: 8px; align-items: baseline; }
+  .cp .c-date-col small { display: inline; }
+  .cp.head { display: none; }
+  .case-head { grid-template-columns: minmax(0, 1fr); }
+  .stamp { justify-self: start; }
+  .badge-body { grid-template-columns: 80px minmax(0, 1fr); }
+  .badge-photo { width: 80px; height: 98px; font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ---------- Base de página (GitHub Pages) ---------- */
+html { color-scheme: light; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+.splash { min-height: 100dvh; display: grid; place-items: center; font-family: var(--font-display); font-size: 18px; color: var(--muted); }
+.login { min-height: 100dvh; display: grid; place-items: center; padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.login-card { width: min(420px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 16px; }
+.login-card h1 { font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.15; }
+.login-err { color: var(--stamp); font-size: 13px; font-weight: 600; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 13px; z-index: 50; max-width: calc(100vw - 32px); box-shadow: var(--shadow); }
+.toast.err { background: var(--stamp); color: #fff; }
+select.sel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 7px 10px; font-size: 13px; font-weight: 600; }
+.btn.small { padding: 4px 10px; font-size: 12px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+table.adm input[type=text], table.adm input[type=date], table.adm input[type=number] { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 5px 8px; font-size: 13px; width: 100%; min-width: 0; }
+table.adm td:first-child input[type=date] { min-width: 132px; }
+.adm-form { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+.adm-form .field { flex: 1; min-width: 140px; }
+.who .btn { align-self: flex-start; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.5h8.5A1.5 1.5 0 0 1 21 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></symbol>
+    <symbol id="i-id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16c.6-1.6 1.8-2.4 3.2-2.4s2.6.8 3.2 2.4"/><path d="M15 10h3.5M15 13.5h3.5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-ladder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v18M17 3v18M7 7h10M7 12h10M7 17h10"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></symbol>
+    <symbol id="i-loupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+  </defs>
+</svg>
+
+<div class="splash" id="splash">Cargando Brújula P&amp;C…</div>
+<div class="login" id="login" hidden>
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <div class="brand" style="padding:0">
+      <svg class="brand-badge" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 2 34 8v11c0 9-6 15.5-14 19C12 34.5 6 28 6 19V8z" fill="var(--ink)"/>
+        <path d="M20 6.5 30.5 11v8.2c0 6.8-4.4 11.8-10.5 14.6C13.9 31 9.5 26 9.5 19.2V11z" fill="none" stroke="var(--manila-fill)" stroke-width="1.4"/>
+        <circle cx="20" cy="19" r="8" fill="none" stroke="var(--manila-fill)" stroke-width="1.6"/>
+        <path d="m20 12.6 2.6 6.4-2.6 6.4-2.6-6.4z" fill="var(--manila-fill)"/>
+        <circle cx="20" cy="19" r="1.2" fill="var(--ink)"/>
+      </svg>
+      <div><div class="brand-name">Brújula P&amp;C</div><div class="brand-sub">Planeamiento Financiero<br>y Control de Gestión</div></div>
+    </div>
+    <h1>Entra a la agencia</h1>
+    <div class="field"><label for="loginWho">¿Quién eres?</label><select id="loginWho"></select></div>
+    <div class="field"><label for="loginPw">Contraseña</label><input id="loginPw" type="password" autocomplete="current-password" required></div>
+    <button class="btn primary" type="submit" id="loginBtn">Entrar</button>
+    <p class="login-err" id="loginErr" role="alert" hidden></p>
+    <p class="note">¿Olvidaste tu contraseña? Pídele a Alvaro que la restablezca.</p>
+  </form>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="app" hidden>
+  <aside class="side" aria-label="Menú principal">
+    <div class="brand">
+      <svg class="brand-badge" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 2 34 8v11c0 9-6 15.5-14 19C12 34.5 6 28 6 19V8z" fill="var(--ink)"/>
+        <path d="M20 6.5 30.5 11v8.2c0 6.8-4.4 11.8-10.5 14.6C13.9 31 9.5 26 9.5 19.2V11z" fill="none" stroke="var(--manila-fill)" stroke-width="1.4"/>
+        <circle cx="20" cy="19" r="8" fill="none" stroke="var(--manila-fill)" stroke-width="1.6"/>
+        <path d="m20 12.6 2.6 6.4-2.6 6.4-2.6-6.4z" fill="var(--manila-fill)"/>
+        <circle cx="20" cy="19" r="1.2" fill="var(--ink)"/>
+      </svg>
+      <div>
+        <div class="brand-name">Brújula P&amp;C</div>
+        <div class="brand-sub">Planeamiento Financiero<br>y Control de Gestión</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <a href="#cuartel" data-v="cuartel"><svg><use href="#i-home"/></svg>Cuartel General</a>
+      <div class="nav-group">Investigación</div>
+      <a href="#casos" data-v="casos"><svg><use href="#i-folder"/></svg>Casos del Mes<span class="count" id="navCount" hidden></span></a>
+      <a href="#credencial" data-v="credencial"><svg><use href="#i-id"/></svg>Mi Credencial</a>
+      <a href="#academia" data-v="academia"><svg><use href="#i-book"/></svg>Academia</a>
+      <a href="#ideas" data-v="ideas"><svg><use href="#i-bulb"/></svg>Tablero de Ideas</a>
+      <a href="#escalafon" data-v="escalafon"><svg><use href="#i-ladder"/></svg>Escalafón</a>
+      <div class="nav-group" id="navAdminGroup">Comisaría</div>
+      <a href="#admin" data-v="admin" id="navAdmin"><svg><use href="#i-gear"/></svg>Administrar</a>
+    </nav>
+    <div class="who">
+      <div class="who-row">
+        <div class="avatar" id="whoAv"></div>
+        <div>
+          <div class="who-name" id="whoName"></div>
+          <div class="who-role" id="whoRole"></div>
+        </div>
+      </div>
+      <button class="btn" type="button" id="logout">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- CUARTEL GENERAL -->
+    <section class="view" id="v-cuartel" data-view="cuartel">
+      <div class="scene" id="scene">
+        <div class="stage" id="stage">
+          <canvas id="c3d" aria-label="Escena 3D del Cuartel General con tu detective"></canvas>
+          <div class="scene-fallback" id="sceneFallback" hidden>La escena 3D no pudo cargarse en este navegador. El resto de la app funciona con normalidad.</div>
+          <div class="scene-top">
+            <span class="chip-dark"><svg><use href="#i-home"/></svg>Cuartel General</span>
+            <button class="bell" id="bell" aria-label="Tus checkpoints pendientes"><svg><use href="#i-bell"/></svg><span class="dot" id="bellCount" hidden></span></button>
+          </div>
+          <div class="scene-caption">
+            <div class="cap-alias" id="capAlias"></div>
+            <div class="cap-meta" id="capMeta"></div>
+          </div>
+          <div class="scene-hint" id="sceneHint">Arrastra para girar</div>
+        </div>
+        <div class="wardrobe" aria-label="Vestidor del detective">
+          <div class="wd-tabs" role="tablist" id="wdTabs">
+            <button role="tab" data-slot="body" aria-selected="false">Silueta</button>
+            <button role="tab" data-slot="skin" aria-selected="false">Piel</button>
+            <button role="tab" data-slot="hair" aria-selected="false">Peinado</button>
+            <button role="tab" data-slot="glasses" aria-selected="false">Lentes</button>
+            <button role="tab" data-slot="outfit" aria-selected="true">Atuendo</button>
+            <button role="tab" data-slot="hat" aria-selected="false">Sombrero</button>
+            <button role="tab" data-slot="acc" aria-selected="false">Accesorio</button>
+          </div>
+          <div class="wd-list">
+            <button class="wd-arrow" id="wdUp" aria-label="Opciones anteriores"><svg><use href="#i-up"/></svg></button>
+            <div class="wd-opts" id="wdOpts"></div>
+            <button class="wd-arrow" id="wdDown" aria-label="Más opciones"><svg><use href="#i-down"/></svg></button>
+          </div>
+          <div class="wd-save">
+            <div class="nm" id="wdSelName"></div>
+            <p id="wdSelDesc"></p>
+            <button class="btn-save" id="wdSave"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3" id="homeCards"></div>
+      <div class="panel" id="teamStrip"></div>
+    </section>
+
+    <!-- CASOS -->
+    <section class="view" id="v-casos" data-view="casos" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Casos del mes</div>
+          <h1 id="caseH1">Expediente</h1>
+          <p>Cada reporte mensual es un checkpoint. Se cierra cuando se entrega a tiempo y sin observaciones. El copiloto lo revisa antes del envío.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <select id="monthSel" class="sel" aria-label="Mes del expediente"></select>
+          <div class="toggle" role="group" aria-label="Filtro">
+            <button aria-pressed="true" data-filter="all">Todo el equipo</button>
+            <button aria-pressed="false" data-filter="mine">Solo los míos</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel" id="caseSummary"></div>
+      <div class="panel">
+        <div class="cp-list" id="cpList"></div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><div class="eyebrow">Reglas</div><h2>Cómo se gana XP</h2></div></div>
+          <div class="rules">
+            <span>Checkpoint entregado a tiempo</span><span class="x">+10</span>
+            <span>Entregado sin observaciones</span><span class="x">+5</span>
+            <span>Revisar como copiloto (a tiempo)</span><span class="x">+5</span>
+            <span>Proponer una idea</span><span class="x">+10</span>
+            <span>Idea implementada, por hora ahorrada al mes</span><span class="x">+5</span>
+            <span>Completar un curso de la Academia</span><span class="x">+15</span>
+            <span>Enseñarlo al equipo</span><span class="x">+20</span>
+            <span>Mes perfecto del equipo, para cada detective</span><span class="x">+25</span>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="eyebrow">Estados</div><h2>Qué significa cada sello</h2></div></div>
+          <div class="rules" style="grid-template-columns: auto minmax(0,1fr); align-items:center">
+            <span class="pill ok">Cerrado</span><span>Entregado a tiempo y sin observaciones.</span>
+            <span class="pill obs">Con observaciones</span><span>A tiempo, pero gerencia pidió correcciones.</span>
+            <span class="pill tarde">Fuera de plazo</span><span>Se entregó después de la fecha límite.</span>
+            <span class="pill curso">En curso</span><span>El responsable ya está trabajando en él.</span>
+            <span class="pill pendiente">Pendiente</span><span>Aún no se ha empezado.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDENCIAL -->
+    <section class="view" id="v-credencial" data-view="credencial" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Mi credencial</div>
+          <h1 id="credTitle">Credencial de detective</h1>
+          <p>Tu identificación dentro de la agencia: especialidad, rango, experiencia y las habilidades que has desbloqueado en la Academia.</p>
+        </div>
+      </div>
+      <div class="badge-wrap" id="credWrap"></div>
+      <div class="panel" id="pwPanel">
+        <div class="panel-head"><div><div class="eyebrow">Seguridad</div><h2>Cambiar mi contraseña</h2></div></div>
+        <form class="inline-form" id="pwForm" autocomplete="off">
+          <div class="field"><label for="pw1">Nueva contraseña (mínimo 8 caracteres)</label><input id="pw1" type="password" minlength="8" autocomplete="new-password" required></div>
+          <div class="field"><label for="pw2">Repítela</label><input id="pw2" type="password" minlength="8" autocomplete="new-password" required></div>
+          <button class="btn" type="submit">Cambiar contraseña</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ACADEMIA -->
+    <section class="view" id="v-academia" data-view="academia" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Academia</div>
+          <h1 id="acaTitle">Árbol de habilidades</h1>
+          <p>Cada habilidad se desbloquea al completar un curso real. Enseñar lo aprendido al equipo da XP extra.</p>
+        </div>
+      </div>
+      <div id="acaBody" class="view" style="gap:16px"></div>
+    </section>
+
+    <!-- IDEAS -->
+    <section class="view" id="v-ideas" data-view="ideas" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Tablero de ideas</div>
+          <h1>Mejoras a la agencia</h1>
+          <p>Cada idea avanza de propuesta a implementada. Su impacto se mide en horas ahorradas al mes.</p>
+        </div>
+      </div>
+      <div class="kpis" id="ideaKpis"></div>
+      <div class="panel">
+        <div class="panel-head"><div><div class="eyebrow">Nueva evidencia</div><h2>Proponer una idea</h2></div></div>
+        <form class="inline-form" id="ideaForm" autocomplete="off">
+          <div class="field" style="flex:2"><label for="ideaTitle">Idea</label><input id="ideaTitle" required maxlength="90" placeholder="Ej.: Automatizar el cuadro de gastos por agencia"></div>
+          <div class="field" style="flex:2"><label for="ideaDesc">Qué resuelve</label><input id="ideaDesc" maxlength="140" placeholder="Ej.: Hoy se copia a mano desde 3 archivos"></div>
+          <div class="field" style="flex:0 0 130px; min-width:130px"><label for="ideaHours">Horas/mes estimadas</label><input id="ideaHours" type="number" min="0" max="80" step="0.5" value="2"></div>
+          <button class="btn primary" type="submit">Proponer (+10 XP)</button>
+        </form>
+      </div>
+      <div class="board" id="board"></div>
+    </section>
+
+    <!-- ESCALAFÓN -->
+    <section class="view" id="v-escalafon" data-view="escalafon" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Escalafón</div>
+          <h1>Rangos de la agencia</h1>
+          <p>Para ascender se necesitan XP y habilidades de la Academia. Los rangos son dentro de la agencia y no tienen relación con el puesto. Cada uno avanza a su ritmo.</p>
+        </div>
+      </div>
+      <div class="panel"><div class="ladder" id="ladder"></div></div>
+      <div class="panel">
+        <div class="panel-head"><div><div class="eyebrow">Progreso</div><h2>Cuánto le falta a cada detective</h2></div></div>
+        <div class="prog-list" id="progList"></div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section class="view" id="v-admin" data-view="admin" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Comisaría</div>
+          <h1>Administrar la agencia</h1>
+          <p>Aquí Armando y Alvaro administran los reportes del mes, las ideas y la validación de cursos. Los XP se recalculan solos.</p>
+        </div>
+      </div>
+      <div id="adminBody" class="view" style="gap:16px"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+<script>
+(function () {
+'use strict';
+
+/* =========================================================
+   DATOS DE EJEMPLO (se reemplazarán por los reales)
+   ========================================================= */
+const MEMBERS = [
+  { id: 'jefe',      nombre: 'Armando',  rol: 'Jefe',                     clase: 'Comisario',              alias: 'El Comisario',   ini: 'AR', color: '#3B4A5C', base: 0,   comisario: true, placa: 'PC-0001' },
+  { id: 'lider',     nombre: 'Alvaro',   rol: 'Líder',                    clase: 'Inspector Jefe',         alias: 'Inspector Jefe', ini: 'AL', color: '#8A5A1A', base: 380, placa: 'PC-0007' },
+  { id: 'analista',  nombre: 'Joel',     rol: 'Analista de Planeamiento', clase: 'Forense de Datos',       alias: 'El Forense',     ini: 'JO', color: '#2F5E7E', base: 430, placa: 'PC-0012' },
+  { id: 'auxiliar',  nombre: 'Fernando', rol: 'Auxiliar de Planeamiento', clase: 'Rastreador',             alias: 'El Rastreador',  ini: 'FE', color: '#4D6B3C', base: 240, placa: 'PC-0019' },
+  { id: 'asistente', nombre: 'Isabel',   rol: 'Asistente de Control',     clase: 'Custodia de Evidencias', alias: 'La Custodia',    ini: 'IS', color: '#7A3F4E', base: 300, placa: 'PC-0023' }
+];
+const DETECTIVES = MEMBERS.filter(m => !m.comisario);
+
+const RANKS = [
+  { name: 'Cadete',                xp: 0,    skills: 0 },
+  { name: 'Detective',             xp: 150,  skills: 0 },
+  { name: 'Detective Senior',      xp: 400,  skills: 2 },
+  { name: 'Investigador Especial', xp: 700,  skills: 4 },
+  { name: 'Leyenda de la Agencia', xp: 1200, skills: 6 }
+];
+
+const STATUS = {
+  ok:        { label: 'Cerrado',           cls: 'ok' },
+  obs:       { label: 'Con observaciones', cls: 'obs' },
+  tarde:     { label: 'Fuera de plazo',    cls: 'tarde' },
+  curso:     { label: 'En curso',          cls: 'curso' },
+  pendiente: { label: 'Pendiente',         cls: 'pendiente' }
+};
+
+const STAGES = [
+  { id: 'propuesta',    name: 'Propuesta',     sub: 'Recién planteada' },
+  { id: 'analisis',     name: 'En análisis',   sub: 'Se evalúa si conviene' },
+  { id: 'piloto',       name: 'Piloto',        sub: 'Se prueba en un caso' },
+  { id: 'implementada', name: 'Implementada',  sub: 'Ya se usa cada mes' }
+];
+
+/* Árboles de habilidades: estado 'done', 'taught', 'progress:NN', 'none' */
+const TREES = {
+  'Forense de Datos': [
+    { name: 'Análisis', skills: [
+      { id: 'f1', name: 'Rastreo de Variaciones', course: 'Análisis de variaciones real vs. presupuesto' },
+      { id: 'f2', name: 'Modelado de Proyecciones', course: 'Forecast con escenarios en Excel' },
+      { id: 'f3', name: 'Detector de Anomalías', course: 'Estadística aplicada a indicadores' } ] },
+    { name: 'Herramientas', skills: [
+      { id: 'f4', name: 'Visión Power BI', course: 'Power BI: modelado y DAX' },
+      { id: 'f5', name: 'Automatización con Python', course: 'Python para finanzas, nivel 1' },
+      { id: 'f6', name: 'Narrativa para Gerencia', course: 'Storytelling con datos' } ] }
+  ],
+  'Rastreador': [
+    { name: 'Fuentes', skills: [
+      { id: 'r1', name: 'Consulta Veloz', course: 'SQL básico para consultas' },
+      { id: 'r2', name: 'Mapa de Fuentes', course: 'Documentación de fuentes de datos' },
+      { id: 'r3', name: 'Conciliación de Cifras', course: 'Conciliación entre sistemas' } ] },
+    { name: 'Automatización', skills: [
+      { id: 'r4', name: 'Consolidación Express', course: 'Power Query desde cero' },
+      { id: 'r5', name: 'Macros a Medida', course: 'VBA básico para reportes' },
+      { id: 'r6', name: 'Alerta Temprana', course: 'Alertas y suscripciones en Power BI' } ] }
+  ],
+  'Custodia de Evidencias': [
+    { name: 'Orden', skills: [
+      { id: 'e1', name: 'Archivo Perfecto', course: 'Gestión documental y nomenclatura' },
+      { id: 'e2', name: 'Control de Versiones', course: 'SharePoint y OneDrive para equipos' },
+      { id: 'e3', name: 'Trazabilidad Total', course: 'Fundamentos de auditoría de procesos' } ] },
+    { name: 'Plazos', skills: [
+      { id: 'e4', name: 'Guardiana de Plazos', course: 'Planner y calendarios compartidos' },
+      { id: 'e5', name: 'Checklist de Cierre', course: 'Diseño de checklists de control' },
+      { id: 'e6', name: 'Bitácora de Acuerdos', course: 'Actas y seguimiento de compromisos' } ] }
+  ],
+  'Inspector Jefe': [
+    { name: 'Equipo', skills: [
+      { id: 'l1', name: 'Planificación de Caso', course: 'Planificación del cierre mensual' },
+      { id: 'l2', name: 'Mentoría', course: 'Liderazgo y feedback' },
+      { id: 'l3', name: 'Desarrollo de Talento', course: 'Planes de desarrollo individual' } ] },
+    { name: 'Estrategia', skills: [
+      { id: 'l4', name: 'Revisión Maestra', course: 'Control de calidad de entregables' },
+      { id: 'l5', name: 'Storytelling Ejecutivo', course: 'Presentaciones para Directorio' },
+      { id: 'l6', name: 'Visión Estratégica', course: 'Planeamiento estratégico' } ] }
+  ]
+};
+
+const COMMON = [
+  { id: 'x1', name: 'Excel avanzado: tablas dinámicas y fórmulas' },
+  { id: 'x2', name: 'Lectura de estados financieros de una caja' },
+  { id: 'x3', name: 'Comunicación efectiva de resultados' }
+];
+
+/* Vestidor: rank = índice mínimo de rango requerido */
+const WARDROBE = {
+  body: [
+    { id: 'fem',  name: 'Femenina',  sw: '#D9A0B0', rank: 0, desc: 'Silueta femenina.' },
+    { id: 'masc', name: 'Masculina', sw: '#8FA9C9', rank: 0, desc: 'Silueta masculina.' }
+  ],
+  skin: [
+    { id: 's1', name: 'Claro',          hex: 0xF2CBA8, sw: '#F2CBA8', rank: 0, desc: 'Tono de piel claro.' },
+    { id: 's2', name: 'Trigueño claro', hex: 0xDDA77F, sw: '#DDA77F', rank: 0, desc: 'Tono de piel trigueño claro.' },
+    { id: 's3', name: 'Trigueño',       hex: 0xC4875E, sw: '#C4875E', rank: 0, desc: 'Tono de piel trigueño.' },
+    { id: 's4', name: 'Moreno',         hex: 0x9C6744, sw: '#9C6744', rank: 0, desc: 'Tono de piel moreno.' },
+    { id: 's5', name: 'Oscuro',         hex: 0x6B432A, sw: '#6B432A', rank: 0, desc: 'Tono de piel oscuro.' }
+  ],
+  hair: [
+    { id: 'corto',     name: 'Corto',            style: 'corto',    color: 0x2E2019, sw: '#2E2019', rank: 0, desc: 'Corto y peinado hacia un lado.' },
+    { id: 'ondulado',  name: 'Ondulado',         style: 'ondulado', color: 0x1E1714, sw: '#1E1714', rank: 0, desc: 'Rulos con volumen.' },
+    { id: 'rapado',    name: 'Rapado',           style: 'rapado',   color: 0x1A1512, sw: '#1A1512', rank: 0, desc: 'Cortito y práctico.' },
+    { id: 'bob',       name: 'Bob',              style: 'bob',      color: 0x4A3022, sw: '#4A3022', rank: 0, desc: 'Melena corta a la altura del mentón.' },
+    { id: 'cola',      name: 'Cola de caballo',  style: 'cola',     color: 0x1E1714, sw: '#1E1714', rank: 0, desc: 'Recogido para los días de cierre.' },
+    { id: 'largo',     name: 'Melena larga',     style: 'largo',    color: 0x5A3722, sw: '#5A3722', rank: 0, desc: 'Cabello largo y suelto.' },
+    { id: 'mono',      name: 'Moño alto',        style: 'mono',     color: 0x2A1D16, sw: '#2A1D16', rank: 0, desc: 'Moño en lo alto de la cabeza.' },
+    { id: 'cobrizo',   name: 'Melena cobriza',   style: 'largo',    color: 0x8A4A26, sw: '#8A4A26', rank: 0, desc: 'Cabello largo color cobre.' },
+    { id: 'canas',     name: 'Corto con canas',  style: 'corto',    color: 0x8E8A86, brow: 0x5E5A56, sw: '#8E8A86', rank: 0, desc: 'Experiencia a la vista.' }
+  ],
+  glasses: [
+    { id: 'none',     name: 'Sin lentes',  sw: '#E8E4DC', rank: 0, desc: 'Sin lentes.' },
+    { id: 'redondos', name: 'Redondos',    sw: '#3A2E26', rank: 0, desc: 'Montura redonda y delgada.' },
+    { id: 'pasta',    name: 'De pasta',    sw: '#15171A', rank: 0, desc: 'Montura gruesa y moderna.' },
+    { id: 'sol',      name: 'De sol',      sw: '#111418', rank: 1, desc: 'Para el trabajo de campo.' },
+    { id: 'dorados',  name: 'Dorados',     sw: '#D9B062', rank: 3, desc: 'Montura dorada de Investigador Especial.' }
+  ],
+  outfit: [
+    { id: 'gab-arena',     name: 'Gabardina arena',        outer: 'coat',   oc: 0xB89565, trim: 0x7A5B35, top: 0xF2F0EA, bottom: 'pants', bc: 0x2B3442, sw: '#B89565', rank: 0, desc: 'La gabardina de detective, en versión actual.' },
+    { id: 'blazer-tinta',  name: 'Blazer azul tinta',      outer: 'blazer', oc: 0x24364F, trim: 0x152030, top: 0xF4F4F2, bottom: 'pants', bc: 0x5B6068, sw: '#24364F', rank: 0, desc: 'Sobrio para reuniones con Gerencia.' },
+    { id: 'blazer-camel',  name: 'Blazer camel con falda', outer: 'blazer', oc: 0xB98B5A, trim: 0x7E5C38, top: 0xF3EBDD, bottom: 'skirt', bc: 0x30343B, sw: '#B98B5A', rank: 0, desc: 'Blazer camel con falda gris oscuro.' },
+    { id: 'polera',        name: 'Polera con capucha',     outer: 'hoodie', oc: 0x6E7682, trim: 0x565D68, top: 0x6E7682, bottom: 'pants', bc: 0x2E3B52, shoes: 0xF1F0EC, sw: '#6E7682', rank: 0, desc: 'Cómoda para los viernes.' },
+    { id: 'chaleco',       name: 'Chaleco acolchado',      outer: 'vest',   oc: 0x2F5D4E, trim: 0x22463A, top: 0xCFE0EE, bottom: 'pants', bc: 0xB59E7A, sw: '#2F5D4E', rank: 1, desc: 'Chaleco verde sobre camisa celeste.' },
+    { id: 'traje-carbon',  name: 'Traje carbón',           outer: 'blazer', oc: 0x2A2B2F, trim: 0x18191C, top: 0xFFFFFF, bottom: 'pants', bc: 0x2A2B2F, tie: 0x8E2F2A, sw: '#2A2B2F', rank: 1, desc: 'Traje completo con corbata rojo sello.' },
+    { id: 'vestido',       name: 'Vestido y blazer',       outer: 'blazer', oc: 0x1F2A3A, trim: 0x131A24, top: 0x8E2F3A, bottom: 'skirt', bc: 0x8E2F3A, sw: '#8E2F3A', rank: 1, desc: 'Vestido vino con blazer azul noche.' },
+    { id: 'bomber',        name: 'Bomber negra',           outer: 'bomber', oc: 0x1F2226, trim: 0x3A3F45, top: 0xE9E6DF, bottom: 'pants', bc: 0x3A4150, shoes: 0xF1F0EC, sw: '#1F2226', rank: 2, desc: 'Casaca bomber con zapatillas blancas.' },
+    { id: 'abrigo-burdeos',name: 'Abrigo burdeos',         outer: 'coat',   oc: 0x6A2430, trim: 0x3A1218, top: 0xEEE8DE, bottom: 'pants', bc: 0x23262B, sw: '#6A2430', rank: 2, desc: 'Abrigo largo color vino.' },
+    { id: 'blazer-marfil', name: 'Blazer marfil de gala',  outer: 'blazer', oc: 0xECE5D6, trim: 0xC9A04E, top: 0x1E2228, bottom: 'pants', bc: 0xECE5D6, sw: '#ECE5D6', rank: 3, desc: 'Para la ceremonia de ascensos.' },
+    { id: 'gab-leyenda',   name: 'Gabardina Leyenda',      outer: 'coat',   oc: 0x1E3B33, trim: 0xD9B062, top: 0xF2F0EA, bottom: 'pants', bc: 0x1A1D22, sw: '#1E3B33', rank: 4, desc: 'Verde botella con detalles dorados.' }
+  ],
+  hat: [
+    { id: 'none',         name: 'Sin sombrero',    style: 'none',   sw: '#E8E4DC', rank: 0, desc: 'Sin nada en la cabeza.' },
+    { id: 'fedora',       name: 'Fedora gris',     style: 'fedora', color: 0x5E646C, band: 0x23272D, sw: '#5E646C', rank: 0, desc: 'El clásico de detective, en gris moderno.' },
+    { id: 'gorra',        name: 'Gorra',           style: 'gorra',  color: 0x24364F, sw: '#24364F', rank: 0, desc: 'Gorra azul tinta.' },
+    { id: 'beanie',       name: 'Gorro de lana',   style: 'beanie', color: 0xB8873A, band: 0xA67A33, sw: '#B8873A', rank: 0, desc: 'Para las mañanas frías.' },
+    { id: 'boina',        name: 'Boina',           style: 'boina',  color: 0x3E4A3A, sw: '#3E4A3A', rank: 1, desc: 'Boina verde oliva.' },
+    { id: 'fedora-negro', name: 'Fedora negro',    style: 'fedora', color: 0x1D1D20, band: 0x8E2F2A, sw: '#1D1D20', rank: 2, desc: 'Negro con cinta rojo sello.' },
+    { id: 'fedora-gala',  name: 'Fedora de gala',  style: 'fedora', color: 0xEAE3D2, band: 0xC9A04E, sw: '#EAE3D2', rank: 3, desc: 'Para la ceremonia de ascensos.' }
+  ],
+  acc: [
+    { id: 'none',      name: 'Manos libres',         sw: '#E8E4DC', rank: 0, desc: 'Sin accesorio.' },
+    { id: 'lupa',      name: 'Lupa',                 sw: '#9C9488', rank: 0, desc: 'Para revisar cada cifra de cerca.' },
+    { id: 'tablet',    name: 'Tablet con dashboard', sw: '#4F8FC9', rank: 0, desc: 'Los indicadores siempre a la mano.' },
+    { id: 'cafe',      name: 'Café del cierre',      sw: '#A9784A', rank: 0, desc: 'Indispensable los días de cierre.' },
+    { id: 'libreta',   name: 'Libreta',              sw: '#D8B871', rank: 0, desc: 'Donde se anotan las pistas del mes.' },
+    { id: 'audifonos', name: 'Audífonos',            sw: '#1B1E22', rank: 0, desc: 'Para concentrarse en el análisis.' },
+    { id: 'gafete',    name: 'Gafete de la agencia', sw: '#B0392D', rank: 0, desc: 'Credencial colgada al cuello.' },
+    { id: 'laptop',    name: 'Laptop',               sw: '#B8BCC2', rank: 1, desc: 'Bajo el brazo, rumbo a la reunión.' },
+    { id: 'maletin',   name: 'Maletín',              sw: '#4A2E1C', rank: 1, desc: 'Para llevar los expedientes a Directorio.' },
+    { id: 'lupa-oro',  name: 'Lupa dorada',          sw: '#D9B062', rank: 3, desc: 'Solo para Investigadores Especiales.' }
+  ]
+};
+const SLOTS = ['body', 'skin', 'hair', 'glasses', 'outfit', 'hat', 'acc'];
+const SLOT_LABEL = { body: 'Silueta', skin: 'Piel', hair: 'Peinado', glasses: 'Lentes', outfit: 'Atuendo', hat: 'Sombrero', acc: 'Accesorio' };
+const DEFAULT_LOOKS = {
+  jefe:      { body: 'masc', skin: 's3', hair: 'canas',    glasses: 'pasta',    outfit: 'traje-carbon', hat: 'none',   acc: 'maletin' },
+  lider:     { body: 'masc', skin: 's2', hair: 'corto',    glasses: 'none',     outfit: 'gab-arena',    hat: 'fedora', acc: 'lupa' },
+  analista:  { body: 'masc', skin: 's3', hair: 'ondulado', glasses: 'redondos', outfit: 'blazer-tinta', hat: 'none',   acc: 'tablet' },
+  auxiliar:  { body: 'masc', skin: 's2', hair: 'rapado',   glasses: 'none',     outfit: 'polera',       hat: 'gorra',  acc: 'audifonos' },
+  asistente: { body: 'fem',  skin: 's2', hair: 'largo',     glasses: 'none',     outfit: 'blazer-camel', hat: 'none',   acc: 'libreta' }
+};
+
+/* =========================================================
+   CONFIGURACIÓN Y DATOS (se leen y se guardan en Supabase)
+   ========================================================= */
+const SUPABASE_URL = 'https://mbabdmvtcqcffxahnvhu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_k6f7uFOqp5R1nICQZvfZig_sSALh2UQ';
+const EMAIL_DOMAIN = 'brujula-pc.com';   // cada persona entra como <clave>@brujula-pc.com (no se envían correos)
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const S = { viewer: null, uid: null, month: null, filter: 'all' };
+const D = { profiles: {}, cps: [], ideas: [], progress: {} };
+let CHECKPOINTS = [];            // reportes del mes que se está viendo
+let busy = false;
+
+function monthLabel(mes) {
+  const [y, m] = mes.split('-').map(Number);
+  const t = new Date(y, m - 1, 1).toLocaleDateString('es-PE', { month: 'long', year: 'numeric' });
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+function monthsList() { return [...new Set(D.cps.map(c => c.mes))].sort().reverse(); }
+function applyMonth() {
+  const ms = monthsList();
+  if (!ms.includes(S.month)) S.month = ms[0] || null;
+  CHECKPOINTS = D.cps.filter(c => c.mes === S.month).sort((a, b) => a.due.localeCompare(b.due) || a.name.localeCompare(b.name));
+}
+const caseTitle = () => S.month ? 'Expediente N.º ' + S.month : 'Sin expediente';
+const caseMonth = () => S.month ? monthLabel(S.month) : 'Sin reportes cargados';
+function perfectMonths() {
+  const by = {};
+  D.cps.forEach(c => { (by[c.mes] = by[c.mes] || []).push(c.status); });
+  return Object.values(by).filter(l => l.length && l.every(s => s === 'ok')).length;
+}
+
+async function fetchAll() {
+  const rs = await Promise.all([
+    sb.from('profiles').select('id, member_key, alias, look'),
+    sb.from('checkpoints').select('*').order('due', { ascending: true }),
+    sb.from('ideas').select('*').order('created_at', { ascending: true }),
+    sb.from('progress').select('*')
+  ]);
+  const bad = rs.find(r => r.error);
+  if (bad) throw bad.error;
+  D.profiles = {};
+  rs[0].data.forEach(p => { D.profiles[p.member_key] = p; });
+  D.cps = rs[1].data.map(r => ({ id: r.id, mes: r.mes, name: r.name, desc: r.descr || '', due: r.due, resp: r.resp, co: r.co, status: r.status }));
+  D.ideas = rs[2].data.map(r => ({ id: r.id, title: r.title, desc: r.descr || '', author: r.author, stage: r.stage, hours: Number(r.hours) || 0 }));
+  D.progress = {};
+  rs[3].data.forEach(r => { D.progress[r.member_key + ':' + r.item_id] = r.state; });
+  applyMonth();
+}
+
+let toastTimer;
+function toast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast' + (isErr ? ' err' : ''); t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.hidden = true; }, isErr ? 6000 : 2600);
+}
+function errMsg(e) {
+  const m = String((e && (e.message || e.code)) || '');
+  if (e && (e.code === '42501' || /row-level security|permission denied|sin permiso/i.test(m))) return 'No tienes permiso para hacer este cambio.';
+  if (/fetch|network|failed|load/i.test(m)) return 'No hay conexión con el servidor. Revisa tu internet e inténtalo otra vez.';
+  return 'No se pudo guardar el cambio. Inténtalo otra vez.';
+}
+/* Ejecuta una escritura, recarga los datos y vuelve a dibujar. Devuelve true si salió bien. */
+async function write(fn, okMsg) {
+  busy = true;
+  try {
+    const res = await fn();
+    if (res.error) throw res.error;
+    if (Array.isArray(res.data) && res.data.length === 0) throw { code: '42501', message: 'sin permiso' };
+  } catch (e) {
+    busy = false; toast(errMsg(e), true); return false;
+  }
+  try { await fetchAll(); } catch (e) { toast('El cambio se guardó, pero no se pudo actualizar la pantalla.', true); }
+  busy = false;
+  renderAll();
+  if (okMsg) toast(okMsg);
+  return true;
+}
+
+/* =========================================================
+   CÁLCULOS
+   ========================================================= */
+const M = id => MEMBERS.find(m => m.id === id);
+const alias = id => { const p = D.profiles[id]; return (p && p.alias && p.alias.trim()) || M(id).alias; };
+const lookOf = id => Object.assign({}, DEFAULT_LOOKS[id], (D.profiles[id] && D.profiles[id].look) || {});
+const stOf = (id, item) => D.progress[id + ':' + item] || 'none';
+const pct = st => st && st.startsWith('progress:') ? +st.split(':')[1] : 0;
+const isDone = st => st === 'done' || st === 'taught';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function cpStatus(c) { return c.status; }
+function cpXPFor(c, id) {
+  const st = cpStatus(c);
+  let x = 0;
+  if (c.resp === id) x += st === 'ok' ? 15 : st === 'obs' ? 10 : st === 'tarde' ? 5 : 0;
+  if (c.co === id && (st === 'ok' || st === 'obs')) x += 5;
+  return x;
+}
+function perfectState() {
+  const sts = CHECKPOINTS.map(cpStatus);
+  if (!sts.length) return 'juego';
+  if (sts.some(s => s === 'obs' || s === 'tarde')) return 'perdido';
+  if (sts.every(s => s === 'ok')) return 'logrado';
+  return 'juego';
+}
+function treeOf(id) {
+  const tree = TREES[M(id).clase];
+  if (!tree) return [];
+  return tree.map(b => ({ name: b.name, skills: b.skills.map(sk => Object.assign({}, sk, { st: stOf(id, sk.id) })) }));
+}
+function skillsOf(id) { return treeOf(id).flatMap(b => b.skills); }
+function skillCount(id) { return skillsOf(id).filter(s => isDone(s.st)).length; }
+function xpOf(id) {
+  const m = M(id);
+  if (m.comisario) return { total: 0, base: 0, cases: 0, ideas: 0, aca: 0, perfect: 0 };
+  const cases = D.cps.reduce((a, c) => a + cpXPFor(c, id), 0);
+  const ideas = D.ideas.filter(i => i.author === id).reduce((a, i) => a + 10 + (i.stage === 'implementada' ? 5 * (+i.hours || 0) : 0), 0);
+  let aca = 0;
+  skillsOf(id).forEach(s => { if (isDone(s.st)) aca += 15; if (s.st === 'taught') aca += 20; });
+  COMMON.forEach(c => { const st = stOf(id, c.id); if (isDone(st)) aca += 15; if (st === 'taught') aca += 20; });
+  const perfect = 25 * perfectMonths();
+  return { total: m.base + cases + ideas + aca + perfect, base: m.base, cases, ideas, aca, perfect };
+}
+function rankIdx(id) {
+  const m = M(id);
+  if (m.comisario) return RANKS.length - 1;
+  const xp = xpOf(id).total, sk = skillCount(id);
+  let r = 0;
+  RANKS.forEach((k, i) => { if (xp >= k.xp && sk >= k.skills) r = i; });
+  return r;
+}
+function rankName(id) { return M(id).comisario ? 'Fuera del escalafón' : RANKS[rankIdx(id)].name; }
+function nextRankInfo(id) {
+  const r = rankIdx(id);
+  if (r >= RANKS.length - 1) return null;
+  const next = RANKS[r + 1], cur = RANKS[r];
+  const xp = xpOf(id).total, sk = skillCount(id);
+  const span = next.xp - cur.xp;
+  return {
+    next, xpMissing: Math.max(0, next.xp - xp), skMissing: Math.max(0, next.skills - sk),
+    progress: Math.max(0, Math.min(1, (xp - cur.xp) / span)), xp, sk
+  };
+}
+function dueDate(c) { return new Date(c.due + 'T23:59:00'); }
+function fmtDate(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('es-PE', { day: '2-digit', month: 'short' }).replace('.', '');
+}
+function dueText(c) {
+  const st = cpStatus(c);
+  if (st === 'ok' || st === 'obs' || st === 'tarde') return { t: 'Entregado', late: false };
+  const days = Math.ceil((dueDate(c) - new Date()) / 86400000);
+  if (days < 0) return { t: 'Venció hace ' + Math.abs(days) + ' d', late: true };
+  if (days === 0) return { t: 'Vence hoy', late: true };
+  return { t: 'Faltan ' + days + ' d', late: days <= 2 };
+}
+function pendingFor(id) { return CHECKPOINTS.filter(c => c.resp === id && (cpStatus(c) === 'pendiente' || cpStatus(c) === 'curso')); }
+function avatar(id, size) {
+  const m = M(id);
+  return `<span class="avatar" style="background:${m.color}${size ? `;width:${size}px;height:${size}px` : ''}">${m.ini}</span>`;
+}
+const nombre = id => M(id).nombre;
+const label = id => M(id).nombre + ' (' + M(id).rol + ')';
+function person(id) { return `<span class="person">${avatar(id)}<span><b>${esc(nombre(id))}</b> <span class="role">(${esc(M(id).rol)})</span></span></span>`; }
+function canAdmin() { return S.viewer === 'jefe' || S.viewer === 'lider'; }
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+const $ = s => document.querySelector(s);
+
+function renderShell() {
+  const v = S.viewer, m = M(v);
+  $('#whoAv').outerHTML = `<div class="avatar" id="whoAv" style="background:${m.color}">${m.ini}</div>`;
+  $('#whoName').textContent = m.nombre + ' (' + m.rol + ')';
+  $('#whoRole').textContent = m.clase + ' · ' + rankName(v);
+  const pend = pendingFor(v).length;
+  const nc = $('#navCount'); nc.hidden = !pend; nc.textContent = pend;
+  const bc = $('#bellCount'); bc.hidden = !pend; bc.textContent = pend;
+  $('#navAdmin').hidden = !canAdmin();
+  $('#navAdminGroup').hidden = !canAdmin();
+  $('#capAlias').textContent = m.nombre;
+  $('#capMeta').innerHTML = `(${esc(m.rol)}) · ${esc(alias(v))} · <b>${esc(rankName(v))}</b>`;
+}
+
+function renderHome() {
+  const st = CHECKPOINTS.map(cpStatus);
+  const closed = st.filter(s => s === 'ok' || s === 'obs' || s === 'tarde').length;
+  const ps = perfectState();
+  const v = S.viewer, m = M(v);
+  const next = pendingFor(v).sort((a, b) => a.due.localeCompare(b.due))[0];
+  const nr = nextRankInfo(v);
+  const psText = ps === 'logrado' ? 'Mes perfecto logrado: +25 XP para cada detective.' : ps === 'perdido' ? 'Un checkpoint tuvo observaciones o se entregó tarde. El mes perfecto ya no es posible.' : `Mes perfecto en juego: faltan ${CHECKPOINTS.length - closed} checkpoints sin errores.`;
+
+  let card2;
+  if (m.comisario) {
+    const open = CHECKPOINTS.filter(c => cpStatus(c) === 'pendiente' || cpStatus(c) === 'curso');
+    card2 = `<div class="panel"><div class="eyebrow">Por cerrar este mes</div>
+      <div class="stat-big" style="margin-top:6px">${open.length}</div>
+      <div class="stat-sub">${open.length ? open.map(c => esc(c.name)).join(' · ') : 'Todo el expediente está cerrado.'}</div></div>`;
+  } else if (next) {
+    const dt = dueText(next);
+    card2 = `<div class="panel"><div class="eyebrow">Tu próximo checkpoint</div>
+      <div style="font-weight:600;font-size:15px;margin-top:6px">${esc(next.name)}</div>
+      <div class="stat-sub">Vence el ${fmtDate(next.due)} · <span style="color:${dt.late ? 'var(--stamp)' : 'inherit'}">${dt.t}</span></div>
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="pill ${STATUS[cpStatus(next)].cls}">${STATUS[cpStatus(next)].label}</span><span class="note">Copiloto: ${esc(label(next.co))}</span></div></div>`;
+  } else {
+    card2 = `<div class="panel"><div class="eyebrow">Tu próximo checkpoint</div>
+      <div style="font-weight:600;font-size:15px;margin-top:6px">Sin pendientes</div>
+      <div class="stat-sub">Tus reportes de este mes ya están entregados.</div></div>`;
+  }
+
+  let card3;
+  if (m.comisario) {
+    const saved = D.ideas.filter(i => i.stage === 'implementada').reduce((a, i) => a + (+i.hours || 0), 0);
+    card3 = `<div class="panel"><div class="eyebrow">Horas recuperadas con ideas</div>
+      <div class="stat-big" style="margin-top:6px">${saved} <span style="font-size:15px;color:var(--muted)">h/mes</span></div>
+      <div class="stat-sub">Suma de las ideas ya implementadas por el equipo.</div></div>`;
+  } else {
+    const xp = xpOf(v).total;
+    card3 = `<div class="panel"><div class="eyebrow">Tu rango</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:6px;gap:8px"><span style="font-family:var(--font-display);font-size:19px">${esc(rankName(v))}</span><span class="mono" style="color:var(--manila)">${xp} XP</span></div>
+      ${nr ? `<div class="meter" style="margin-top:10px"><span style="width:${Math.round(nr.progress * 100)}%"></span></div>
+      <div class="stat-sub" style="margin-top:6px">${nr.xpMissing ? nr.xpMissing + ' XP' : ''}${nr.xpMissing && nr.skMissing ? ' y ' : ''}${nr.skMissing ? nr.skMissing + (nr.skMissing === 1 ? ' habilidad' : ' habilidades') : ''}${nr.xpMissing || nr.skMissing ? ' para ' : 'Listo para '}${esc(nr.next.name)}</div>` : '<div class="stat-sub" style="margin-top:6px">Rango máximo alcanzado.</div>'}</div>`;
+  }
+
+  $('#teamStrip').innerHTML = `<div class="panel-head"><div><div class="eyebrow">La agencia</div><h2>Equipo de Planeamiento Financiero y Control de Gestión</h2></div></div>
+    <div class="team">${MEMBERS.map(t => `<div class="team-card ${t.id === v ? 'me' : ''}">${avatar(t.id, 40)}<div style="min-width:0"><div class="team-name">${esc(t.nombre)} <span class="role">(${esc(t.rol)})</span></div><div class="note">${esc(t.clase)} · ${esc(rankName(t.id))}</div></div></div>`).join('')}</div>`;
+  $('#homeCards').innerHTML = `
+    <div class="panel"><div class="eyebrow">${caseTitle()}</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:6px"><span class="stat-big">${closed}<span style="font-size:15px;color:var(--muted)"> / ${CHECKPOINTS.length}</span></span><span class="note">checkpoints cerrados</span></div>
+      <div class="seg" style="margin-top:10px">${st.map(s => `<span class="${s === 'ok' ? 'ok' : s === 'obs' ? 'obs' : s === 'tarde' ? 'tarde' : s === 'curso' ? 'curso' : ''}"></span>`).join('')}</div>
+      <div class="stat-sub" style="margin-top:8px">${psText}</div></div>
+    ${card2}${card3}`;
+}
+
+function renderCasos() {
+  const ms = monthsList(), msel = $('#monthSel');
+  msel.innerHTML = ms.length ? ms.map(m => `<option value="${m}" ${m === S.month ? 'selected' : ''}>${esc(monthLabel(m))}</option>`).join('') : '<option>Sin meses</option>';
+  msel.disabled = !ms.length;
+  $('#caseH1').textContent = caseTitle();
+  const st = CHECKPOINTS.map(cpStatus);
+  const closed = st.filter(s => s === 'ok' || s === 'obs' || s === 'tarde').length;
+  const ps = perfectState();
+  const stamp = ps === 'logrado' ? '<span class="stamp won">Mes perfecto</span>' : ps === 'perdido' ? '<span class="stamp lost">Sin mes perfecto</span>' : '<span class="stamp">Caso abierto</span>';
+  $('#caseSummary').innerHTML = `<div class="case-head">
+      <div>
+        <div class="case-file">${caseMonth()}</div>
+        <div class="stat-sub">${closed} de ${CHECKPOINTS.length} checkpoints cerrados · Si todos se cierran sin observaciones, cada detective gana +25 XP.</div>
+        <div class="seg" style="margin-top:12px;max-width:520px">${st.map(s => `<span class="${['ok','obs','tarde','curso'].includes(s) ? s : ''}"></span>`).join('')}</div>
+      </div>
+      ${stamp}
+    </div>`;
+  document.querySelectorAll('#v-casos .toggle button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === S.filter)));
+  const list = CHECKPOINTS.filter(c => S.filter === 'all' || c.resp === S.viewer || c.co === S.viewer);
+  const rows = list.map(c => {
+    const s = cpStatus(c), dt = dueText(c);
+    const xp = cpXPFor(c, S.viewer);
+    const mine = c.resp === S.viewer || c.co === S.viewer;
+    return `<div class="cp ${mine ? 'mine' : ''}">
+      <div class="cp-date c-date-col">${fmtDate(c.due)}<small class="${dt.late ? 'late' : ''}">${dt.t}</small></div>
+      <div style="min-width:0"><div class="cp-name">${esc(c.name)}</div><div class="cp-desc">${esc(c.desc)}</div>
+        <div class="c-people-mobile">${person(c.resp)}<span class="note">copiloto</span>${person(c.co)}</div></div>
+      <div class="c-resp">${person(c.resp)}</div>
+      <div class="c-co">${person(c.co)}</div>
+      <div><span class="pill ${STATUS[s].cls}">${STATUS[s].label}</span></div>
+      <div class="cp-xp" title="XP que este checkpoint te da a ti">${xp ? '+' + xp : '—'}</div>
+    </div>`;
+  }).join('');
+  $('#cpList').innerHTML = `<div class="cp head"><div>Vence</div><div>Checkpoint</div><div class="c-resp">Responsable</div><div class="c-co">Copiloto</div><div>Estado</div><div style="text-align:right">Tu XP</div></div>` + (rows || `<p class="note" style="padding:12px 4px">${CHECKPOINTS.length ? 'No tienes reportes asignados en este expediente.' : 'Todavía no hay reportes cargados para este mes. Armando o Alvaro pueden crearlos en Administrar.'}</p>`);
+}
+
+function renderCredencial() {
+  const v = S.viewer, m = M(v);
+  $('#credTitle').textContent = 'Credencial de ' + m.nombre;
+  const xp = xpOf(v), nr = nextRankInfo(v);
+  const skills = skillsOf(v).filter(s => isDone(s.st));
+  const commons = COMMON.filter(c => isDone(stOf(v, c.id)));
+  const asResp = CHECKPOINTS.filter(c => c.resp === v && ['ok', 'obs', 'tarde'].includes(cpStatus(c))).length;
+  const asCo = CHECKPOINTS.filter(c => c.co === v && ['ok', 'obs'].includes(cpStatus(c))).length;
+  const myIdeas = D.ideas.filter(i => i.author === v);
+  const impl = myIdeas.filter(i => i.stage === 'implementada').length;
+
+  const reqs = nr ? `<div class="req-list">
+      <div class="${nr.xpMissing ? 'unmet' : 'met'}"><svg><use href="#i-${nr.xpMissing ? 'circle' : 'check'}"/></svg>${nr.next.xp} XP (tienes ${nr.xp})</div>
+      <div class="${nr.skMissing ? 'unmet' : 'met'}"><svg><use href="#i-${nr.skMissing ? 'circle' : 'check'}"/></svg>${nr.next.skills} habilidades de la Academia (tienes ${nr.sk})</div>
+    </div>` : '';
+
+  const badge = `<div class="badge">
+    <div class="badge-top"><span>BRÚJULA P&amp;C</span><span>CREDENCIAL</span></div>
+    <div class="badge-body">
+      <div class="badge-photo" style="background:${m.color}">${m.ini}</div>
+      <div style="min-width:0">
+        <div class="badge-alias">${esc(m.nombre)}</div>
+        <div class="badge-field">Alias<b>${esc(alias(v))}</b></div>
+        <div class="badge-field">Especialidad<b>${esc(m.clase)}</b></div>
+        <div class="badge-field">Rango<b>${esc(rankName(v))}</b></div>
+        <div class="badge-field">Puesto<b>${esc(m.rol)}</b></div>
+      </div>
+    </div>
+    <div class="badge-foot">
+      <div class="row"><span class="badge-no">PLACA ${m.placa}</span><span class="mono" style="color:var(--manila)">${m.comisario ? '' : xp.total + ' XP'}</span></div>
+      ${nr && !m.comisario ? `<div class="meter"><span style="width:${Math.round(nr.progress * 100)}%"></span></div><div class="note">Siguiente rango: ${esc(nr.next.name)}</div>` : ''}
+    </div>
+  </div>`;
+
+  let right;
+  if (m.comisario) {
+    right = `<div class="view" style="gap:16px">
+      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Rol del Comisario</div><h2>Fuera del escalafón</h2></div></div>
+        <p style="max-width:62ch">El Comisario no compite ni acumula XP. Abre y cierra expedientes, valida los checkpoints, aprueba ideas y entrega las insignias en la ceremonia de ascensos.</p></div>
+      <div class="panel"><div class="field"><label for="aliasIn">Alias en la agencia</label>
+        <div class="inline-form"><input id="aliasIn" maxlength="28" value="${esc(alias(v))}" style="flex:1;min-width:160px"><button class="btn" id="aliasSave" type="button">Guardar alias</button></div></div></div>
+    </div>`;
+  } else {
+    right = `<div class="view" style="gap:16px">
+      <div class="stats4">
+        <div><div class="eyebrow">Checkpoints</div><div class="stat-big">${asResp}</div><div class="stat-sub">entregados este mes</div></div>
+        <div><div class="eyebrow">Copiloto</div><div class="stat-big">${asCo}</div><div class="stat-sub">revisiones hechas</div></div>
+        <div><div class="eyebrow">Ideas</div><div class="stat-big">${myIdeas.length}</div><div class="stat-sub">${impl} implementada${impl === 1 ? '' : 's'}</div></div>
+        <div><div class="eyebrow">Habilidades</div><div class="stat-big">${skills.length}<span style="font-size:14px;color:var(--muted)"> / 6</span></div><div class="stat-sub">desbloqueadas</div></div>
+      </div>
+      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Insignias</div><h2>Habilidades desbloqueadas</h2></div><span class="note">Las doradas ya fueron enseñadas al equipo</span></div>
+        <div class="insignias">${skills.concat(commons.map(c => ({ name: c.name, st: stOf(v, c.id) }))).map(s => `<span class="insignia ${s.st === 'taught' ? 'taught' : ''}"><span class="ic"><svg><use href="#i-star"/></svg></span>${esc(s.name)}</span>`).join('') || '<span class="note">Aún no hay insignias.</span>'}</div></div>
+      <div class="grid-2">
+        <div class="panel"><div class="panel-head"><div><div class="eyebrow">Próximo ascenso</div><h2>${nr ? esc(nr.next.name) : 'Rango máximo'}</h2></div></div>${reqs}</div>
+        <div class="panel"><div class="panel-head"><div><div class="eyebrow">De dónde vienen tus XP</div><h2>${xp.total} XP en total</h2></div></div>
+          <div class="rules">
+            <span>Meses anteriores</span><span class="x">${xp.base}</span>
+            <span>Reportes entregados y revisados</span><span class="x">${xp.cases}</span>
+            <span>Ideas</span><span class="x">${xp.ideas}</span>
+            <span>Academia</span><span class="x">${xp.aca}</span>
+            ${xp.perfect ? `<span>Mes perfecto</span><span class="x">${xp.perfect}</span>` : ''}
+          </div></div>
+      </div>
+      <div class="panel"><div class="field"><label for="aliasIn">Alias de detective</label>
+        <div class="inline-form"><input id="aliasIn" maxlength="28" value="${esc(alias(v))}" style="flex:1;min-width:160px"><button class="btn" id="aliasSave" type="button">Guardar alias</button></div></div></div>
+    </div>`;
+  }
+  $('#credWrap').innerHTML = badge + right;
+  $('#aliasSave').addEventListener('click', () => {
+    const val = $('#aliasIn').value.trim();
+    saveAlias(val);
+  });
+}
+
+function nodeState(skill, prevUnlocked) {
+  if (isDone(skill.st)) return { cls: 'unlocked', html: `<span class="pill ok">${skill.st === 'taught' ? 'Desbloqueada · enseñada' : 'Desbloqueada'}</span><span class="mono note">+${skill.st === 'taught' ? 35 : 15} XP</span>`, icon: 'check' };
+  if (skill.st.startsWith('progress')) { const p = pct(skill.st); return { cls: 'progress', html: `<div class="meter"><span style="width:${p}%"></span></div><span class="note mono">${p}% del curso</span>`, icon: 'book' }; }
+  if (prevUnlocked) return { cls: '', html: '<span class="pill pendiente">Disponible · por iniciar</span>', icon: 'circle' };
+  return { cls: '', html: '<span class="pill pendiente">Requiere la anterior</span>', icon: 'lock' };
+}
+function stateLabel(st) {
+  if (st === 'taught') return '<span class="pill ok">Completado · enseñado</span>';
+  if (st === 'done') return '<span class="pill ok">Completado</span>';
+  if (st && st.startsWith('progress')) return `<span style="display:flex;gap:8px;align-items:center"><span class="meter" style="width:90px;height:6px"><span style="width:${pct(st)}%;background:var(--info)"></span></span><span class="note mono">${pct(st)}%</span></span>`;
+  return '<span class="pill pendiente">Por iniciar</span>';
+}
+
+function renderAcademia() {
+  const v = S.viewer, m = M(v);
+  const body = $('#acaBody');
+  if (m.comisario) {
+    $('#acaTitle').textContent = 'Avance del equipo';
+    body.innerHTML = `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Vista del Comisario</div><h2>Habilidades por especialidad</h2></div><span class="note">Cada punto es una habilidad de su árbol</span></div>
+      ${DETECTIVES.map(d => { const sk = skillsOf(d.id); return `<div class="team-skill"><div>${person(d.id)}<div class="note" style="margin-top:3px">${esc(d.clase)}</div></div>
+        <div class="dots">${sk.map(s => `<span class="${isDone(s.st) ? 'on' : s.st.startsWith('progress') ? 'half' : ''}" title="${esc(s.name)}"></span>`).join('')}</div>
+        <div class="mono" style="text-align:right">${sk.filter(s => isDone(s.st)).length} / ${sk.length}</div></div>`; }).join('')}</div>
+      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Cursos comunes</div><h2>Formación compartida</h2></div></div>
+      ${COMMON.map(c => `<div class="course-row"><div style="font-weight:600">${esc(c.name)}</div><div class="c-state note">${DETECTIVES.filter(d => isDone(stOf(d.id, c.id))).length} de ${DETECTIVES.length} lo completaron</div><div></div></div>`).join('')}</div>`;
+    return;
+  }
+  $('#acaTitle').textContent = 'Árbol del ' + m.clase;
+  const tree = treeOf(v);
+  const branches = tree.map(b => {
+    let prev = true;
+    const nodes = b.skills.map(s => {
+      const ns = nodeState(s, prev);
+      prev = isDone(s.st);
+      return `<div class="node ${ns.cls}"><div class="node-ic"><svg><use href="#i-${ns.icon}"/></svg></div>
+        <div style="min-width:0"><div class="node-name">${esc(s.name)}</div><div class="node-course">Curso: ${esc(s.course)}</div><div class="node-state">${ns.html}</div></div></div>`;
+    }).join('');
+    const done = b.skills.filter(s => isDone(s.st)).length;
+    return `<div class="branch"><h3><span>Rama ${esc(b.name)}</span><span class="mono note">${done}/3</span></h3>${nodes}</div>`;
+  }).join('');
+  body.innerHTML = `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Especialidad</div><h2>${esc(m.clase)}</h2></div><span class="note">${skillCount(v)} de 6 habilidades · cuentan para ascender</span></div><div class="tree">${branches}</div></div>
+    <div class="panel"><div class="panel-head"><div><div class="eyebrow">Cursos comunes</div><h2>Para todo el equipo</h2></div><span class="note">Dan XP e insignia, pero no cuentan como habilidad de especialidad</span></div>
+      ${COMMON.map(c => { const st = stOf(v, c.id); return `<div class="course-row"><div style="font-weight:600">${esc(c.name)}</div><div class="c-state">${stateLabel(st)}</div><div class="mono" style="text-align:right;color:var(--manila)">${st === 'taught' ? '+35' : isDone(st) ? '+15' : '+15'}</div></div>`; }).join('')}</div>`;
+}
+
+function renderIdeas() {
+  const ideas = D.ideas;
+  const saved = ideas.filter(i => i.stage === 'implementada').reduce((a, i) => a + (+i.hours || 0), 0);
+  const potential = ideas.filter(i => i.stage !== 'implementada').reduce((a, i) => a + (+i.hours || 0), 0);
+  $('#ideaKpis').innerHTML = `
+    <div class="panel"><div class="eyebrow">Horas recuperadas</div><div class="stat-big" style="margin-top:6px">${saved} <span style="font-size:15px;color:var(--muted)">h/mes</span></div><div class="stat-sub">Ideas ya implementadas</div></div>
+    <div class="panel"><div class="eyebrow">Horas en camino</div><div class="stat-big" style="margin-top:6px">${potential} <span style="font-size:15px;color:var(--muted)">h/mes</span></div><div class="stat-sub">Si se implementan las ideas abiertas</div></div>
+    <div class="panel"><div class="eyebrow">Ideas en el tablero</div><div class="stat-big" style="margin-top:6px">${ideas.length}</div><div class="stat-sub">${ideas.filter(i => i.stage === 'implementada').length} implementadas</div></div>`;
+  $('#board').innerHTML = STAGES.map(st => {
+    const items = ideas.filter(i => i.stage === st.id);
+    return `<div class="col ${st.id === 'implementada' ? 'done' : ''}"><div class="col-head"><span>${st.name}</span><span class="n">${items.length}</span></div><div class="col-sub">${st.sub}</div>
+      ${items.map(i => `<div class="idea"><div class="idea-title">${esc(i.title)}</div>${i.desc ? `<div class="idea-desc">${esc(i.desc)}</div>` : ''}
+        <div class="idea-foot">${person(i.author)}<span class="idea-h">${i.hours} h/mes${st.id === 'implementada' ? '' : ' est.'}</span></div></div>`).join('') || '<div class="note" style="padding:6px 4px">Sin ideas en esta etapa.</div>'}
+    </div>`;
+  }).join('');
+}
+
+function renderEscalafon() {
+  $('#ladder').innerHTML = RANKS.map((r, i) => i).reverse().map(i => {
+    const r = RANKS[i];
+    const people = DETECTIVES.filter(d => rankIdx(d.id) === i);
+    return `<div class="rung ${people.length ? 'has' : ''}">
+      <div class="rung-n"><svg><use href="#i-${i === RANKS.length - 1 ? 'star' : 'ladder'}"/></svg></div>
+      <div><div class="rung-name">${r.name}</div><div class="rung-req">${r.xp ? r.xp + ' XP' : 'Punto de partida'}${r.skills ? ' · ' + r.skills + ' habilidades' : ''}</div></div>
+      <div class="rung-people">${people.map(p => `<span class="rung-person">${avatar(p.id)}${esc(label(p.id))}</span>`).join('')}</div>
+    </div>`;
+  }).join('') + `<div class="rung"><div class="rung-n"><svg><use href="#i-loupe"/></svg></div><div><div class="rung-name">Comisario</div><div class="rung-req">Fuera del escalafón · valida y premia</div></div><div class="rung-people"><span class="rung-person">${avatar('jefe')}${esc(label('jefe'))}</span></div></div>`;
+  $('#progList').innerHTML = DETECTIVES.map(d => {
+    const nr = nextRankInfo(d.id);
+    const txt = !nr ? 'Rango máximo alcanzado.' : (nr.xpMissing || nr.skMissing) ? `Le faltan ${[nr.xpMissing ? nr.xpMissing + ' XP' : '', nr.skMissing ? nr.skMissing + (nr.skMissing === 1 ? ' habilidad' : ' habilidades') : ''].filter(Boolean).join(' y ')} para ${nr.next.name}.` : `Cumple los requisitos de ${nr.next.name}.`;
+    return `<div class="prog"><div>${person(d.id)}<div class="note" style="margin-top:3px">${esc(rankName(d.id))} · <span class="mono">${xpOf(d.id).total} XP</span></div></div>
+      <div><div class="meter"><span style="width:${nr ? Math.round(nr.progress * 100) : 100}%"></span></div><div class="prog-text">${txt}</div></div></div>`;
+  }).join('');
+}
+
+/* ---------- Administración (solo Armando y Alvaro) ---------- */
+let admMember = 'analista', delArmed = null, delTimer = null;
+const PROG_OPTS = [['none', 'Por iniciar'], ['progress:25', 'En curso · 25%'], ['progress:50', 'En curso · 50%'], ['progress:75', 'En curso · 75%'], ['done', 'Completado'], ['taught', 'Completado y enseñado']];
+function addMonth(mes, n) { const [y, m] = mes.split('-').map(Number); const d = new Date(Date.UTC(y, m - 1 + (n || 1), 1)); return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0'); }
+function shiftDue(due, mesTo) { const day = +due.slice(8, 10); const [y, m] = mesTo.split('-').map(Number); const last = new Date(Date.UTC(y, m, 0)).getUTCDate(); return mesTo + '-' + String(Math.min(day, last)).padStart(2, '0'); }
+function nowMes() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+
+function renderAdmin() {
+  const body = $('#adminBody');
+  if (!canAdmin()) {
+    body.innerHTML = `<div class="panel lockbox"><svg><use href="#i-lock"/></svg><h2>Solo para el Comisario y el Inspector Jefe</h2><p class="note">Esta sección la ven Armando y Alvaro.</p></div>`;
+    return;
+  }
+  const people = MEMBERS.map(m => [m.id, label(m.id)]);
+  const opts = (cur, list) => list.map(([v, l]) => `<option value="${esc(v)}" ${v === cur ? 'selected' : ''}>${esc(l)}</option>`).join('');
+  const stList = Object.entries(STATUS).map(([k, v]) => [k, v.label]);
+  const months = monthsList();
+  const next = S.month ? addMonth(S.month) : nowMes();
+  const nextExists = months.includes(next);
+  const defMes = S.month || nowMes();
+  const delBtn = key => `<button class="btn small danger" type="button" data-del="${key}">${delArmed === key ? '¿Seguro? Borrar' : 'Borrar'}</button>`;
+
+  const cpRows = CHECKPOINTS.map(c => `<tr>
+      <td><input type="date" value="${esc(c.due)}" data-kind="cp" data-id="${c.id}" data-field="due" aria-label="Fecha límite de ${esc(c.name)}" required></td>
+      <td style="min-width:300px"><input type="text" value="${esc(c.name)}" maxlength="120" data-kind="cp" data-id="${c.id}" data-field="name" aria-label="Nombre del reporte">
+        <input type="text" value="${esc(c.desc)}" maxlength="240" placeholder="Descripción (opcional)" data-kind="cp" data-id="${c.id}" data-field="descr" aria-label="Descripción de ${esc(c.name)}" style="margin-top:4px"></td>
+      <td><select data-kind="cp" data-id="${c.id}" data-field="resp" aria-label="Responsable de ${esc(c.name)}">${opts(c.resp, people)}</select></td>
+      <td><select data-kind="cp" data-id="${c.id}" data-field="co" aria-label="Copiloto de ${esc(c.name)}">${opts(c.co, people)}</select></td>
+      <td><select data-kind="cp" data-id="${c.id}" data-field="status" aria-label="Estado de ${esc(c.name)}">${opts(c.status, stList)}</select></td>
+      <td>${delBtn('cp:' + c.id)}</td></tr>`).join('');
+
+  const ideaRows = D.ideas.map(i => `<tr>
+      <td style="font-weight:600;min-width:200px">${esc(i.title)}</td>
+      <td>${person(i.author)}</td>
+      <td><input type="number" min="0" max="80" step="0.5" value="${i.hours}" data-kind="idea" data-id="${i.id}" data-field="hours" aria-label="Horas por mes de ${esc(i.title)}" style="width:80px"></td>
+      <td><select data-kind="idea" data-id="${i.id}" data-field="stage" aria-label="Etapa de ${esc(i.title)}">${opts(i.stage, STAGES.map(s => [s.id, s.name]))}</select></td>
+      <td>${delBtn('idea:' + i.id)}</td></tr>`).join('');
+
+  const mm = M(admMember);
+  const progItems = treeOf(admMember).flatMap(b => b.skills.map(s => ({ id: s.id, name: s.name, course: s.course, st: s.st })))
+    .concat(COMMON.map(c => ({ id: c.id, name: c.name, course: 'Curso común', st: stOf(admMember, c.id) })));
+  const progRows = progItems.map(it => {
+    const list = PROG_OPTS.some(o => o[0] === it.st) ? PROG_OPTS : PROG_OPTS.concat([[it.st, 'En curso · ' + pct(it.st) + '%']]);
+    return `<tr><td style="font-weight:600;min-width:200px">${esc(it.name)}<div class="note">${esc(it.course)}</div></td>
+      <td><select data-kind="prog" data-member="${admMember}" data-item="${it.id}" aria-label="Estado de ${esc(it.name)}">${opts(it.st, list)}</select></td></tr>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="panel">
+      <div class="panel-head"><div><div class="eyebrow">Reportes del mes</div><h2>${esc(caseMonth())}</h2></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <select id="admMonth" class="sel" aria-label="Mes">${months.length ? months.map(m => `<option value="${m}" ${m === S.month ? 'selected' : ''}>${esc(monthLabel(m))}</option>`).join('') : '<option>Sin meses</option>'}</select>
+          <button class="btn" type="button" id="nextMonth" ${(!CHECKPOINTS.length || nextExists) ? 'disabled' : ''} title="Crea los mismos reportes en el mes siguiente, todos pendientes">Copiar a ${esc(monthLabel(next))}</button>
+        </div></div>
+      <p class="note" style="margin-bottom:12px">Los cambios se guardan al salir de cada casilla. Al copiar un mes, los reportes pasan al mes siguiente con el mismo día de vencimiento y estado pendiente; revisa las fechas si caen en fin de semana.</p>
+      ${CHECKPOINTS.length ? `<div class="table-wrap"><table class="adm"><thead><tr><th>Vence</th><th>Reporte</th><th>Responsable</th><th>Copiloto</th><th>Estado</th><th></th></tr></thead><tbody>${cpRows}</tbody></table></div>` : '<p class="note">Este mes todavía no tiene reportes. Agrégalos abajo.</p>'}
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><div class="eyebrow">Nuevo reporte</div><h2>Agregar un reporte</h2></div></div>
+      <form class="adm-form" id="cpForm" autocomplete="off">
+        <div class="field"><label for="cpMes">Mes</label><input id="cpMes" type="month" value="${defMes}" pattern="[0-9]{4}-[0-9]{2}" placeholder="2026-11" required></div>
+        <div class="field" style="flex:2;min-width:220px"><label for="cpName">Reporte</label><input id="cpName" maxlength="120" required placeholder="Ej.: Informe de morosidad"></div>
+        <div class="field"><label for="cpDue">Vence</label><input id="cpDue" type="date" required></div>
+        <div class="field"><label for="cpResp">Responsable</label><select id="cpResp">${opts('analista', people)}</select></div>
+        <div class="field"><label for="cpCo">Copiloto</label><select id="cpCo">${opts('auxiliar', people)}</select></div>
+        <button class="btn primary" type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><div class="eyebrow">Tablero de ideas</div><h2>Avance de las ideas</h2></div></div>
+      ${D.ideas.length ? `<div class="table-wrap"><table class="adm"><thead><tr><th>Idea</th><th>Autor</th><th>Horas/mes</th><th>Etapa</th><th></th></tr></thead><tbody>${ideaRows}</tbody></table></div>` : '<p class="note">Aún no hay ideas propuestas.</p>'}
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><div class="eyebrow">Academia</div><h2>Validar cursos de ${esc(label(admMember))}</h2></div>
+        <select id="admMember" class="sel" aria-label="Persona">${opts(admMember, DETECTIVES.map(d => [d.id, label(d.id)]))}</select></div>
+      <p class="note" style="margin-bottom:12px">Marca un curso como completado solo cuando lo hayas verificado. Cada habilidad completada suma XP automáticamente.</p>
+      <div class="table-wrap"><table class="adm"><thead><tr><th>${esc(mm.clase)}</th><th>Estado</th></tr></thead><tbody>${progRows}</tbody></table></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><div class="eyebrow">Cuentas</div><h2>Quién ya tiene usuario</h2></div></div>
+      <div class="team">${MEMBERS.map(t => `<div class="team-card">${avatar(t.id, 36)}<div style="min-width:0"><div class="team-name">${esc(t.nombre)}</div><div class="note">${D.profiles[t.id] ? 'Usuario creado' : 'Falta crear el usuario'}</div></div></div>`).join('')}</div>
+    </div>`;
+}
+
+async function onAdminChange(e) {
+  const el = e.target;
+  if (el.id === 'admMonth') { S.month = el.value; applyMonth(); renderAll(); return; }
+  if (el.id === 'admMember') { admMember = el.value; renderAdmin(); return; }
+  const kind = el.dataset.kind; if (!kind) return;
+  let ok;
+  if (kind === 'cp') {
+    const c = D.cps.find(x => x.id === el.dataset.id); if (!c) return;
+    const f = el.dataset.field; let v = el.value;
+    if (f === 'name') { v = v.trim(); if (!v) { renderAdmin(); return; } }
+    if (f === 'due' && !v) { renderAdmin(); return; }
+    if ((f === 'resp' && v === c.co) || (f === 'co' && v === c.resp)) { toast('El responsable y el copiloto deben ser personas distintas.', true); renderAdmin(); return; }
+    ok = await write(() => sb.from('checkpoints').update({ [f]: v }).eq('id', c.id).select());
+  } else if (kind === 'idea') {
+    const f = el.dataset.field; let v = el.value;
+    if (f === 'hours') v = Math.min(80, Math.max(0, parseFloat(v) || 0));
+    ok = await write(() => sb.from('ideas').update({ [f]: v }).eq('id', el.dataset.id).select());
+  } else if (kind === 'prog') {
+    ok = await write(() => sb.from('progress').upsert({ member_key: el.dataset.member, item_id: el.dataset.item, state: el.value }, { onConflict: 'member_key,item_id' }).select(), 'Avance actualizado');
+  }
+  if (ok === false) renderAdmin();
+}
+
+async function onAdminClick(e) {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.del) {
+    const key = b.dataset.del;
+    if (delArmed !== key) {
+      delArmed = key; clearTimeout(delTimer);
+      delTimer = setTimeout(() => { delArmed = null; if (currentView === 'admin') renderAdmin(); }, 4000);
+      renderAdmin(); return;
+    }
+    delArmed = null; clearTimeout(delTimer);
+    const [kind, id] = key.split(':');
+    await write(() => sb.from(kind === 'cp' ? 'checkpoints' : 'ideas').delete().eq('id', id).select(), 'Borrado');
+    return;
+  }
+  if (b.id === 'nextMonth') {
+    const next = addMonth(S.month);
+    const rows = CHECKPOINTS.map(c => ({ mes: next, name: c.name, descr: c.desc, due: shiftDue(c.due, next), resp: c.resp, co: c.co, status: 'pendiente' }));
+    const ok = await write(() => sb.from('checkpoints').insert(rows).select());
+    if (ok) { S.month = next; applyMonth(); renderAll(); toast('Mes creado: ' + monthLabel(next)); }
+  }
+}
+
+async function onAdminSubmit(e) {
+  if (e.target.id !== 'cpForm') return;
+  e.preventDefault();
+  const mes = $('#cpMes').value, name = $('#cpName').value.trim(), due = $('#cpDue').value, resp = $('#cpResp').value, co = $('#cpCo').value;
+  if (!/^\d{4}-\d{2}$/.test(mes) || !name || !due) { toast('Completa el mes, el nombre y la fecha de vencimiento.', true); return; }
+  if (resp === co) { toast('El responsable y el copiloto deben ser personas distintas.', true); return; }
+  const ok = await write(() => sb.from('checkpoints').insert({ mes, name, descr: '', due, resp, co, status: 'pendiente' }).select(), 'Reporte agregado');
+  if (ok) { S.month = mes; applyMonth(); renderAll(); }
+}
+$('#adminBody').addEventListener('change', onAdminChange);
+$('#adminBody').addEventListener('click', onAdminClick);
+$('#adminBody').addEventListener('submit', onAdminSubmit);
+
+function renderAll() {
+  renderShell(); renderHome(); renderCasos(); renderCredencial(); renderAcademia(); renderIdeas(); renderEscalafon(); renderAdmin();
+}
+
+/* =========================================================
+   VESTIDOR
+   ========================================================= */
+let wdSlot = 'outfit', wdOffset = 0, preview = null;
+const WD_VISIBLE = 4;
+function viewerLook() { return lookOf(S.viewer); }
+function currentLook() { return preview || viewerLook(); }
+function wardrobeSync() { preview = null; wdOffset = Math.max(0, WARDROBE[wdSlot].findIndex(o => o.id === viewerLook()[wdSlot]) - 1); renderWardrobe(); if (window.__scene) window.__scene.setLook(currentLook()); }
+function renderWardrobe() {
+  const list = WARDROBE[wdSlot];
+  const look = currentLook();
+  const rIdx = rankIdx(S.viewer);
+  const narrow = window.matchMedia('(max-width: 900px)').matches;
+  const maxOff = Math.max(0, list.length - WD_VISIBLE);
+  wdOffset = Math.min(Math.max(0, wdOffset), maxOff);
+  const shown = narrow ? list : list.slice(wdOffset, wdOffset + WD_VISIBLE);
+  $('#wdOpts').innerHTML = shown.map(o => {
+    const locked = rIdx < o.rank;
+    return `<button class="wd-opt ${locked ? 'locked' : ''}" data-id="${o.id}" aria-pressed="${look[wdSlot] === o.id}" ${locked ? 'aria-disabled="true"' : ''}>
+      <span class="lbl">${SLOT_LABEL[wdSlot]}</span>
+      <span class="nm"><span class="sw" style="background:${o.sw}"></span>${esc(o.name)}</span>
+      ${locked ? `<span class="lock"><svg><use href="#i-lock"/></svg>Requiere ${RANKS[o.rank].name}</span>` : ''}
+      <span class="bar"></span></button>`;
+  }).join('');
+  $('#wdUp').disabled = wdOffset <= 0;
+  $('#wdDown').disabled = wdOffset >= maxOff;
+  document.querySelectorAll('#wdTabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.slot === wdSlot)));
+  const sel = list.find(o => o.id === look[wdSlot]) || list[0];
+  $('#wdSelName').textContent = sel.name;
+  const dirty = preview && SLOTS.some(k => preview[k] !== viewerLook()[k]);
+  $('#wdSelDesc').textContent = dirty ? sel.desc + ' Es una vista previa: guarda para conservarla.' : sel.desc + ' Así te ven en el Cuartel.';
+  const btn = $('#wdSave');
+  btn.className = 'btn-save' + (dirty ? '' : ' saved');
+  btn.innerHTML = dirty ? 'Guardar' : '<svg><use href="#i-check"/></svg>Guardado';
+  btn.disabled = !dirty;
+}
+$('#wdOpts').addEventListener('click', e => {
+  const b = e.target.closest('.wd-opt'); if (!b || b.classList.contains('locked')) return;
+  preview = Object.assign({}, currentLook(), { [wdSlot]: b.dataset.id });
+  renderWardrobe();
+  if (window.__scene) window.__scene.setLook(currentLook());
+});
+$('#wdTabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  wdSlot = b.dataset.slot;
+  wdOffset = Math.max(0, WARDROBE[wdSlot].findIndex(o => o.id === currentLook()[wdSlot]) - 1);
+  renderWardrobe();
+});
+$('#wdUp').addEventListener('click', () => { wdOffset--; renderWardrobe(); });
+$('#wdDown').addEventListener('click', () => { wdOffset++; renderWardrobe(); });
+$('#wdSave').addEventListener('click', async () => {
+  if (!preview) return;
+  const look = Object.assign({}, preview);
+  const ok = await write(() => sb.from('profiles').update({ look }).eq('id', S.uid).select(), 'Look guardado');
+  if (ok) wardrobeSync();
+});
+$('#bell').addEventListener('click', () => { S.filter = 'mine'; renderCasos(); location.hash = 'casos'; });
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+const VIEWS = ['cuartel', 'casos', 'credencial', 'academia', 'ideas', 'escalafon', 'admin'];
+let currentView = 'cuartel';
+function route() {
+  let v = (location.hash || '').replace('#', '');
+  if (!VIEWS.includes(v)) v = 'cuartel';
+  currentView = v;
+  document.querySelectorAll('.view[data-view]').forEach(s => s.hidden = s.dataset.view !== v);
+  document.querySelectorAll('#nav a').forEach(a => { if (a.dataset.v === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  if (window.__scene) window.__scene.setActive(v === 'cuartel');
+  if (v !== 'cuartel') window.scrollTo({ top: 0 });
+}
+window.addEventListener('hashchange', route);
+$('#monthSel').addEventListener('change', e => { S.month = e.target.value; applyMonth(); renderAll(); });
+document.querySelectorAll('#v-casos .toggle button').forEach(b => b.addEventListener('click', () => { S.filter = b.dataset.filter; renderCasos(); }));
+$('#ideaForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const t = $('#ideaTitle').value.trim(); if (!t) return;
+  const btn = e.target.querySelector('button[type=submit]'); btn.disabled = true;
+  const hours = Math.min(80, Math.max(0, +$('#ideaHours').value || 0));
+  const ok = await write(() => sb.from('ideas').insert({ title: t, descr: $('#ideaDesc').value.trim(), author: S.viewer, stage: 'propuesta', hours }).select(), 'Idea propuesta: +10 XP');
+  btn.disabled = false;
+  if (ok) { $('#ideaTitle').value = ''; $('#ideaDesc').value = ''; $('#ideaHours').value = '2'; }
+});
+async function saveAlias(val) {
+  await write(() => sb.from('profiles').update({ alias: val || null }).eq('id', S.uid).select(), 'Alias guardado');
+}
+window.matchMedia('(max-width: 900px)').addEventListener('change', renderWardrobe);
+
+/* =========================================================
+   ESCENA 3D
+   ========================================================= */
+function initScene() {
+  if (!window.THREE) throw new Error('three');
+  const T = THREE;
+  const canvas = $('#c3d'), stage = $('#stage');
+  const renderer = new T.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = T.sRGBEncoding;
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = .95;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = T.PCFSoftShadowMap;
+
+  const scene = new T.Scene();
+  scene.background = new T.Color(0x0D1218);
+  scene.fog = new T.Fog(0x0D1218, 9, 18);
+  const camera = new T.PerspectiveCamera(38, 16 / 9, 0.1, 60);
+
+  /* ---- Texturas dibujadas ---- */
+  function canvasTex(w, h, draw, repeat) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d'); draw(g, w, h);
+    const t = new T.CanvasTexture(c); t.encoding = T.sRGBEncoding; t.anisotropy = 4;
+    if (repeat) { t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]); }
+    return t;
+  }
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const floorTex = canvasTex(512, 512, (g, w, h) => {
+    const rows = 8; const ph = h / rows;
+    for (let r = 0; r < rows; r++) {
+      let x = -rnd() * 200;
+      while (x < w) {
+        const len = 160 + rnd() * 140;
+        const l = 22 + rnd() * 9;
+        g.fillStyle = `hsl(${26 + rnd() * 6}, ${38 + rnd() * 10}%, ${l}%)`;
+        g.fillRect(x, r * ph, len, ph);
+        for (let k = 0; k < 6; k++) { g.strokeStyle = `rgba(0,0,0,${.05 + rnd() * .08})`; g.lineWidth = 1; g.beginPath(); const yy = r * ph + rnd() * ph; g.moveTo(x, yy); g.bezierCurveTo(x + len * .3, yy + 3, x + len * .6, yy - 3, x + len, yy); g.stroke(); }
+        g.fillStyle = 'rgba(0,0,0,.55)'; g.fillRect(x, r * ph, 2, ph);
+        x += len;
+      }
+      g.fillStyle = 'rgba(0,0,0,.6)'; g.fillRect(0, r * ph, w, 2);
+    }
+  }, [3, 3]);
+  const wallTex = canvasTex(512, 512, (g, w, h) => {
+    g.fillStyle = '#22303A'; g.fillRect(0, 0, w, h);
+    for (let x = 0; x < w; x += 32) { g.fillStyle = 'rgba(255,255,255,.025)'; g.fillRect(x, 0, 14, h * .62); }
+    g.fillStyle = '#2E2018'; g.fillRect(0, h * .62, w, h * .38);
+    g.fillStyle = '#3A291E'; g.fillRect(0, h * .62, w, 10);
+    for (let x = 12; x < w; x += 128) { g.strokeStyle = 'rgba(0,0,0,.45)'; g.lineWidth = 3; g.strokeRect(x, h * .62 + 26, 104, h * .38 - 44); g.strokeStyle = 'rgba(255,220,180,.06)'; g.lineWidth = 1; g.strokeRect(x + 3, h * .62 + 29, 98, h * .38 - 50); }
+  }, [3, 1]);
+  const corkTex = canvasTex(512, 384, (g, w, h) => {
+    g.fillStyle = '#A97C4A'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 9000; i++) { g.fillStyle = rnd() > .5 ? 'rgba(70,40,15,.35)' : 'rgba(230,190,140,.25)'; g.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 2, 1 + rnd() * 2); }
+  });
+  function paperTex(kind) {
+    return canvasTex(256, 320, (g, w, h) => {
+      if (kind === 'photo') {
+        g.fillStyle = '#F1EEE6'; g.fillRect(0, 0, w, h);
+        const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#6E7C86'); gr.addColorStop(1, '#3A444C');
+        g.fillStyle = gr; g.fillRect(16, 16, w - 32, h - 90);
+        g.fillStyle = '#20272D'; g.beginPath(); g.arc(w / 2, h * .36, 34, 0, Math.PI * 2); g.fill(); g.fillRect(w / 2 - 55, h * .36 + 40, 110, 90);
+        g.fillStyle = '#333'; g.font = '22px Courier New'; g.fillText('AGENCIA 07', 20, h - 34);
+      } else if (kind === 'chart') {
+        g.fillStyle = '#F4F0E6'; g.fillRect(0, 0, w, h);
+        g.strokeStyle = '#99A'; g.lineWidth = 2; g.beginPath(); g.moveTo(26, h - 40); g.lineTo(w - 20, h - 40); g.moveTo(26, 40); g.lineTo(26, h - 40); g.stroke();
+        g.strokeStyle = '#B0392D'; g.lineWidth = 4; g.beginPath(); [0, .25, .5, .75, 1].forEach((t, i) => { const x = 30 + t * (w - 60), y = h - 70 - [20, 80, 60, 140, 110][i]; i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke();
+        g.fillStyle = '#333'; g.font = 'bold 20px Courier New'; g.fillText('MORA %', 34, 30);
+      } else {
+        g.fillStyle = kind === 'manila' ? '#E3C78C' : '#F3EFE5'; g.fillRect(0, 0, w, h);
+        g.fillStyle = '#333'; g.font = 'bold 22px Courier New'; g.fillText(kind === 'manila' ? 'EXP. 2026-10' : 'PISTAS', 20, 40);
+        g.fillStyle = 'rgba(40,40,40,.55)';
+        for (let y = 70; y < h - 20; y += 22) g.fillRect(20, y, 60 + rnd() * (w - 100), 5);
+      }
+    });
+  }
+  const winTex = canvasTex(256, 256, (g, w, h) => {
+    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#CFE1F2'); gr.addColorStop(1, '#8FB0CC');
+    g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    for (let y = 0; y < h; y += 16) { g.fillStyle = 'rgba(30,40,55,.75)'; g.fillRect(0, y + 9, w, 7); }
+    g.fillStyle = '#1B1510'; g.fillRect(w / 2 - 4, 0, 8, h); g.fillRect(0, h / 2 - 4, w, 8);
+  });
+  const emblemTex = canvasTex(512, 512, (g, w, h) => {
+    const gr = g.createRadialGradient(w / 2, h / 2, 20, w / 2, h / 2, w / 2);
+    gr.addColorStop(0, '#2A323D'); gr.addColorStop(1, '#151A21');
+    g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    g.strokeStyle = 'rgba(227,184,104,.55)'; g.lineWidth = 4; g.beginPath(); g.arc(w / 2, h / 2, 200, 0, Math.PI * 2); g.stroke();
+    g.lineWidth = 1.5; g.beginPath(); g.arc(w / 2, h / 2, 186, 0, Math.PI * 2); g.stroke();
+    g.fillStyle = 'rgba(227,184,104,.8)'; g.font = 'bold 28px Courier New'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    const txt = '· BRÚJULA P&C · PLANEAMIENTO Y CONTROL ';
+    for (let i = 0; i < txt.length; i++) { const a = (i / txt.length) * Math.PI * 2 - Math.PI / 2; g.save(); g.translate(w / 2 + Math.cos(a) * 222, h / 2 + Math.sin(a) * 222); g.rotate(a + Math.PI / 2); g.fillText(txt[i], 0, 0); g.restore(); }
+  });
+
+  /* ---- Materiales ---- */
+  const mat = (c, o) => new T.MeshStandardMaterial(Object.assign({ color: c, roughness: .8, metalness: .05 }, o || {}));
+  const wood = mat(0x4A2F1C, { roughness: .6 });
+  const metalDark = mat(0x2B3036, { roughness: .45, metalness: .5 });
+
+  /* ---- Habitación ---- */
+  const floor = new T.Mesh(new T.PlaneGeometry(16, 12), mat(0xffffff, { map: floorTex, roughness: .55 }));
+  floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+  const wallMat = mat(0xffffff, { map: wallTex, roughness: .9 });
+  const back = new T.Mesh(new T.PlaneGeometry(12, 4.4), wallMat); back.position.set(0, 2.2, -3.4); back.receiveShadow = true; scene.add(back);
+  const leftTex = wallTex.clone(); leftTex.needsUpdate = true; leftTex.repeat.set(2.5, 1);
+  const left = new T.Mesh(new T.PlaneGeometry(10, 4.4), mat(0xffffff, { map: leftTex, roughness: .9 })); left.rotation.y = Math.PI / 2; left.position.set(-5.2, 2.2, 0.6); scene.add(left);
+  const right = new T.Mesh(new T.PlaneGeometry(10, 4.4), mat(0xffffff, { map: leftTex, roughness: .9 })); right.rotation.y = -Math.PI / 2; right.position.set(5.2, 2.2, 0.6); scene.add(right);
+  // zócalo
+  const skirt = new T.Mesh(new T.BoxGeometry(12, .14, .05), wood); skirt.position.set(0, .07, -3.37); scene.add(skirt);
+
+  // Ventana con persianas (pared izquierda)
+  const win = new T.Mesh(new T.PlaneGeometry(2.0, 1.7), new T.MeshBasicMaterial({ map: winTex }));
+  win.rotation.y = Math.PI / 2; win.position.set(-5.18, 2.25, -0.6); scene.add(win);
+  const frameM = mat(0x1E1712, { roughness: .6 });
+  [[0, .9, 2.12, .08], [0, -.9, 2.12, .08], [1.04, 0, .08, 1.88], [-1.04, 0, .08, 1.88]].forEach(([z, y, wz, hy]) => {
+    const f = new T.Mesh(new T.BoxGeometry(.08, hy, wz), frameM); f.position.set(-5.15, 2.25 + y, -0.6 + z); scene.add(f);
+  });
+
+  // Corcho con pistas (pared del fondo, izquierda)
+  const board = new T.Group(); board.position.set(-2.35, 2.25, -3.36); scene.add(board);
+  const cork = new T.Mesh(new T.BoxGeometry(2.4, 1.6, .05), mat(0xffffff, { map: corkTex, roughness: 1 })); cork.castShadow = true; board.add(cork);
+  const frame = new T.Mesh(new T.BoxGeometry(2.52, 1.72, .03), wood); frame.position.z = -.02; board.add(frame);
+  const notes = [
+    { k: 'photo',  x: -.85, y: .35, r: -.06, s: .42 },
+    { k: 'paper',  x: -.2,  y: .42, r: .05,  s: .38 },
+    { k: 'chart',  x: .52,  y: .3,  r: -.03, s: .46 },
+    { k: 'manila', x: -.62, y: -.36, r: .07, s: .4 },
+    { k: 'paper',  x: .12,  y: -.32, r: -.08, s: .36 },
+    { k: 'photo',  x: .8,   y: -.38, r: .04, s: .36 }
+  ];
+  const pinPos = [];
+  const pinMat = mat(0xC4372C, { roughness: .35 });
+  notes.forEach(n => {
+    const p = new T.Mesh(new T.PlaneGeometry(n.s, n.s * 1.25), mat(0xffffff, { map: paperTex(n.k), roughness: .9 }));
+    p.position.set(n.x, n.y, .03 + Math.random() * .004); p.rotation.z = n.r; board.add(p);
+    const pin = new T.Mesh(new T.SphereGeometry(.025, 10, 8), pinMat); pin.position.set(n.x, n.y + n.s * .55, .06); board.add(pin);
+    pinPos.push(new T.Vector3(n.x, n.y + n.s * .55, .06));
+  });
+  const strG = new T.BufferGeometry().setFromPoints([pinPos[0], pinPos[2], pinPos[4], pinPos[3], pinPos[0], pinPos[1], pinPos[5]]);
+  board.add(new T.Line(strG, new T.LineBasicMaterial({ color: 0xD33A2E })));
+
+  // Archivadores (fondo, extremo izquierdo)
+  const cabMat = mat(0x3F4A44, { roughness: .5, metalness: .35 });
+  [-4.4, -3.75].forEach(x => {
+    const cab = new T.Group(); cab.position.set(x, 0, -3.0); scene.add(cab);
+    const body = new T.Mesh(new T.BoxGeometry(.6, 1.45, .62), cabMat); body.position.y = .725; body.castShadow = body.receiveShadow = true; cab.add(body);
+    for (let i = 0; i < 4; i++) {
+      const d = new T.Mesh(new T.BoxGeometry(.54, .3, .03), mat(0x46524B, { roughness: .45, metalness: .35 })); d.position.set(0, .2 + i * .34, .32); cab.add(d);
+      const h = new T.Mesh(new T.BoxGeometry(.16, .025, .03), mat(0xB9A57D, { metalness: .8, roughness: .3 })); h.position.set(0, .26 + i * .34, .345); cab.add(h);
+    }
+    if (x === -4.4) { const f = new T.Mesh(new T.BoxGeometry(.32, .05, .24), mat(0xE0C285)); f.position.set(0, 1.48, 0); f.rotation.y = .3; cab.add(f); }
+  });
+
+  // Escritorio con lámpara (fondo, derecha)
+  const desk = new T.Group(); desk.position.set(2.55, 0, -2.6); desk.rotation.y = -.18; scene.add(desk);
+  const top = new T.Mesh(new T.BoxGeometry(2.0, .08, .9), wood); top.position.y = .8; top.castShadow = top.receiveShadow = true; desk.add(top);
+  [[-.92, -.38], [.92, -.38], [-.92, .38], [.92, .38]].forEach(([x, z]) => { const l = new T.Mesh(new T.BoxGeometry(.07, .78, .07), wood); l.position.set(x, .39, z); l.castShadow = true; desk.add(l); });
+  const drawer = new T.Mesh(new T.BoxGeometry(.6, .5, .8), mat(0x3E2717, { roughness: .65 })); drawer.position.set(.62, .5, 0); drawer.castShadow = true; desk.add(drawer);
+  const folderCols = [0xE0C285, 0xD3B06C, 0xC7A05C];
+  folderCols.forEach((c, i) => { const f = new T.Mesh(new T.BoxGeometry(.42, .025, .3), mat(c)); f.position.set(-.45, .855 + i * .028, .05); f.rotation.y = (i - 1) * .12; f.castShadow = true; desk.add(f); });
+  const mug = new T.Mesh(new T.CylinderGeometry(.05, .045, .12, 16), mat(0xE9E4DA, { roughness: .3 })); mug.position.set(.15, .9, .2); desk.add(mug);
+  // lámpara
+  const lb = new T.Mesh(new T.CylinderGeometry(.11, .13, .04, 20), metalDark); lb.position.set(.55, .86, -.18); desk.add(lb);
+  const la = new T.Mesh(new T.CylinderGeometry(.015, .015, .55, 8), metalDark); la.position.set(.55, 1.12, -.18); la.rotation.z = .25; desk.add(la);
+  const shade = new T.Mesh(new T.ConeGeometry(.17, .22, 24, 1, true), mat(0x1E4A3C, { roughness: .4, metalness: .3, side: T.DoubleSide }));
+  shade.position.set(.45, 1.42, -.12); shade.rotation.z = .5; desk.add(shade);
+  const bulb = new T.Mesh(new T.SphereGeometry(.05, 12, 10), new T.MeshBasicMaterial({ color: 0xFFE2A8 })); bulb.position.set(.43, 1.36, -.12); desk.add(bulb);
+  const lampLight = new T.PointLight(0xFFB86B, 1.4, 4.5, 2); lampLight.position.set(.4, 1.3, -.1); desk.add(lampLight);
+
+  // Estante con libros (pared derecha)
+  const shelf = new T.Group(); shelf.position.set(4.95, 0, -1.2); shelf.rotation.y = -Math.PI / 2; scene.add(shelf);
+  const sb = new T.Mesh(new T.BoxGeometry(1.6, 2.1, .4), mat(0x2E1F15, { roughness: .7 })); sb.position.y = 1.05; shelf.add(sb);
+  const bookCols = [0x7A2E2A, 0x2D4B5E, 0x5C5A3A, 0x8A6A3C, 0x3A2F4A, 0x4D6B5C, 0xB08B54];
+  for (let r = 0; r < 4; r++) {
+    let x = -.72;
+    while (x < .7) {
+      const bw = .05 + rnd() * .05, bh = .3 + rnd() * .14;
+      const b = new T.Mesh(new T.BoxGeometry(bw, bh, .26), mat(bookCols[Math.floor(rnd() * bookCols.length)], { roughness: .8 }));
+      b.position.set(x + bw / 2, .2 + r * .5 + bh / 2, .1); shelf.add(b);
+      x += bw + .008;
+    }
+  }
+
+  // Alfombra
+  const rug = new T.Mesh(new T.CircleGeometry(2.2, 48), mat(0x2A1712, { roughness: 1 })); rug.rotation.x = -Math.PI / 2; rug.position.y = .005; rug.receiveShadow = true; scene.add(rug);
+  const rugRing = new T.Mesh(new T.RingGeometry(1.95, 2.05, 64), mat(0x8A6A3C, { roughness: 1 })); rugRing.rotation.x = -Math.PI / 2; rugRing.position.y = .007; scene.add(rugRing);
+
+  /* ---- Pedestal ---- */
+  const turntable = new T.Group(); scene.add(turntable);
+  const pedestal = new T.Mesh(new T.CylinderGeometry(1.0, 1.06, .14, 64), [metalDark, mat(0xffffff, { map: emblemTex, roughness: .5, metalness: .2 }), metalDark]);
+  pedestal.position.y = .07; pedestal.receiveShadow = true; pedestal.castShadow = true; turntable.add(pedestal);
+  const ring = new T.Mesh(new T.TorusGeometry(1.01, .014, 8, 96), new T.MeshStandardMaterial({ color: 0xE3B868, emissive: 0xE3B868, emissiveIntensity: 1.2 }));
+  ring.rotation.x = Math.PI / 2; ring.position.y = .141; turntable.add(ring);
+  const figureHolder = new T.Group(); figureHolder.position.y = .14; turntable.add(figureHolder);
+
+  /* ---- Luces ---- */
+  scene.add(new T.HemisphereLight(0x9DB2C8, 0x2A1E14, .42));
+  const sun = new T.DirectionalLight(0xC9DCFF, .85);
+  sun.position.set(-6, 5, 1.5); sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024); sun.shadow.camera.left = -5; sun.shadow.camera.right = 5; sun.shadow.camera.top = 5; sun.shadow.camera.bottom = -2; sun.shadow.bias = -.0005;
+  scene.add(sun);
+  const spot = new T.SpotLight(0xFFE7C2, .85, 12, .42, .65, 1.2);
+  spot.position.set(.6, 5.2, 2.2); spot.target.position.set(0, .8, 0); spot.castShadow = true; spot.shadow.mapSize.set(1024, 1024); spot.shadow.bias = -.0004;
+  scene.add(spot); scene.add(spot.target);
+  const rim = new T.PointLight(0xE3B868, .8, 6, 2); rim.position.set(1.6, 2.2, -1.6); scene.add(rim);
+
+  /* ---- Detective (personaje estilizado moderno) ---- */
+  const texCache = {};
+  function screenTex() {
+    if (texCache.screen) return texCache.screen;
+    return texCache.screen = canvasTex(256, 176, (g, w, h) => {
+      g.fillStyle = '#0F1722'; g.fillRect(0, 0, w, h);
+      g.fillStyle = '#E3B868'; g.font = 'bold 16px Courier New'; g.fillText('INDICADORES', 14, 24);
+      const vals = [.45, .7, .55, .85, .62, .92];
+      vals.forEach((v, i) => { g.fillStyle = i === 5 ? '#E3B868' : '#4F8FC9'; g.fillRect(16 + i * 38, h - 14 - v * 110, 26, v * 110); });
+      g.strokeStyle = '#7ED6A5'; g.lineWidth = 3; g.beginPath();
+      vals.forEach((v, i) => { const x = 29 + i * 38, y = h - 26 - v * 110; i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke();
+    });
+  }
+  function badgeTex() {
+    if (texCache.badge) return texCache.badge;
+    return texCache.badge = canvasTex(96, 136, (g, w, h) => {
+      g.fillStyle = '#F4F1EA'; g.fillRect(0, 0, w, h);
+      g.fillStyle = '#16212C'; g.fillRect(0, 0, w, 34);
+      g.fillStyle = '#E3B868'; g.font = 'bold 15px Courier New'; g.textAlign = 'center'; g.fillText('P&C', w / 2, 23);
+      g.fillStyle = '#9AA8B6'; g.fillRect(24, 46, 48, 52);
+      g.fillStyle = '#16212C'; g.fillRect(16, 108, 64, 6); g.fillRect(26, 120, 44, 5);
+    });
+  }
+  function find(slot, id) { return WARDROBE[slot].find(o => o.id === id) || WARDROBE[slot][0]; }
+  const fabric = (c, o) => new T.MeshStandardMaterial(Object.assign({ color: c, roughness: .82, metalness: 0 }, o || {}));
+  const vinyl = (c, o) => new T.MeshPhysicalMaterial(Object.assign({ color: c, roughness: .5, metalness: 0, clearcoat: .3, clearcoatRoughness: .45 }, o || {}));
+  const V2 = (x, y) => new T.Vector2(x, y);
+  function capsuleGeo(rTop, rBot, len, seg) {
+    const pts = [], n = 6;
+    for (let i = 0; i <= n; i++) { const a = -Math.PI / 2 + (Math.PI / 2) * (i / n); pts.push(V2(Math.max(.0001, rBot * Math.cos(a)), -len + rBot * Math.sin(a))); }
+    for (let i = 0; i <= n; i++) { const a = (Math.PI / 2) * (i / n); pts.push(V2(Math.max(.0001, rTop * Math.cos(a)), rTop * Math.sin(a))); }
+    return new T.LatheGeometry(pts, seg || 18);
+  }
+  function rod(mat, a, b, r) {
+    const dir = new T.Vector3().subVectors(b, a); const len = dir.length();
+    const m = new T.Mesh(new T.CylinderGeometry(r, r, len, 6), mat);
+    m.position.copy(a).addScaledVector(dir, .5);
+    m.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), dir.normalize());
+    return m;
+  }
+
+  function buildDetective(look) {
+    const fem = look.body === 'fem';
+    const B = fem
+      ? { sh: .165, chest: .148, waist: .112, hip: .158, legR: .06, armR: .045 }
+      : { sh: .195, chest: .162, waist: .138, hip: .148, legR: .068, armR: .052 };
+    const ZS = .8;
+    const o = find('outfit', look.outfit), hz = find('hat', look.hat), a = find('acc', look.acc);
+    const hairO = find('hair', look.hair), gl = find('glasses', look.glasses), sk = find('skin', look.skin);
+    const skin = vinyl(sk.hex, { roughness: .55, clearcoat: .12 });
+    const topM = fabric(o.top);
+    const outM = fabric(o.oc, { side: T.DoubleSide });
+    const trimM = fabric(o.trim || o.oc);
+    const botM = fabric(o.bc, { side: T.DoubleSide });
+    const shoeM = vinyl(o.shoes || 0x1A1614, { roughness: .35 });
+    const hairM = vinyl(hairO.color, { roughness: .62, clearcoat: .18, side: T.DoubleSide });
+    const g = new T.Group();
+    const upper = new T.Group(); g.add(upper);
+    const skirt = o.bottom === 'skirt';
+    const outer = o.outer || 'none';
+
+    // Piernas y zapatos
+    [-1, 1].forEach(s => {
+      const x = s * B.hip * .5;
+      const leg = new T.Mesh(capsuleGeo(B.legR, B.legR * .72, .72, 16), skirt ? skin : botM);
+      leg.position.set(x, .84, 0); g.add(leg);
+      const shoe = new T.Mesh(new T.SphereGeometry(1, 20, 14), shoeM);
+      shoe.scale.set(.062, .048, .118); shoe.position.set(x, .045, .03); g.add(shoe);
+      if (o.shoes) { const sole = new T.Mesh(new T.CylinderGeometry(1, 1, 1, 20), vinyl(0xF4F3EF)); sole.scale.set(.064, .018, .12); sole.position.set(x, .012, .03); g.add(sole); }
+    });
+
+    // Cadera, falda y torso
+    const hips = new T.Mesh(new T.LatheGeometry([V2(.0001, .76), V2(B.hip * .8, .78), V2(B.hip, .85), V2(B.hip * .98, .92), V2(B.waist + .005, 1.0)], 28), botM);
+    hips.scale.z = ZS; upper.add(hips);
+    if (skirt) {
+      const sk2 = new T.Mesh(new T.LatheGeometry([V2(B.hip * 1.32, .57), V2(B.hip * 1.24, .68), V2(B.hip * 1.06, .86), V2(B.waist + .012, 1.0)], 36), botM);
+      sk2.scale.z = ZS + .06; upper.add(sk2);
+    } else {
+      const belt = new T.Mesh(new T.TorusGeometry(B.waist + .008, .011, 8, 32), fabric(0x1E1A17)); belt.rotation.x = Math.PI / 2; belt.position.y = 1.0; belt.scale.y = ZS; upper.add(belt);
+    }
+    const torso = new T.Mesh(new T.LatheGeometry([V2(B.waist, 1.0), V2(B.waist * 1.02, 1.06), V2(B.chest, 1.17), V2(B.sh * .96, 1.28), V2(B.sh * .82, 1.35), V2(.085, 1.405), V2(.055, 1.42)], 36), topM);
+    torso.scale.z = ZS; upper.add(torso);
+
+    // Capa exterior
+    const d = .014;
+    const shoulderTop = [[B.sh * .96 + d, 1.28], [B.sh * .82 + d, 1.355], [.1, 1.405], [.075, 1.425]];
+    function shell(pts, gap, mat) {
+      const geo = new T.LatheGeometry(pts.map(p => V2(p[0], p[1])), 44, gap / 2, Math.PI * 2 - gap);
+      const m = new T.Mesh(geo, mat); m.scale.z = ZS; upper.add(m); return m;
+    }
+    function ring(r, y, tube, mat) { const t = new T.Mesh(new T.TorusGeometry(r, tube, 8, 36), mat); t.rotation.x = Math.PI / 2; t.position.y = y; t.scale.y = ZS; upper.add(t); return t; }
+    const frontZ = y => {
+      const r = y > 1.17 ? B.chest + (B.sh * .96 - B.chest) * (y - 1.17) / .11 : B.waist + (B.chest - B.waist) * (y - 1.0) / .17;
+      return r * ZS;
+    };
+    if (outer === 'blazer' || outer === 'coat' || outer === 'bomber') {
+      const pts = outer === 'coat'
+        ? [[B.hip * 1.4, .5], [B.hip * 1.2, .7], [B.hip * 1.07 + d, .86], [B.waist + d, 1.0], [B.chest + d, 1.17]].concat(shoulderTop)
+        : outer === 'bomber'
+          ? [[B.waist + d + .016, .9], [B.waist + d + .018, 1.0], [B.chest + d + .01, 1.17]].concat(shoulderTop)
+          : [[B.hip * 1.07 + d, .8], [B.hip + d, .88], [B.waist + d, 1.0], [B.chest + d, 1.17]].concat(shoulderTop);
+      shell(pts, outer === 'bomber' ? .08 : outer === 'coat' ? .42 : .52, outM);
+      ring(.088, 1.415, .024, outM);
+      if (outer !== 'bomber') {
+        [-1, 1].forEach(s => {
+          const lap = new T.Mesh(new T.BoxGeometry(.04, .2, .008), trimM);
+          lap.position.set(s * .05, 1.27, frontZ(1.27) + d + .006); lap.rotation.z = s * .38; lap.rotation.x = -.28; upper.add(lap);
+        });
+      }
+      if (outer === 'coat') {
+        ring(B.waist + d + .014, 1.0, .016, trimM);
+        const bk = new T.Mesh(new T.BoxGeometry(.05, .04, .015), vinyl(0xC9A86A, { metalness: .7, roughness: .3, clearcoat: 0 })); bk.position.set(0, 1.0, (B.waist + d + .03) * ZS); upper.add(bk);
+      }
+      if (outer === 'bomber') {
+        ring(B.waist + d + .02, .9, .018, trimM);
+        const zip = new T.Mesh(new T.BoxGeometry(.006, .48, .006), vinyl(0xB9B4A8, { metalness: .6, roughness: .3 })); zip.position.set(0, 1.15, frontZ(1.15) + d + .012); upper.add(zip);
+      }
+      if (o.tie) {
+        const tie = new T.Mesh(new T.BoxGeometry(.03, .2, .01), fabric(o.tie)); tie.position.set(0, 1.21, frontZ(1.21) + .006); tie.rotation.x = -.18; upper.add(tie);
+        const knot = new T.Mesh(new T.SphereGeometry(.018, 10, 8), fabric(o.tie)); knot.position.set(0, 1.33, frontZ(1.3) + .004); upper.add(knot);
+      }
+    } else if (outer === 'hoodie') {
+      shell([[B.hip + d + .006, .84], [B.waist + d + .012, 1.0], [B.chest + d + .012, 1.17]].concat(shoulderTop), 0.0001, outM);
+      ring(B.hip + d + .008, .845, .017, trimM);
+      const hood = new T.Mesh(new T.TorusGeometry(.115, .05, 10, 24, Math.PI), outM); hood.rotation.x = -Math.PI / 2 + .45; hood.position.y = 1.41; hood.scale.set(1, .9, 1); upper.add(hood);
+      const pocket = new T.Mesh(new T.BoxGeometry(.18, .08, .03), trimM); pocket.position.set(0, .93, (B.waist + d + .01) * ZS); upper.add(pocket);
+      [-1, 1].forEach(s => { const str = new T.Mesh(new T.CylinderGeometry(.005, .005, .11, 6), fabric(0xEDEBE6)); str.position.set(s * .035, 1.31, frontZ(1.31) + d + .01); upper.add(str); });
+    } else if (outer === 'vest') {
+      const vp = [[B.hip + .026, .86], [B.waist + .032, 1.0], [B.chest + .032, 1.17], [B.sh * .9 + .02, 1.27], [.12, 1.37], [.092, 1.42]];
+      shell(vp, .07, outM);
+      [.96, 1.07, 1.18].forEach(y => { const r = y < 1.0 ? B.waist + .034 : y < 1.17 ? B.waist + .034 + (B.chest - B.waist) * (y - 1.0) / .17 : B.chest + .034; ring(r, y, .009, trimM); });
+      ring(.1, 1.415, .026, outM);
+    }
+
+    // Brazos
+    const sleeveM = outer === 'vest' || outer === 'none' ? topM : outM;
+    const holding = ['lupa', 'lupa-oro', 'tablet', 'cafe', 'libreta'].includes(a.id);
+    const arms = {};
+    [-1, 1].forEach(s => {
+      const shp = new T.Group(); shp.position.set(s * (B.sh * .96 + B.armR * .35), 1.3, 0); upper.add(shp);
+      shp.add(new T.Mesh(capsuleGeo(B.armR * 1.05, B.armR * .95, .27, 16), sleeveM));
+      const el = new T.Group(); el.position.y = -.27; shp.add(el);
+      el.add(new T.Mesh(capsuleGeo(B.armR * .95, B.armR * .82, .24, 16), sleeveM));
+      const hand = new T.Mesh(new T.SphereGeometry(1, 16, 12), skin); hand.scale.set(B.armR * .95, B.armR * 1.25, B.armR * .8); hand.position.y = -.24 - B.armR * .95; el.add(hand);
+      shp.rotation.z = s * .1; el.rotation.x = -.18;
+      arms[s] = { sh: shp, el, hand, baseZ: s * .1, side: s };
+    });
+    if (holding) { const r = arms[-1]; r.sh.rotation.x = -.3; r.sh.rotation.z = -.2; r.el.rotation.x = -1.3; r.baseZ = -.2; r.hold = true; }
+    if (a.id === 'laptop') { arms[1].sh.rotation.z = .24; arms[1].baseZ = .24; arms[1].el.rotation.x = -.5; arms[1].hold = true; }
+    g.updateMatrixWorld(true);
+    function holder(arm) {
+      const hg = new T.Group(); hg.position.copy(arm.hand.position);
+      const q = new T.Quaternion(); arm.el.getWorldQuaternion(q); hg.quaternion.copy(q).invert();
+      arm.el.add(hg); return hg;
+    }
+
+    // Cuello y cabeza
+    const neck = new T.Mesh(new T.CylinderGeometry(.05, .056, .14, 16), skin); neck.position.y = 1.45; upper.add(neck);
+    const head = new T.Group(); head.position.y = 1.64; head.scale.setScalar(1.1); upper.add(head);
+    const skull = new T.Mesh(new T.SphereGeometry(.165, 36, 28), skin); skull.scale.set(1, 1.06, .98); head.add(skull);
+    [-1, 1].forEach(s => {
+      const ear = new T.Mesh(new T.SphereGeometry(.034, 12, 10), skin); ear.scale.set(.55, 1, .8); ear.position.set(s * .162, -.02, -.01); head.add(ear);
+      const eye = new T.Mesh(new T.SphereGeometry(.024, 16, 12), vinyl(0x1F1A17, { roughness: .2, clearcoat: .8 })); eye.scale.set(1, 1.25, .6); eye.position.set(s * .058, .005, .142); head.add(eye);
+      const hl = new T.Mesh(new T.SphereGeometry(.0075, 8, 6), new T.MeshBasicMaterial({ color: 0xFFFFFF })); hl.position.set(s * .058 + .008, .017, .156); head.add(hl);
+      const brow = new T.Mesh(new T.TorusGeometry(.03, .0065, 6, 14, Math.PI * .7), vinyl(hairO.brow || hairO.color, { roughness: .7 }));
+      brow.rotation.z = Math.PI * .15 + s * .06; brow.position.set(s * .058, .048, .148); head.add(brow);
+      const blush = new T.Mesh(new T.CircleGeometry(.022, 18), new T.MeshBasicMaterial({ color: 0xE88C8C, transparent: true, opacity: .28, depthWrite: false }));
+      blush.position.set(s * .09, -.035, .138); blush.rotation.y = s * .58; head.add(blush);
+    });
+    const nose = new T.Mesh(new T.SphereGeometry(.017, 12, 10), skin); nose.position.set(0, -.02, .162); head.add(nose);
+    const mouth = new T.Mesh(new T.TorusGeometry(.026, .0062, 6, 16, Math.PI * .8), vinyl(0x6E3530, { roughness: .6 }));
+    mouth.rotation.z = Math.PI * 1.1; mouth.position.set(0, -.034, .152); head.add(mouth);
+
+    // Cabello
+    const hatOn = hz.id !== 'none';
+    const st = hairO.style;
+    function cap(r, theta, tilt) { const m = new T.Mesh(new T.SphereGeometry(r, 32, 18, 0, Math.PI * 2, 0, theta), hairM); m.scale.set(1, 1.06, .99); m.rotation.x = tilt; head.add(m); return m; }
+    const capR = hatOn ? .168 : st === 'rapado' ? .168 : .175;
+    cap(capR, Math.PI * (st === 'rapado' ? .42 : st === 'cola' || st === 'mono' ? .5 : .46), st === 'corto' || st === 'ondulado' || st === 'rapado' ? -.3 : -.2);
+    function curtain(thetaEnd, gap) {
+      const m = new T.Mesh(new T.SphereGeometry(.188, 32, 18, Math.PI / 2 + gap / 2, Math.PI * 2 - gap, Math.PI * .2, Math.PI * (thetaEnd - .2)), hairM);
+      m.scale.set(1, 1.06, 1); head.add(m); return m;
+    }
+    if (st === 'corto' && !hatOn) { const f = new T.Mesh(new T.SphereGeometry(1, 16, 10), hairM); f.scale.set(.11, .035, .06); f.position.set(.025, .145, .1); f.rotation.z = .2; head.add(f); }
+    if (st === 'ondulado' && !hatOn) {
+      for (let i = 0; i < 9; i++) { const ang = i / 9 * Math.PI * 2; const b = new T.Mesh(new T.SphereGeometry(.052, 14, 10), hairM); b.position.set(Math.cos(ang) * .112, .138 + (i % 2) * .012, Math.sin(ang) * .112 - .02); head.add(b); }
+      const tp = new T.Mesh(new T.SphereGeometry(.07, 14, 10), hairM); tp.position.set(0, .17, -.01); head.add(tp);
+    }
+    if (st === 'bob') curtain(.72, Math.PI * .75);
+    if (st === 'largo') {
+      curtain(.82, Math.PI * .85);
+      const back = new T.Mesh(new T.CylinderGeometry(.168, .19, .32, 32, 1, true, Math.PI * .3, Math.PI * 1.4), hairM);
+      back.position.y = -.22; back.scale.z = .9; head.add(back);
+    }
+    if (st === 'cola') {
+      const tie = new T.Mesh(new T.SphereGeometry(.032, 12, 10), vinyl(0x8E2F3A)); tie.position.set(0, .03, -.168); head.add(tie);
+      const tail = new T.Mesh(capsuleGeo(.046, .024, .22, 16), hairM); tail.position.set(0, .04, -.19); tail.rotation.x = .45; head.add(tail);
+    }
+    if (st === 'mono' && !hatOn) { const bun = new T.Mesh(new T.SphereGeometry(.078, 18, 14), hairM); bun.position.set(0, .2, -.04); head.add(bun); }
+
+    // Lentes
+    if (gl.id !== 'none') {
+      const fm = gl.id === 'dorados' ? vinyl(0xD9B062, { metalness: .8, roughness: .25, clearcoat: 0 }) : vinyl(gl.id === 'redondos' ? 0x3A2E26 : 0x15171A, { roughness: .3 });
+      const square = gl.id === 'pasta' || gl.id === 'sol';
+      [-1, 1].forEach(s => {
+        const rim = new T.Mesh(new T.TorusGeometry(square ? .036 : .032, square ? .007 : .005, 6, square ? 4 : 24), fm);
+        rim.position.set(s * .058, .008, .162);
+        if (square) { rim.rotation.z = Math.PI / 4; rim.scale.set(1.15, .85, 1); }
+        head.add(rim);
+        const lens = new T.Mesh(new T.CircleGeometry(square ? .036 : .031, square ? 4 : 24), new T.MeshStandardMaterial({ color: gl.id === 'sol' ? 0x111418 : 0xCFE3F2, transparent: true, opacity: gl.id === 'sol' ? .9 : .16, roughness: .05, depthWrite: false }));
+        lens.position.set(s * .058, .008, .16);
+        if (square) { lens.rotation.z = Math.PI / 4; lens.scale.set(1.15, .85, 1); }
+        head.add(lens);
+        const temple = new T.Mesh(new T.BoxGeometry(.006, .006, .15), fm); temple.position.set(s * .155, .015, .087); head.add(temple);
+      });
+      const bridge = new T.Mesh(new T.CylinderGeometry(.004, .004, .04, 6), fm); bridge.rotation.z = Math.PI / 2; bridge.position.set(0, .016, .166); head.add(bridge);
+    }
+
+    // Sombrero
+    if (hatOn) {
+      const hm = vinyl(hz.color, { roughness: .75, clearcoat: .05 });
+      const hg = new T.Group(); head.add(hg);
+      if (hz.style === 'fedora') {
+        const brim = new T.Mesh(new T.CylinderGeometry(.26, .26, .012, 44), hm); brim.position.y = .1; hg.add(brim);
+        const crown = new T.Mesh(new T.CylinderGeometry(.128, .16, .13, 36), hm); crown.position.y = .17; hg.add(crown);
+        const band = new T.Mesh(new T.CylinderGeometry(.162, .162, .03, 36), vinyl(hz.band, { roughness: .6 })); band.position.y = .123; hg.add(band);
+        hg.rotation.x = -.06;
+      } else if (hz.style === 'gorra') {
+        const crown = new T.Mesh(new T.SphereGeometry(.185, 32, 16, 0, Math.PI * 2, 0, Math.PI * .5), hm); crown.position.y = .01; hg.add(crown);
+        const visor = new T.Mesh(new T.CylinderGeometry(.17, .17, .012, 32, 1, false, -Math.PI * .42, Math.PI * .84), hm);
+        visor.position.set(0, .05, .06); visor.rotation.x = .32; visor.scale.set(1, 1.6, 1.2); hg.add(visor);
+        const btn = new T.Mesh(new T.SphereGeometry(.016, 10, 8), hm); btn.position.y = .195; hg.add(btn);
+        hg.rotation.x = -.08;
+      } else if (hz.style === 'beanie') {
+        const dome = new T.Mesh(new T.SphereGeometry(.184, 32, 18, 0, Math.PI * 2, 0, Math.PI * .55), hm); dome.scale.set(1, 1.1, 1); dome.position.y = -.005; hg.add(dome);
+        const cuff = new T.Mesh(new T.CylinderGeometry(.188, .188, .06, 36, 1, true), vinyl(hz.band || hz.color, { roughness: .8, side: T.DoubleSide })); cuff.position.y = .04; hg.add(cuff);
+        hg.rotation.x = -.18;
+      } else if (hz.style === 'boina') {
+        const b = new T.Mesh(new T.SphereGeometry(.19, 28, 16), hm); b.scale.set(1, .36, 1); b.position.set(-.02, .14, -.01); b.rotation.z = .18; hg.add(b);
+        const bb = new T.Mesh(new T.TorusGeometry(.15, .016, 8, 28), hm); bb.rotation.x = Math.PI / 2; bb.position.y = .105; hg.add(bb);
+      }
+    }
+
+    // Accesorios
+    const metalGold = vinyl(0xD9B062, { metalness: .85, roughness: .25, clearcoat: 0 });
+    if (a.id === 'lupa' || a.id === 'lupa-oro') {
+      const hg = holder(arms[-1]); const inner = new T.Group(); inner.rotation.z = .25; hg.add(inner);
+      const handle = new T.Mesh(new T.CylinderGeometry(.012, .015, .13, 10), vinyl(a.id === 'lupa-oro' ? 0x2A1E14 : 0x5A3B22)); handle.position.y = .04; inner.add(handle);
+      const rim = new T.Mesh(new T.TorusGeometry(.058, .009, 10, 32), a.id === 'lupa-oro' ? metalGold : vinyl(0x9C9488, { metalness: .6, roughness: .3 })); rim.position.y = .16; inner.add(rim);
+      const glass = new T.Mesh(new T.CircleGeometry(.055, 28), new T.MeshStandardMaterial({ color: 0xBFD9F0, transparent: true, opacity: .3, roughness: .05, side: T.DoubleSide, depthWrite: false })); glass.position.y = .16; inner.add(glass);
+    } else if (a.id === 'tablet') {
+      const hg = holder(arms[-1]); const inner = new T.Group(); inner.position.set(.02, .07, .03); inner.rotation.x = -.25; hg.add(inner);
+      inner.add(new T.Mesh(new T.BoxGeometry(.21, .15, .012), vinyl(0x22262C, { roughness: .3 })));
+      const scr = new T.Mesh(new T.PlaneGeometry(.194, .134), new T.MeshBasicMaterial({ map: screenTex() })); scr.position.z = .0065; inner.add(scr);
+    } else if (a.id === 'cafe') {
+      const hg = holder(arms[-1]);
+      const cup = new T.Mesh(new T.CylinderGeometry(.034, .028, .09, 20), vinyl(0xF2EEE6, { roughness: .4 })); cup.position.set(0, .03, .03); hg.add(cup);
+      const sl = new T.Mesh(new T.CylinderGeometry(.0335, .031, .04, 20), fabric(0xA9784A)); sl.position.set(0, .025, .03); hg.add(sl);
+      const lid = new T.Mesh(new T.CylinderGeometry(.036, .036, .012, 20), vinyl(0x2A2522)); lid.position.set(0, .08, .03); hg.add(lid);
+    } else if (a.id === 'libreta') {
+      const hg = holder(arms[-1]); const inner = new T.Group(); inner.position.set(0, .05, .04); inner.rotation.x = -.9; hg.add(inner);
+      inner.add(new T.Mesh(new T.BoxGeometry(.13, .17, .012), fabric(0xD8B871)));
+      const pg = new T.Mesh(new T.BoxGeometry(.12, .16, .006), fabric(0xF4F0E6)); pg.position.z = .008; inner.add(pg);
+    } else if (a.id === 'maletin') {
+      const hg = holder(arms[1]);
+      const box = new T.Mesh(new T.BoxGeometry(.085, .25, .34), vinyl(0x4A2E1C, { roughness: .45 })); box.position.y = -.15; hg.add(box);
+      const hd = new T.Mesh(new T.TorusGeometry(.045, .01, 6, 16, Math.PI), vinyl(0x2A1A10)); hd.rotation.y = Math.PI / 2; hd.position.y = -.03; hg.add(hd);
+      const latch = new T.Mesh(new T.BoxGeometry(.09, .02, .05), metalGold); latch.position.y = -.04; hg.add(latch);
+    } else if (a.id === 'laptop') {
+      const lp = new T.Mesh(new T.BoxGeometry(.022, .23, .32), vinyl(0xB8BCC2, { metalness: .5, roughness: .3 }));
+      lp.position.set(B.sh + .045, 1.03, .03); lp.rotation.z = .12; upper.add(lp);
+    } else if (a.id === 'audifonos') {
+      const dark = vinyl(0x1B1E22, { roughness: .35 });
+      const band = new T.Mesh(new T.TorusGeometry(.1, .012, 8, 24, Math.PI), dark); band.rotation.x = -Math.PI / 2; band.position.y = 1.425; band.scale.y = .9; upper.add(band);
+      [-1, 1].forEach(s => {
+        const cup = new T.Mesh(new T.CylinderGeometry(.04, .04, .03, 20), dark); cup.rotation.z = Math.PI / 2; cup.position.set(s * .1, 1.415, .02); upper.add(cup);
+        const acc = new T.Mesh(new T.TorusGeometry(.03, .005, 6, 20), metalGold); acc.rotation.y = Math.PI / 2; acc.position.set(s * .117, 1.415, .02); upper.add(acc);
+      });
+    } else if (a.id === 'gafete') {
+      const fz = frontZ(1.14) + (outer === 'none' ? .006 : outer === 'vest' ? .04 : .022);
+      const lanyard = fabric(0xB0392D);
+      [-1, 1].forEach(s => upper.add(rod(lanyard, new T.Vector3(s * .065, 1.4, .045), new T.Vector3(s * .012, 1.185, fz + .004), .004)));
+      const card = new T.Mesh(new T.BoxGeometry(.058, .082, .004), [fabric(0xF4F1EA), fabric(0xF4F1EA), fabric(0xF4F1EA), fabric(0xF4F1EA), new T.MeshStandardMaterial({ map: badgeTex(), roughness: .6 }), fabric(0xF4F1EA)]);
+      card.position.set(0, 1.14, fz + .006); upper.add(card);
+    }
+
+    g.traverse(m => { if (m.isMesh && !(m.material && m.material.transparent)) m.castShadow = true; });
+    g.userData.anim = { upper, head, arms };
+    return g;
+  }
+  let figure = null;
+  function setLook(look) {
+    if (figure) { figureHolder.remove(figure); figure.traverse(m => { if (m.isMesh) m.geometry.dispose(); }); }
+    figure = buildDetective(look); figureHolder.add(figure);
+    requestRender();
+  }
+  function animateFigure(t) {
+    if (!figure || reduce) return;
+    const an = figure.userData.anim;
+    an.upper.position.y = Math.sin(t * 1.7) * .004;
+    an.head.rotation.z = Math.sin(t * .7) * .035;
+    an.head.rotation.y = Math.sin(t * .45) * .1;
+    [-1, 1].forEach(s => { const ar = an.arms[s]; if (!ar.hold) ar.sh.rotation.z = ar.baseZ + Math.sin(t * 1.7 + s) * .018 * s; });
+  }
+
+  /* ---- Cámara y tamaño ---- */
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    const aspect = w / h;
+    camera.aspect = aspect;
+    const wide = window.matchMedia('(min-width: 901px)').matches;
+    const dist = aspect < 1.3 ? 5.0 + (1.3 - aspect) * 3.2 : 5.0;
+    const xShift = wide ? .55 : 0; // deja espacio al vestidor de la derecha
+    camera.position.set(xShift, 1.65, dist);
+    camera.lookAt(xShift, 1.0, 0);
+    camera.updateProjectionMatrix();
+    requestRender();
+  }
+  new ResizeObserver(resize).observe(stage);
+
+  /* ---- Interacción: arrastrar para girar ---- */
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let rot = .35, vel = 0, dragging = false, lastX = 0, lastT = 0, idle = 0;
+  canvas.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastT = performance.now(); vel = 0; canvas.setPointerCapture(e.pointerId); $('#sceneHint').hidden = true; requestRender(); });
+  canvas.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const now = performance.now(), dx = e.clientX - lastX;
+    rot += dx * .009; vel = dx * .009 / Math.max(1, (now - lastT) / 16);
+    lastX = e.clientX; lastT = now; idle = 0; requestRender();
+  });
+  const end = () => { dragging = false; };
+  canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end);
+
+  let active = true, raf = 0, needs = true;
+  function requestRender() { needs = true; if (!raf && active) raf = requestAnimationFrame(loop); }
+  function loop() {
+    raf = 0;
+    if (!active || document.hidden) return;
+    let moving = false;
+    if (!dragging) {
+      if (Math.abs(vel) > .0002) { rot += vel; vel *= .93; moving = true; }
+      else if (!reduce) { idle++; if (idle > 90) { rot += .0035; moving = true; } }
+    }
+    turntable.rotation.y = rot;
+    if (!reduce) { animateFigure(performance.now() / 1000); moving = true; }
+    if (needs || moving || dragging) { renderer.render(scene, camera); needs = false; }
+    if (moving || dragging || !reduce) raf = requestAnimationFrame(loop);
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) requestRender(); });
+
+  resize();
+  setLook(currentLook());
+  return {
+    setLook,
+    setActive(on) { active = on; if (on) { resize(); requestRender(); } }
+  };
+}
+
+/* =========================================================
+   INGRESO Y ARRANQUE
+   ========================================================= */
+function showLogin(msg) {
+  $('#splash').hidden = true; $('.app').hidden = true; $('#login').hidden = false;
+  if (msg) { const er = $('#loginErr'); er.textContent = msg; er.hidden = false; }
+  setTimeout(() => { try { $('#loginPw').focus(); } catch (e) {} }, 50);
+}
+let pollTimer = null;
+function startPolling() {
+  if (pollTimer) return;
+  const tick = async () => {
+    if (document.hidden || busy) return;
+    const a = document.activeElement;
+    if (a && /^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)) return;
+    try { await fetchAll(); renderAll(); } catch (e) { /* se reintenta en el próximo ciclo */ }
+  };
+  pollTimer = setInterval(tick, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
+}
+let sceneStarted = false;
+function startScene() {
+  if (sceneStarted) return; sceneStarted = true;
+  try {
+    window.__scene = initScene();
+    window.__scene.setActive(currentView === 'cuartel');
+  } catch (err) {
+    $('#sceneFallback').hidden = false;
+    $('#sceneHint').hidden = true;
+  }
+}
+async function enterApp(session) {
+  S.uid = session.user.id;
+  try { await fetchAll(); }
+  catch (e) { await sb.auth.signOut(); showLogin('No se pudieron cargar los datos. Revisa tu conexión e intenta de nuevo.'); return false; }
+  const me = Object.values(D.profiles).find(p => p.id === S.uid);
+  if (!me) { await sb.auth.signOut(); showLogin('Tu usuario no está vinculado a ningún integrante del equipo. Avísale a Alvaro.'); return false; }
+  S.viewer = me.member_key;
+  $('#splash').hidden = true; $('#login').hidden = true; $('.app').hidden = false;
+  renderAll(); wardrobeSync(); route();
+  startScene(); startPolling();
+  return true;
+}
+
+$('#loginWho').innerHTML = MEMBERS.map(m => `<option value="${m.id}">${esc(label(m.id))}</option>`).join('');
+try { const last = localStorage.getItem('brujula-who'); if (last && M(last)) $('#loginWho').value = last; } catch (e) {}
+
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const key = $('#loginWho').value, pw = $('#loginPw').value;
+  const btn = $('#loginBtn'), er = $('#loginErr');
+  er.hidden = true; btn.disabled = true; btn.textContent = 'Entrando…';
+  let res;
+  try { res = await sb.auth.signInWithPassword({ email: key + '@' + EMAIL_DOMAIN, password: pw }); }
+  catch (x) { res = { error: { message: 'network' } }; }
+  if (res.error || !res.data || !res.data.session) {
+    const m = String(res.error && res.error.message || '');
+    er.textContent = /invalid login/i.test(m) ? 'La contraseña no es correcta, o tu usuario todavía no fue creado.' : 'No se pudo conectar con el servidor. Revisa tu internet e intenta de nuevo.';
+    er.hidden = false; btn.disabled = false; btn.textContent = 'Entrar'; return;
+  }
+  try { localStorage.setItem('brujula-who', key); } catch (x) {}
+  $('#loginPw').value = '';
+  const ok = await enterApp(res.data.session);
+  btn.disabled = false; btn.textContent = 'Entrar';
+  if (!ok) return;
+});
+$('#logout').addEventListener('click', async () => { try { await sb.auth.signOut(); } catch (e) {} location.reload(); });
+$('#pwForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const a = $('#pw1').value, b = $('#pw2').value;
+  if (a.length < 8) { toast('La contraseña debe tener al menos 8 caracteres.', true); return; }
+  if (a !== b) { toast('Las dos contraseñas no coinciden.', true); return; }
+  busy = true;
+  const { error } = await sb.auth.updateUser({ password: a });
+  busy = false;
+  if (error) { toast('No se pudo cambiar la contraseña. Inténtalo otra vez.', true); return; }
+  $('#pw1').value = ''; $('#pw2').value = '';
+  toast('Contraseña actualizada.');
+});
+sb.auth.onAuthStateChange(ev => { if (ev === 'SIGNED_OUT' && S.viewer) location.reload(); });
+
+(async function boot() {
+  try {
+    const { data } = await sb.auth.getSession();
+    if (data && data.session) { await enterApp(data.session); return; }
+  } catch (e) { /* se muestra el ingreso */ }
+  showLogin();
+})();
+})();
+
+</script>
+
+</body>
+</html>
