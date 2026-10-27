@@ -502,6 +502,113 @@ table.adm select { background: var(--surface-2); border: 1px solid var(--line); 
 @media (min-width: 901px) { .hot-card { bottom: 64px; } .arrange-bar { left: calc(50% - 130px); } }
 @media (max-width: 560px) { .arrange-bar span { display: none; } .scene-hint { display: none; } }
 
+
+/* ---------- Mi día y personaje vivo ---------- */
+.home-top { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+.home-top .scene { aspect-ratio: auto; height: 100%; min-height: 470px; max-height: none; }
+.scene .wardrobe { display: none; }
+.scene.dressing .wardrobe { display: flex; }
+.myday { display: flex; flex-direction: column; gap: 12px; padding: 18px; }
+.md-top { display: flex; gap: 12px; align-items: center; }
+.md-title { font-weight: 600; font-size: 14px; margin-top: 2px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.md-motiv { font-family: var(--font-display); font-size: 15.5px; line-height: 1.35; color: var(--ink); margin: 2px 0 0; }
+.md-alert { background: color-mix(in srgb, var(--stamp) 12%, transparent); color: var(--stamp); border-radius: var(--r-sm); padding: 8px 10px; font-size: 12.5px; font-weight: 600; margin-top: 8px; }
+.md-alert.soft { background: var(--warn-soft); color: var(--warn); }
+.md-needs { display: grid; gap: 7px; }
+.need-row { display: grid; grid-template-columns: 96px minmax(0, 1fr) 30px; gap: 8px; align-items: center; font-size: 12.5px; }
+.need-n { color: var(--muted); font-weight: 600; }
+.need-v { text-align: right; font-size: 12px; color: var(--muted); }
+.meter.need { height: 7px; }
+.meter.need.hi > span { background: var(--ok); }
+.meter.need.mid > span { background: var(--manila-fill); }
+.meter.need.low > span { background: var(--stamp); }
+.md-list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.task { display: grid; grid-template-columns: 20px 92px minmax(0, 1fr); gap: 8px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.task .tick { width: 18px; height: 18px; color: var(--muted); margin-top: 1px; }
+.task .tick svg { width: 18px; height: 18px; }
+.task.done .tick { color: var(--ok); }
+.task.done .task-t { color: var(--muted); }
+.task-need { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-top: 2px; }
+.task-t .neg { color: var(--stamp); font-weight: 600; }
+.task .btn.small { margin: 4px 4px 0 0; }
+.md-acts { display: inline-flex; flex-wrap: wrap; }
+.md-foot { padding-top: 8px; font-size: 12.5px; color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--manila); text-decoration: underline; font-size: 12.5px; }
+.reco-form { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.reco-form input { flex: 1; min-width: 160px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 6px 8px; font-size: 13px; }
+.myday .daily { padding: 14px; }
+.myday .daily .opts { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+.myday .daily .opt { padding: 8px 10px; font-size: 13px; }
+.mood { display: inline-flex; align-items: center; border-radius: 999px; padding: 1px 8px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.mood.ok { background: var(--ok-soft); color: var(--ok); }
+.mood.info { background: var(--info-soft); color: var(--info); }
+.mood.warn { background: var(--warn-soft); color: var(--warn); }
+.mood.bad { background: transparent; color: var(--stamp); border: 1px dashed var(--stamp); }
+.fade-av { display: inline-flex; transition: opacity .3s; }
+.recos { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.reco { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; }
+.reco .avatar { width: 26px; height: 26px; font-size: 10px; }
+.games-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+/* ---------- Casos: detalle, entrega, validación e historial ---------- */
+.pill.entregado { background: var(--manila-soft); color: var(--manila); border: 1px dashed var(--manila-fill); }
+.seg span.entregado { background: var(--manila-soft); border-color: var(--manila-fill); }
+.cp.clickable { cursor: pointer; }
+.cp.clickable:hover { background: var(--surface-2); }
+.cp-wrap { border-top: 1px solid var(--line); }
+.cp-wrap .cp { border-top: 0; }
+.cp-wrap.open { background: var(--surface-2); border-radius: var(--r-md); }
+.chev { width: 14px; height: 14px; vertical-align: -2px; color: var(--muted); transition: transform .2s; }
+.cp-wrap.open .chev { transform: rotate(90deg); }
+.cp-detail { padding: 4px 14px 16px 90px; display: flex; flex-direction: column; gap: 10px; }
+.cp-detail .hc-row { border-top-color: var(--line); }
+.cp-detail .hc-row small { color: var(--muted); }
+.cp-acts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.deliver { display: flex; gap: 6px; flex-wrap: wrap; flex: 1 1 100%; }
+.deliver input { flex: 1; min-width: 180px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 6px 8px; font-size: 13px; }
+.hist { border-left: 2px solid var(--line); padding-left: 12px; display: flex; flex-direction: column; gap: 4px; }
+.hist-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; font-size: 12.5px; }
+.vd-body { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 12px; }
+.vd-body .hc-row { border-top: 1px solid var(--line); }
+.seal-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.seal { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--r-sm); cursor: pointer; font-size: 12.5px; }
+.seal:has(input:checked) { border-color: var(--manila-fill); background: var(--manila-soft); }
+.seal .mono { margin-left: auto; }
+.gu-t { font-family: var(--font-display); font-weight: 600; font-size: 21px; margin-top: 6px; }
+.gu-b { font-size: 14px; line-height: 1.55; color: var(--ink); }
+
+/* ---------- Ideas: apoyos y comentarios ---------- */
+.idea-next { font-size: 12px; color: var(--manila); background: var(--manila-soft); border-radius: var(--r-sm); padding: 4px 8px; }
+.idea-acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.chipbtn { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.chipbtn svg { width: 13px; height: 13px; }
+.chipbtn.on { color: var(--stamp); border-color: var(--stamp); }
+.idea-com { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; border-top: 1px dashed var(--line); padding-top: 6px; }
+.idea-com form { display: flex; gap: 6px; }
+.idea-com input { flex: 1; min-width: 0; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 5px 8px; font-size: 12.5px; }
+
+/* ---------- Tablero del Comisario ---------- */
+.kpi4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.stat-big.neg { color: var(--stamp); }
+.trend { width: 100%; height: auto; }
+.trend .grid { stroke: var(--line); stroke-width: 1; }
+.trend .ax { fill: var(--muted); font-size: 11px; font-family: var(--font-mono); }
+.trend .b1, .lg.b1 { fill: var(--ok); background: var(--ok); }
+.trend .b2, .lg.b2 { fill: var(--manila-fill); background: var(--manila-fill); }
+.lg { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; }
+table.adm th.num, table.adm td.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+td.neg { color: var(--stamp); font-weight: 600; }
+.panel.danger { border-color: color-mix(in srgb, var(--stamp) 45%, var(--line)); }
+@media (max-width: 1180px) { .kpi4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .home-top { grid-template-columns: minmax(0, 1fr); } .home-top .scene { min-height: 0; height: auto; } }
+@media (max-width: 900px) { .cp-detail { padding-left: 14px; } .seal-opts { grid-template-columns: minmax(0, 1fr); } .task { grid-template-columns: 20px minmax(0, 1fr); } .task-need { display: none; } }
+@media print {
+  .side, .topbar, .no-print, .toast { display: none !important; }
+  .app { display: block; padding: 0; }
+  body { background: #fff; color: #000; }
+  .view[hidden] { display: none !important; }
+  .panel { break-inside: avoid; box-shadow: none; }
+}
+
 /* ---------- Sala de entrenamiento ---------- */
 .train-meter { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .train-meter .tm { display: flex; flex-direction: column; line-height: 1.2; font-size: 13px; }
@@ -629,6 +736,9 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
     <symbol id="i-loupe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
     <symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 5.1A10.7 10.7 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7c1.8 0 3.4-.5 4.8-1.3"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m3 3 18 18"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.2-8.6C1.2 8.2 3 4.5 6.6 4.5c2 0 3.4 1.1 4.4 2.6 1-1.5 2.4-2.6 4.4-2.6 3.6 0 5.4 3.7 3.8 6.9C19 15.6 12 20 12 20z"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
   </defs>
 </svg>
@@ -659,6 +769,24 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
   </form>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<dialog class="game-dlg" id="valDlg" aria-labelledby="vdTitle">
+  <div class="gd-head"><div><div class="eyebrow">Validar reporte</div><h2 id="vdTitle"></h2></div><button class="gd-x" type="button" data-close aria-label="Cerrar">×</button></div>
+  <form id="valForm" class="vd-body"></form>
+</dialog>
+<dialog class="game-dlg" id="guideDlg" aria-labelledby="guTitle">
+  <div class="gd-head"><div><div class="eyebrow">Cómo funciona</div><h2 id="guTitle">Bienvenido a Brújula P&amp;C</h2></div><button class="gd-x" type="button" data-close aria-label="Cerrar">×</button></div>
+  <div id="guBody" class="vd-body"></div>
+</dialog>
+<dialog class="game-dlg" id="pwDlg" aria-labelledby="pwTitle">
+  <div class="gd-head"><div><div class="eyebrow">Primer ingreso</div><h2 id="pwTitle">Crea tu contraseña personal</h2></div></div>
+  <form id="pwFirst" class="vd-body" autocomplete="off" novalidate>
+    <p class="note">Tu contraseña inicial la creó Alvaro. Por seguridad, cámbiala por una que solo tú conozcas (mínimo 8 caracteres).</p>
+    <div class="field"><label for="pf1">Nueva contraseña</label><div class="pw-wrap"><input id="pf1" type="password" minlength="8" autocomplete="new-password" required><button class="pw-eye" type="button" data-for="pf1" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
+    <div class="field"><label for="pf2">Repítela</label><div class="pw-wrap"><input id="pf2" type="password" minlength="8" autocomplete="new-password" required><button class="pw-eye" type="button" data-for="pf2" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
+    <p class="login-err" id="pfErr" hidden></p>
+    <div class="gbtns"><button class="btn primary" type="submit">Guardar y entrar</button></div>
+  </form>
+</dialog>
 <dialog class="game-dlg" id="gameDlg" aria-labelledby="gdTitle">
   <div class="gd-head"><div><div class="eyebrow" id="gdEyebrow"></div><h2 id="gdTitle"></h2></div><button class="gd-x" id="gdClose" type="button" aria-label="Cerrar">×</button></div>
   <div id="gdBody"></div>
@@ -680,7 +808,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
     </div>
     <nav class="nav" id="nav">
       <a href="#cuartel" data-v="cuartel"><svg><use href="#i-home"/></svg>Cuartel General</a>
-      <a href="#entrenamiento" data-v="entrenamiento"><svg><use href="#i-star"/></svg>Sala de entrenamiento</a>
+      <a href="#sala" data-v="sala"><svg><use href="#i-star"/></svg>Sala de entrenamiento</a>
       <div class="nav-group">Investigación</div>
       <a href="#casos" data-v="casos"><svg><use href="#i-folder"/></svg>Casos del Mes<span class="count" id="navCount" hidden></span></a>
       <a href="#credencial" data-v="credencial"><svg><use href="#i-id"/></svg>Mi Credencial</a>
@@ -688,6 +816,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
       <a href="#ideas" data-v="ideas"><svg><use href="#i-bulb"/></svg>Tablero de Ideas</a>
       <a href="#escalafon" data-v="escalafon"><svg><use href="#i-ladder"/></svg>Escalafón</a>
       <div class="nav-group" id="navAdminGroup">Comisaría</div>
+      <a href="#tablero" data-v="tablero" id="navTablero"><svg><use href="#i-chart"/></svg>Tablero del Comisario<span class="count" id="navValCount" hidden></span></a>
       <a href="#admin" data-v="admin" id="navAdmin"><svg><use href="#i-gear"/></svg>Administrar</a>
     </nav>
     <div class="who">
@@ -698,7 +827,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
           <div class="who-role" id="whoRole"></div>
         </div>
       </div>
-      <button class="btn" type="button" id="logout">Cerrar sesión</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" id="guideBtn">Cómo funciona</button><button class="btn" type="button" id="logout">Cerrar sesión</button></div>
     </div>
   </aside>
 
@@ -707,6 +836,13 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
 
     <!-- CUARTEL GENERAL -->
     <section class="view" id="v-cuartel" data-view="cuartel">
+      <div class="home-top">
+      <div class="panel myday" id="myDay">
+        <div id="mdHead"></div>
+        <div class="md-needs" id="mdNeeds"></div>
+        <div class="md-list" id="mdList"></div>
+        <div class="daily" id="daily"></div>
+      </div>
       <div class="scene" id="scene">
         <div class="stage" id="stage">
           <canvas id="c3d" aria-label="Escena 3D del Cuartel General con tu detective"></canvas>
@@ -714,24 +850,18 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
           <div class="scene-top">
             <span class="chip-dark"><svg><use href="#i-home"/></svg>Cuartel General</span>
             <div class="scene-actions">
-              <button class="chip-dark sbtn" id="pedBtn" type="button" hidden>Volver al pedestal</button>
-              <button class="chip-dark sbtn" id="arrangeBtn" type="button" aria-pressed="false" title="Mueve los objetos de tu escritorio">Ordenar</button>
+              <button class="chip-dark sbtn" id="dressBtn" type="button" aria-pressed="false">Personalizar</button>
               <button class="bell" id="bell" aria-label="Tus checkpoints pendientes"><svg><use href="#i-bell"/></svg><span class="dot" id="bellCount" hidden></span></button>
             </div>
           </div>
           <div class="hot-tip" id="hotTip" hidden></div>
           <div class="bubble" id="bubble" hidden></div>
           <div class="hot-card" id="hotCard" hidden></div>
-          <div class="arrange-bar" id="arrangeBar" hidden>
-            <span>Arrastra la taza, las carpetas, el teléfono, la lámpara o la planta.</span>
-            <button class="btn small" id="arrangeCancel" type="button">Cancelar</button>
-            <button class="btn small primary" id="arrangeSave" type="button">Guardar escritorio</button>
-          </div>
           <div class="scene-caption">
             <div class="cap-alias" id="capAlias"></div>
             <div class="cap-meta" id="capMeta"></div>
           </div>
-          <div class="scene-hint" id="sceneHint">Arrastra para girar · toca los objetos · toca el piso para caminar</div>
+          <div class="scene-hint" id="sceneHint">Arrastra para girar · toca a tu detective o los objetos</div>
         </div>
         <div class="wardrobe" aria-label="Vestidor del detective">
           <div class="wd-tabs" role="tablist" id="wdTabs">
@@ -757,16 +887,42 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
           </div>
         </div>
       </div>
-
-      <div class="panel" id="training">
-        <div class="panel-head"><div><div class="eyebrow">Sala de entrenamiento</div><h2>Aprende el negocio de la Caja jugando</h2></div><div class="train-meter" id="trainMeter"></div></div>
-        <div class="train-grid">
-          <div class="daily" id="daily"></div>
-          <div class="games" id="gameTiles"></div>
-        </div>
       </div>
       <div class="grid-3" id="homeCards"></div>
       <div class="panel" id="teamStrip"></div>
+    </section>
+
+    <!-- SALA DE ENTRENAMIENTO -->
+    <section class="view" id="v-sala" data-view="sala" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Sala de entrenamiento</div>
+          <h1>Aprende el negocio de la Caja</h1>
+          <p>Cinco juegos sobre Caja Ica, regulación SBS e indicadores. Cada acierto da +2 XP, hasta 10 XP por semana. Jugar una vez por semana mantiene el Conocimiento de tu detective.</p>
+        </div>
+      </div>
+      <div class="panel" id="training">
+        <div class="panel-head"><div><div class="eyebrow">Minijuegos</div><h2>Elige un juego</h2></div><div class="train-meter" id="trainMeter"></div></div>
+        <div class="games games-grid" id="gameTiles"></div>
+      </div>
+      <div class="panel" id="qPropose"></div>
+    </section>
+
+    <!-- TABLERO DEL COMISARIO -->
+    <section class="view" id="v-tablero" data-view="tablero" hidden>
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Comisaría</div>
+          <h1>Tablero del Comisario</h1>
+          <p>Indicadores del mes para seguimiento y para llevar a Gerencia: cumplimiento de plazos, calidad, entregas por validar y aporte de ideas.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center" class="no-print">
+          <select id="tabMonth" class="sel" aria-label="Mes"></select>
+          <button class="btn" type="button" id="tabCsv">Descargar Excel (CSV)</button>
+          <button class="btn" type="button" id="tabPrint">Imprimir o guardar PDF</button>
+        </div>
+      </div>
+      <div id="tabBody" class="view" style="gap:16px"></div>
     </section>
 
     <!-- CASOS -->
@@ -806,8 +962,12 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
             <span>Enseñarlo al equipo</span><span class="x">+20</span>
             <span>Mes perfecto del equipo, para cada detective</span><span class="x">+25</span>
             <span>Sala de entrenamiento, por respuesta correcta (máx. 10 por semana)</span><span class="x">+2</span>
+            <span>Semana en racha (4 preguntas del día y un minijuego)</span><span class="x">+5</span>
+            <span>Pregunta tuya aprobada para el banco</span><span class="x">+5</span>
           </div>
           <p class="note" style="margin-top:12px">El rango está protegido: si una penalidad baja tus XP, conservas el rango que ya ganaste. Para el siguiente ascenso sí necesitas recuperar los XP.</p>
+          <p class="note" style="margin-top:6px">Privacidad: las observaciones, errores y tardanzas de un reporte solo las ven su responsable, su copiloto y la Comisaría. Para el resto aparece como «Validado».</p>
+          <p class="note" style="margin-top:6px">Los XP y rangos son un juego interno del equipo: no forman parte de la evaluación de desempeño oficial ni de la remuneración.</p>
         </div>
         <div class="panel">
           <div class="panel-head"><div><div class="eyebrow">Estados</div><h2>Qué significa cada sello</h2></div></div>
@@ -817,6 +977,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
             <span class="pill tarde">Fuera de plazo</span><span>Se entregó después de la fecha límite.</span>
             <span class="pill error">Con errores</span><span>Cifras incorrectas, datos que no cuadran o información que hubo que rehacer.</span>
             <span class="pill tarde_error">Tarde y con errores</span><span>Las dos faltas a la vez.</span>
+            <span class="pill entregado">Entregado · por validar</span><span>El responsable lo entregó; falta el sello de Armando o Alvaro.</span>
             <span class="pill curso">En curso</span><span>El responsable ya está trabajando en él.</span>
             <span class="pill pendiente">Pendiente</span><span>Aún no se ha empezado.</span>
           </div>
@@ -900,7 +1061,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
         <div>
           <div class="eyebrow">Comisaría</div>
           <h1>Administrar la agencia</h1>
-          <p>Aquí Armando y Alvaro administran los reportes del mes, las ideas y la validación de cursos. Los XP se recalculan solos.</p>
+          <p>Aquí Armando y Alvaro administran los reportes del mes, las ideas, los cursos, las preguntas y las fotos. Para poner sellos usa «Validar»: queda registrado en el historial.</p>
         </div>
       </div>
       <div id="adminBody" class="view" style="gap:16px"></div>
@@ -920,10 +1081,10 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
    ========================================================= */
 const MEMBERS = [
   { id: 'jefe',      nombre: 'Armando',  rol: 'Jefe',                     clase: 'Comisario',              alias: 'El Comisario',   ini: 'AR', color: '#3B4A5C', base: 0,   comisario: true, placa: 'PC-0001' },
-  { id: 'lider',     nombre: 'Alvaro',   rol: 'Líder',                    clase: 'Inspector Jefe',         alias: 'Inspector Jefe', ini: 'AL', color: '#8A5A1A', base: 380, placa: 'PC-0007' },
-  { id: 'analista',  nombre: 'Joel',     rol: 'Analista de Planeamiento', clase: 'Forense de Datos',       alias: 'El Forense',     ini: 'JO', color: '#2F5E7E', base: 430, placa: 'PC-0012' },
-  { id: 'auxiliar',  nombre: 'Fernando', rol: 'Auxiliar de Planeamiento', clase: 'Rastreador',             alias: 'El Rastreador',  ini: 'FE', color: '#4D6B3C', base: 240, placa: 'PC-0019' },
-  { id: 'asistente', nombre: 'Isabel',   rol: 'Asistente de Control',     clase: 'Custodia de Evidencias', alias: 'La Custodia',    ini: 'IS', color: '#7A3F4E', base: 300, placa: 'PC-0023' }
+  { id: 'lider',     nombre: 'Alvaro',   rol: 'Líder',                    clase: 'Inspector Jefe',         alias: 'Inspector Jefe', ini: 'AL', color: '#8A5A1A', base: 0, placa: 'PC-0007' },
+  { id: 'analista',  nombre: 'Joel',     rol: 'Analista de Planeamiento', clase: 'Forense de Datos',       alias: 'El Forense',     ini: 'JO', color: '#2F5E7E', base: 0, placa: 'PC-0012' },
+  { id: 'auxiliar',  nombre: 'Fernando', rol: 'Auxiliar de Planeamiento', clase: 'Rastreador',             alias: 'El Rastreador',  ini: 'FE', color: '#4D6B3C', base: 0, placa: 'PC-0019' },
+  { id: 'asistente', nombre: 'Isabel',   rol: 'Asistente de Control',     clase: 'Custodia de Evidencias', alias: 'La Custodia',    ini: 'IS', color: '#7A3F4E', base: 0, placa: 'PC-0023' }
 ];
 const DETECTIVES = MEMBERS.filter(m => !m.comisario);
 
@@ -938,6 +1099,7 @@ const RANKS = [
 const STATUS = {
   ok:        { label: 'Cerrado',           cls: 'ok' },
   obs:       { label: 'Con observaciones', cls: 'obs' },
+  entregado: { label: 'Entregado · por validar', cls: 'entregado' },
   tarde:     { label: 'Fuera de plazo',    cls: 'tarde' },
   error:     { label: 'Con errores',       cls: 'error' },
   tarde_error: { label: 'Tarde y con errores', cls: 'tarde_error' },
@@ -1097,7 +1259,8 @@ const EMAIL_DOMAIN = 'brujula-pc.com';   // cada persona entra como <clave>@bruj
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const S = { viewer: null, uid: null, month: null, filter: 'all' };
-const D = { profiles: {}, cps: [], ideas: [], progress: {}, floors: {}, plays: [], questions: [], migrated: true, photos: {}, photosReady: false };
+const D = { profiles: {}, cps: [], ideas: [], progress: {}, floors: {}, plays: [], questions: [], migrated: true, photos: {}, photosReady: false,
+  v4: false, events: [], actions: [], votes: [], comments: [], proposals: [] };
 let CHECKPOINTS = [];            // reportes del mes que se está viendo
 let busy = false;
 
@@ -1138,11 +1301,23 @@ async function fetchAll() {
   D.migrated = !v2.some(r => r.error);
   D.floors = {}; (v2[0].data || []).forEach(r => { D.floors[r.member_key] = r.rank; });
   D.plays = v2[1].data || [];
-  D.questions = (v2[2].data || []).map(q => ({ id: q.id, t: 'Del equipo', q: q.prompt, o: q.options, a: q.answer, e: q.explain || '', created: q.created_at, by: q.created_by, custom: true }));
+  const qs = (v2[2].data || []).map(q => ({ id: q.id, t: 'Del equipo', q: q.prompt, o: q.options, a: q.answer, e: q.explain || '', created: q.created_at, by: q.created_by, status: q.status || 'aprobada', custom: true }));
+  D.questions = qs.filter(q => q.status === 'aprobada');
+  D.proposals = qs.filter(q => q.status === 'propuesta');
+  // tablas de la versión 4
+  const v4 = await Promise.all([
+    sb.from('cp_events').select('*').order('created_at', { ascending: true }),
+    sb.from('actions').select('*').order('created_at', { ascending: true }),
+    sb.from('idea_votes').select('*'),
+    sb.from('idea_comments').select('*').order('created_at', { ascending: true })
+  ]);
+  D.v4 = D.migrated && !v4.some(r => r.error);
+  D.events = v4[0].data || []; D.actions = v4[1].data || []; D.votes = v4[2].data || []; D.comments = v4[3].data || [];
   D.profiles = {};
   rs[0].data.forEach(p => { D.profiles[p.member_key] = p; });
-  D.cps = rs[1].data.map(r => ({ id: r.id, mes: r.mes, name: r.name, desc: r.descr || '', due: r.due, resp: r.resp, co: r.co, status: r.status }));
-  D.ideas = rs[2].data.map(r => ({ id: r.id, title: r.title, desc: r.descr || '', author: r.author, stage: r.stage, hours: Number(r.hours) || 0 }));
+  D.cps = rs[1].data.map(r => ({ id: r.id, mes: r.mes, name: r.name, desc: r.descr || '', due: r.due, resp: r.resp, co: r.co, status: r.status,
+    deliveredAt: r.delivered_at || null, evidence: r.evidence || '', reviewedAt: r.reviewed_at || null, reviewNote: r.review_note || '', valNote: r.validation_note || '' }));
+  D.ideas = rs[2].data.map(r => ({ id: r.id, title: r.title, desc: r.descr || '', author: r.author, stage: r.stage, hours: Number(r.hours) || 0, created: r.created_at, owner: r.owner || null, next: r.next_step || '' }));
   D.progress = {};
   rs[3].data.forEach(r => { D.progress[r.member_key + ':' + r.item_id] = r.state; });
   applyMonth();
@@ -1220,7 +1395,7 @@ function skillsOf(id) { return treeOf(id).flatMap(b => b.skills); }
 function skillCount(id) { return skillsOf(id).filter(s => isDone(s.st)).length; }
 function xpOf(id) {
   const m = M(id);
-  if (m.comisario) return { total: 0, base: 0, cases: 0, pen: 0, ideas: 0, aca: 0, perfect: 0, games: 0 };
+  if (m.comisario) return { total: 0, base: 0, cases: 0, pen: 0, ideas: 0, aca: 0, perfect: 0, games: 0, racha: 0, preguntas: 0 };
   let cases = 0, pen = 0;
   D.cps.forEach(c => { const x = cpXPFor(c, id); if (x >= 0) cases += x; else pen += x; });
   const games = gameXP(id);
@@ -1229,7 +1404,9 @@ function xpOf(id) {
   skillsOf(id).forEach(s => { if (isDone(s.st)) aca += 15; if (s.st === 'taught') aca += 20; });
   COMMON.forEach(c => { const st = stOf(id, c.id); if (isDone(st)) aca += 15; if (st === 'taught') aca += 20; });
   const perfect = 25 * perfectMonths();
-  return { total: Math.max(0, m.base + cases + pen + ideas + aca + perfect + games), base: m.base, cases, pen, ideas, aca, perfect, games };
+  const racha = 5 * rachaWeeks(id);
+  const preguntas = 5 * (D.questions || []).filter(q => q.by === id && !['jefe', 'lider'].includes(id)).length;
+  return { total: Math.max(0, m.base + cases + pen + ideas + aca + perfect + games + racha + preguntas), base: m.base, cases, pen, ideas, aca, perfect, games, racha, preguntas };
 }
 /* Rango según XP y habilidades de hoy */
 function earnedRank(id) {
@@ -1272,7 +1449,7 @@ function fmtDate(iso) {
 }
 function dueText(c) {
   const st = cpStatus(c);
-  if (isClosed(st)) return { t: 'Entregado', late: false };
+  if (isClosed(st) || st === 'entregado') return { t: 'Entregado', late: false };
   const days = Math.ceil((dueDate(c) - new Date()) / 86400000);
   if (days < 0) return { t: 'Venció hace ' + Math.abs(days) + ' d', late: true };
   if (days === 0) return { t: 'Vence hoy', late: true };
@@ -1354,37 +1531,23 @@ function renderShell() {
   if (window.__scene && window.__scene.setPhoneAlert) window.__scene.setPhoneAlert(pendingFor(v).some(c => dueText(c).late));
   $('#navAdmin').hidden = !canAdmin();
   $('#navAdminGroup').hidden = !canAdmin();
+  $('#navTablero').hidden = !canAdmin();
+  const waiting = D.cps.filter(c => c.status === 'entregado').length;
+  const vc = $('#navValCount'); vc.hidden = !(canAdmin() && waiting); vc.textContent = waiting;
   $('#capAlias').textContent = m.nombre;
   $('#capMeta').innerHTML = `(${esc(m.rol)}) · ${esc(alias(v))} · <b>${esc(rankName(v))}</b>`;
 }
 
 function renderHome() {
-  const st = CHECKPOINTS.map(cpStatus);
-  const closed = st.filter(isClosed).length;
+  const st = CHECKPOINTS.map(c => canAdmin() ? cpStatus(c) : shownStatus(c));
+  const closed = CHECKPOINTS.filter(c => isClosed(cpStatus(c))).length;
   const ps = perfectState();
   const v = S.viewer, m = M(v);
-  const next = pendingFor(v).sort((a, b) => a.due.localeCompare(b.due))[0];
   const nr = nextRankInfo(v);
-  const psText = ps === 'logrado' ? 'Mes perfecto logrado: +25 XP para cada detective.' : ps === 'perdido' ? 'Un reporte tuvo observaciones, errores o se entregó tarde. El mes perfecto ya no es posible.' : `Mes perfecto en juego: faltan ${CHECKPOINTS.length - closed} checkpoints sin errores.`;
-
-  let card2;
-  if (m.comisario) {
-    const open = CHECKPOINTS.filter(c => cpStatus(c) === 'pendiente' || cpStatus(c) === 'curso');
-    card2 = `<div class="panel"><div class="eyebrow">Por cerrar este mes</div>
-      <div class="stat-big" style="margin-top:6px">${open.length}</div>
-      <div class="stat-sub">${open.length ? open.map(c => esc(c.name)).join(' · ') : 'Todo el expediente está cerrado.'}</div></div>`;
-  } else if (next) {
-    const dt = dueText(next);
-    card2 = `<div class="panel"><div class="eyebrow">Tu próximo checkpoint</div>
-      <div style="font-weight:600;font-size:15px;margin-top:6px">${esc(next.name)}</div>
-      <div class="stat-sub">Vence el ${fmtDate(next.due)} · <span style="color:${dt.late ? 'var(--stamp)' : 'inherit'}">${dt.t}</span></div>
-      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="pill ${STATUS[cpStatus(next)].cls}">${STATUS[cpStatus(next)].label}</span><span class="note">Copiloto: ${esc(label(next.co))}</span></div></div>`;
-  } else {
-    card2 = `<div class="panel"><div class="eyebrow">Tu próximo checkpoint</div>
-      <div style="font-weight:600;font-size:15px;margin-top:6px">Sin pendientes</div>
-      <div class="stat-sub">Tus reportes de este mes ya están entregados.</div></div>`;
-  }
-
+  const psText = ps === 'logrado' ? 'Mes perfecto logrado: +25 XP para cada detective.' : ps === 'perdido' ? 'Este mes ya no puede ser perfecto. A seguir sumando.' : `Mes perfecto en juego: faltan ${CHECKPOINTS.length - closed} reportes por cerrar sin observaciones.`;
+  const recos = (D.actions || []).filter(a => a.kind === 'reconocimiento').slice(-4).reverse();
+  const card2 = `<div class="panel"><div class="eyebrow">Reconocimientos recientes</div>
+    ${recos.length ? `<div class="recos">${recos.map(a => `<div class="reco">${avatar(a.member_key, 26)}<div><b>${esc(nombre(a.member_key))}</b> → <b>${esc(nombre(a.target))}</b><div class="note">«${esc(a.note || '')}»</div></div></div>`).join('')}</div>` : '<div class="stat-sub" style="margin-top:6px">Aún no hay reconocimientos. Da el primero desde «Mi día».</div>'}</div>`;
   let card3;
   if (m.comisario) {
     const saved = D.ideas.filter(i => i.stage === 'implementada').reduce((a, i) => a + (+i.hours || 0), 0);
@@ -1398,13 +1561,12 @@ function renderHome() {
       ${nr ? `<div class="meter" style="margin-top:10px"><span style="width:${Math.round(nr.progress * 100)}%"></span></div>
       <div class="stat-sub" style="margin-top:6px">${nr.xpMissing ? nr.xpMissing + ' XP' : ''}${nr.xpMissing && nr.skMissing ? ' y ' : ''}${nr.skMissing ? nr.skMissing + (nr.skMissing === 1 ? ' habilidad' : ' habilidades') : ''}${nr.xpMissing || nr.skMissing ? ' para ' : 'Listo para '}${esc(nr.next.name)}</div>` : '<div class="stat-sub" style="margin-top:6px">Rango máximo alcanzado.</div>'}</div>`;
   }
-
-  $('#teamStrip').innerHTML = `<div class="panel-head"><div><div class="eyebrow">La agencia</div><h2>Equipo de Planeamiento Financiero y Control de Gestión</h2></div></div>
-    <div class="team">${MEMBERS.map(t => `<div class="team-card ${t.id === v ? 'me' : ''}">${avatar(t.id, 40)}<div style="min-width:0"><div class="team-name">${esc(t.nombre)} <span class="role">(${esc(t.rol)})</span></div><div class="note">${esc(t.clase)} · ${esc(rankName(t.id))}</div></div></div>`).join('')}</div>`;
+  $('#teamStrip').innerHTML = `<div class="panel-head"><div><div class="eyebrow">La agencia</div><h2>Cómo están los detectives del equipo</h2></div><span class="note">El estado depende de cuánto atiende cada uno a su detective</span></div>
+    <div class="team">${MEMBERS.map(t => { const N = needsOf(t.id); return `<div class="team-card ${t.id === v ? 'me' : ''}"><span class="fade-av" style="opacity:${Math.max(.35, N.presence)};filter:saturate(${N.presence})">${avatar(t.id, 40)}</span><div style="min-width:0"><div class="team-name">${esc(t.nombre)} <span class="role">(${esc(t.rol)})</span></div><div class="note">${esc(rankName(t.id))}</div><div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${moodChip(t.id, N)}${inStreak(t.id, N) ? '<span class="mood ok">En racha</span>' : ''}</div></div></div>`; }).join('')}</div>`;
   $('#homeCards').innerHTML = `
     <div class="panel"><div class="eyebrow">${caseTitle()}</div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:6px"><span class="stat-big">${closed}<span style="font-size:15px;color:var(--muted)"> / ${CHECKPOINTS.length}</span></span><span class="note">checkpoints cerrados</span></div>
-      <div class="seg" style="margin-top:10px">${st.map(s => `<span class="${s === 'pendiente' ? '' : s}"></span>`).join('')}</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:6px"><span class="stat-big">${closed}<span style="font-size:15px;color:var(--muted)"> / ${CHECKPOINTS.length}</span></span><span class="note">reportes validados</span></div>
+      <div class="seg" style="margin-top:10px">${st.map(s => `<span class="${s === 'pendiente' ? '' : s === 'validado' ? 'ok' : s}"></span>`).join('')}</div>
       <div class="stat-sub" style="margin-top:8px">${psText}</div></div>
     ${card2}${card3}`;
 }
@@ -1414,33 +1576,35 @@ function renderCasos() {
   msel.innerHTML = ms.length ? ms.map(m => `<option value="${m}" ${m === S.month ? 'selected' : ''}>${esc(monthLabel(m))}</option>`).join('') : '<option>Sin meses</option>';
   msel.disabled = !ms.length;
   $('#caseH1').textContent = caseTitle();
-  const st = CHECKPOINTS.map(cpStatus);
-  const closed = st.filter(isClosed).length;
+  const st = CHECKPOINTS.map(c => canAdmin() ? cpStatus(c) : shownStatus(c));
+  const closed = CHECKPOINTS.filter(c => isClosed(cpStatus(c))).length;
   const ps = perfectState();
   const stamp = ps === 'logrado' ? '<span class="stamp won">Mes perfecto</span>' : ps === 'perdido' ? '<span class="stamp lost">Sin mes perfecto</span>' : '<span class="stamp">Caso abierto</span>';
   $('#caseSummary').innerHTML = `<div class="case-head">
       <div>
         <div class="case-file">${caseMonth()}</div>
-        <div class="stat-sub">${closed} de ${CHECKPOINTS.length} checkpoints cerrados · Si todos se cierran sin observaciones, cada detective gana +25 XP.</div>
-        <div class="seg" style="margin-top:12px;max-width:520px">${st.map(s => `<span class="${s === 'pendiente' ? '' : s}"></span>`).join('')}</div>
+        <div class="stat-sub">${closed} de ${CHECKPOINTS.length} reportes validados${CHECKPOINTS.some(c => c.status === 'entregado') ? ` · ${CHECKPOINTS.filter(c => c.status === 'entregado').length} entregados por validar` : ''} · Si todos se cierran sin observaciones, cada detective gana +25 XP.</div>
+        <div class="seg" style="margin-top:12px;max-width:520px">${st.map(s => `<span class="${s === 'pendiente' ? '' : s === 'validado' ? 'ok' : s}"></span>`).join('')}</div>
+        <p class="note" style="margin-top:8px">Toca un reporte para ver su detalle${D.v4 ? ', marcar tu avance o registrar tu revisión' : ''}.</p>
       </div>
       ${stamp}
     </div>`;
   document.querySelectorAll('#v-casos .toggle button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === S.filter)));
   const list = CHECKPOINTS.filter(c => S.filter === 'all' || c.resp === S.viewer || c.co === S.viewer);
   const rows = list.map(c => {
-    const s = cpStatus(c), dt = dueText(c);
+    const s = shownStatus(c), dt = dueText(c);
     const xp = cpXPFor(c, S.viewer);
     const mine = c.resp === S.viewer || c.co === S.viewer;
-    return `<div class="cp ${mine ? 'mine' : ''}">
+    const open = S.openCp === c.id;
+    return `<div class="cp-wrap ${open ? 'open' : ''}"><div class="cp ${mine ? 'mine' : ''} clickable" data-cprow="${c.id}" role="button" tabindex="0" aria-expanded="${open}">
       <div class="cp-date c-date-col">${fmtDate(c.due)}<small class="${dt.late ? 'late' : ''}">${dt.t}</small></div>
       <div style="min-width:0"><div class="cp-name">${esc(c.name)}</div><div class="cp-desc">${esc(c.desc)}</div>
         <div class="c-people-mobile">${person(c.resp)}<span class="note">copiloto</span>${person(c.co)}</div></div>
       <div class="c-resp">${person(c.resp)}</div>
       <div class="c-co">${person(c.co)}</div>
-      <div><span class="pill ${STATUS[s].cls}">${STATUS[s].label}</span></div>
-      <div class="cp-xp ${xp < 0 ? 'neg' : ''}" title="XP que este reporte te da (o te quita) a ti">${xp ? signed(xp) : '—'}</div>
-    </div>`;
+      <div><span class="pill ${SHOWN_LABEL[s].cls}">${SHOWN_LABEL[s].label}</span>${c.reviewedAt ? '<div class="note" style="margin-top:3px">revisado por copiloto</div>' : ''}</div>
+      <div class="cp-xp ${xp < 0 ? 'neg' : ''}" title="XP que este reporte te da (o te quita) a ti">${xp ? signed(xp) : '—'} <svg class="chev"><use href="#i-chev"/></svg></div>
+    </div>${open ? cpDetail(c) : ''}</div>`;
   }).join('');
   $('#cpList').innerHTML = `<div class="cp head"><div>Vence</div><div>Checkpoint</div><div class="c-resp">Responsable</div><div class="c-co">Copiloto</div><div>Estado</div><div style="text-align:right">Tu XP</div></div>` + (rows || `<p class="note" style="padding:12px 4px">${CHECKPOINTS.length ? 'No tienes reportes asignados en este expediente.' : 'Todavía no hay reportes cargados para este mes. Armando o Alvaro pueden crearlos en Administrar.'}</p>`);
 }
@@ -1502,20 +1666,27 @@ function renderCredencial() {
         <div class="panel"><div class="panel-head"><div><div class="eyebrow">Próximo ascenso</div><h2>${nr ? esc(nr.next.name) : 'Rango máximo'}</h2></div></div>${reqs}</div>
         <div class="panel"><div class="panel-head"><div><div class="eyebrow">De dónde vienen tus XP</div><h2>${xp.total} XP en total</h2></div></div>
           <div class="rules">
-            <span>Meses anteriores</span><span class="x">${xp.base}</span>
             <span>Reportes entregados y revisados</span><span class="x">${xp.cases}</span>
             ${xp.pen ? `<span>Penalidades por reportes</span><span class="x neg">${signed(xp.pen)}</span>` : ''}
             <span>Ideas</span><span class="x">${xp.ideas}</span>
             <span>Academia</span><span class="x">${xp.aca}</span>
             ${xp.perfect ? `<span>Mes perfecto</span><span class="x">${xp.perfect}</span>` : ''}
             ${xp.games ? `<span>Sala de entrenamiento</span><span class="x">${xp.games}</span>` : ''}
+            ${xp.racha ? `<span>Semanas en racha</span><span class="x">${xp.racha}</span>` : ''}
+            ${xp.preguntas ? `<span>Preguntas aprobadas</span><span class="x">${xp.preguntas}</span>` : ''}
           </div></div>
       </div>
       <div class="panel"><div class="field"><label for="aliasIn">Alias de detective</label>
         <div class="inline-form"><input id="aliasIn" maxlength="28" value="${esc(alias(v))}" style="flex:1;min-width:160px"><button class="btn" id="aliasSave" type="button">Guardar alias</button></div></div></div>
     </div>`;
   }
-  $('#credWrap').innerHTML = badge + right;
+  const vac = (viewerLook() || {}).vac;
+  const vacPanel = `<div class="panel" style="grid-column:1/-1"><div class="panel-head"><div><div class="eyebrow">Vacaciones o licencia</div><h2>Avísale a tu detective</h2></div><span class="note">Mientras estés fuera, sus necesidades no bajan y no se desvanece</span></div>
+    <form class="inline-form" id="vacForm"><div class="field"><label for="vacFrom">Desde</label><input id="vacFrom" type="date" value="${vac ? vac.from : ''}" required></div><div class="field"><label for="vacUntil">Hasta</label><input id="vacUntil" type="date" value="${vac ? vac.until : ''}" required></div>
+    <button class="btn primary" type="submit">Guardar</button>${vac ? '<button class="btn" type="button" id="vacClear">Quitar</button>' : ''}</form></div>`;
+  $('#credWrap').innerHTML = badge + right + vacPanel;
+  $('#vacForm').addEventListener('submit', e => { e.preventDefault(); const f = $('#vacFrom').value, u = $('#vacUntil').value; if (!f || !u || u < f) { toast('Revisa las fechas.', true); return; } saveVacation(f, u); });
+  const vc = $('#vacClear'); if (vc) vc.addEventListener('click', () => saveVacation(null, null));
   $('#aliasSave').addEventListener('click', () => {
     const val = $('#aliasIn').value.trim();
     saveAlias(val);
@@ -1578,7 +1749,7 @@ function renderIdeas() {
     const items = ideas.filter(i => i.stage === st.id);
     return `<div class="col ${st.id === 'implementada' ? 'done' : ''}"><div class="col-head"><span>${st.name}</span><span class="n">${items.length}</span></div><div class="col-sub">${st.sub}</div>
       ${items.map(i => `<div class="idea"><div class="idea-title">${esc(i.title)}</div>${i.desc ? `<div class="idea-desc">${esc(i.desc)}</div>` : ''}
-        <div class="idea-foot">${person(i.author)}<span class="idea-h">${i.hours} h/mes${st.id === 'implementada' ? '' : ' est.'}</span></div></div>`).join('') || '<div class="note" style="padding:6px 4px">Sin ideas en esta etapa.</div>'}
+        <div class="idea-foot">${person(i.author)}<span class="idea-h">${i.hours} h/mes${st.id === 'implementada' ? '' : ' est.'}</span></div>${ideaExtras(i)}</div>`).join('') || '<div class="note" style="padding:6px 4px">Sin ideas en esta etapa.</div>'}
     </div>`;
   }).join('');
 }
@@ -1630,7 +1801,7 @@ function renderAdmin() {
         <input type="text" value="${esc(c.desc)}" maxlength="240" placeholder="Descripción (opcional)" data-kind="cp" data-id="${c.id}" data-field="descr" aria-label="Descripción de ${esc(c.name)}" style="margin-top:4px"></td>
       <td><select data-kind="cp" data-id="${c.id}" data-field="resp" aria-label="Responsable de ${esc(c.name)}">${opts(c.resp, people)}</select></td>
       <td><select data-kind="cp" data-id="${c.id}" data-field="co" aria-label="Copiloto de ${esc(c.name)}">${opts(c.co, people)}</select></td>
-      <td><select data-kind="cp" data-id="${c.id}" data-field="status" aria-label="Estado de ${esc(c.name)}">${opts(c.status, stList)}</select></td>
+      <td>${D.v4 ? `<span class="pill ${STATUS[c.status].cls}">${STATUS[c.status].label}</span> <button class="btn small" type="button" data-validate="${c.id}">Validar</button>` : `<select data-kind="cp" data-id="${c.id}" data-field="status" aria-label="Estado de ${esc(c.name)}">${opts(c.status, stList)}</select>`}</td>
       <td>${delBtn('cp:' + c.id)}</td></tr>`).join('');
 
   const ideaRows = D.ideas.map(i => `<tr>
@@ -1638,6 +1809,9 @@ function renderAdmin() {
       <td>${person(i.author)}</td>
       <td><input type="number" min="0" max="80" step="0.5" value="${i.hours}" data-kind="idea" data-id="${i.id}" data-field="hours" aria-label="Horas por mes de ${esc(i.title)}" style="width:80px"></td>
       <td><select data-kind="idea" data-id="${i.id}" data-field="stage" aria-label="Etapa de ${esc(i.title)}">${opts(i.stage, STAGES.map(s => [s.id, s.name]))}</select></td>
+      ${D.v4 ? `<td><select data-kind="idea" data-id="${i.id}" data-field="owner" aria-label="Responsable del siguiente paso">${opts(i.owner || '', [['', 'Sin asignar']].concat(people))}</select>
+        <input type="text" value="${esc(i.next)}" maxlength="160" placeholder="Siguiente paso" data-kind="idea" data-id="${i.id}" data-field="next_step" aria-label="Siguiente paso" style="margin-top:4px"></td>
+      <td class="num">${(D.votes || []).filter(x => x.idea_id === i.id).length}</td>` : ''}
       <td>${delBtn('idea:' + i.id)}</td></tr>`).join('');
 
   const mm = M(admMember);
@@ -1672,7 +1846,7 @@ function renderAdmin() {
     </div>
     <div class="panel">
       <div class="panel-head"><div><div class="eyebrow">Tablero de ideas</div><h2>Avance de las ideas</h2></div></div>
-      ${D.ideas.length ? `<div class="table-wrap"><table class="adm"><thead><tr><th>Idea</th><th>Autor</th><th>Horas/mes</th><th>Etapa</th><th></th></tr></thead><tbody>${ideaRows}</tbody></table></div>` : '<p class="note">Aún no hay ideas propuestas.</p>'}
+      ${D.ideas.length ? `<div class="table-wrap"><table class="adm"><thead><tr><th>Idea</th><th>Autor</th><th>Horas/mes</th><th>Etapa</th>${D.v4 ? '<th>Responsable y siguiente paso</th><th class="num">Apoyos</th>' : ''}<th></th></tr></thead><tbody>${ideaRows}</tbody></table></div>` : '<p class="note">Aún no hay ideas propuestas.</p>'}
     </div>
     <div class="panel">
       <div class="panel-head"><div><div class="eyebrow">Academia</div><h2>Validar cursos de ${esc(label(admMember))}</h2></div>
@@ -1693,11 +1867,20 @@ function renderAdmin() {
       ${D.questions.length ? `<div class="table-wrap" style="margin-top:14px"><table class="adm"><thead><tr><th>Pregunta</th><th>Respuesta</th><th>Autor</th><th></th></tr></thead><tbody>${D.questions.map(q => `<tr><td style="min-width:260px">${esc(q.q)}</td><td>${esc(q.o[q.a])}</td><td>${esc(nombre(q.by))}</td><td>${delBtn('q:' + q.id)}</td></tr>`).join('')}</tbody></table></div>` : ''}`
       : '<p class="note"><b>Falta la actualización 2 de la base de datos.</b> Ejecuta <span class="mono">supabase/actualizacion-2.sql</span> en Supabase para activar penalidades, rango protegido y minijuegos con XP.</p>'}
     </div>
+    ${D.v4 ? `<div class="panel">
+      <div class="panel-head"><div><div class="eyebrow">Preguntas propuestas por el equipo</div><h2>Por aprobar</h2></div><span class="note">${D.proposals.length} en revisión</span></div>
+      ${D.proposals.length ? `<div class="table-wrap"><table class="adm"><thead><tr><th>Pregunta</th><th>Respuesta correcta</th><th>Autor</th><th></th></tr></thead><tbody>${D.proposals.map(q => `<tr><td style="min-width:260px">${esc(q.q)}<div class="note">${q.o.map((o, k) => `${'ABCD'[k]}) ${esc(o)}`).join(' · ')}</div>${q.e ? `<div class="note">${esc(q.e)}</div>` : ''}</td><td>${esc(q.o[q.a])}</td><td>${esc(nombre(q.by))}</td><td style="white-space:nowrap"><button class="btn small primary" type="button" data-approve="${q.id}">Aprobar</button> ${delBtn('q:' + q.id)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="note">No hay preguntas por aprobar.</p>'}
+    </div>` : ''}
     <div class="panel">
       <div class="panel-head"><div><div class="eyebrow">Fotos del equipo</div><h2>Foto de cada credencial</h2></div><span class="note">Se guardan en un espacio privado: solo se ven con sesión iniciada</span></div>
       ${D.photosReady ? `<div class="team">${MEMBERS.map(t => `<div class="team-card" style="flex-direction:column;align-items:flex-start;gap:8px">${avatar(t.id, 56)}<div class="team-name">${esc(t.nombre)}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><label class="btn small photo-btn">${D.photos[t.id] ? 'Cambiar' : 'Subir'}<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${t.id}"></label>${D.photos[t.id] ? `<button class="btn small" type="button" data-photo-del="${t.id}">Quitar</button>` : ''}</div></div>`).join('')}</div>`
         : '<p class="note"><b>Falta la actualización 3.</b> Ejecuta <span class="mono">supabase/actualizacion-3.sql</span> en Supabase para activar las fotos.</p>'}
     </div>
+    ${D.v4 ? `<div class="panel danger">
+      <div class="panel-head"><div><div class="eyebrow">Lanzamiento</div><h2>Empezar la temporada de cero</h2></div></div>
+      <p class="note" style="margin-bottom:10px">Borra los datos de ejemplo: reportes, ideas, avance de la Academia, rangos guardados, partidas, reconocimientos e historial. Conserva usuarios, looks, fotos y preguntas. Úsalo una sola vez, antes de cargar los reportes reales. <b>No se puede deshacer.</b></p>
+      <form class="inline-form" id="resetForm"><div class="field"><label for="resetTxt">Escribe EMPEZAR para confirmar</label><input id="resetTxt" autocomplete="off"></div><button class="btn danger" type="submit">Borrar datos y empezar</button></form>
+    </div>` : ''}
     <div class="panel">
       <div class="panel-head"><div><div class="eyebrow">Cuentas</div><h2>Quién ya tiene usuario</h2></div></div>
       <div class="team">${MEMBERS.map(t => `<div class="team-card">${avatar(t.id, 36)}<div style="min-width:0"><div class="team-name">${esc(t.nombre)}</div><div class="note">${D.profiles[t.id] ? 'Usuario creado' : 'Falta crear el usuario'}</div></div></div>`).join('')}</div>
@@ -1722,6 +1905,8 @@ async function onAdminChange(e) {
   } else if (kind === 'idea') {
     const f = el.dataset.field; let v = el.value;
     if (f === 'hours') v = Math.min(80, Math.max(0, parseFloat(v) || 0));
+    if (f === 'owner' && !v) v = null;
+    if (f === 'next_step') v = v.trim() || null;
     ok = await write(() => sb.from('ideas').update({ [f]: v }).eq('id', el.dataset.id).select());
   } else if (kind === 'prog') {
     ok = await write(() => sb.from('progress').upsert({ member_key: el.dataset.member, item_id: el.dataset.item, state: el.value }, { onConflict: 'member_key,item_id' }).select(), 'Avance actualizado');
@@ -1731,6 +1916,8 @@ async function onAdminChange(e) {
 
 async function onAdminClick(e) {
   const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.validate) { openValidate(b.dataset.validate); return; }
+  if (b.dataset.approve) { await write(() => sb.from('questions').update({ status: 'aprobada' }).eq('id', b.dataset.approve).select(), 'Pregunta aprobada'); return; }
   if (b.dataset.del) {
     const key = b.dataset.del;
     if (delArmed !== key) {
@@ -1752,6 +1939,12 @@ async function onAdminClick(e) {
 }
 
 async function onAdminSubmit(e) {
+  if (e.target.id === 'resetForm') {
+    e.preventDefault();
+    if ($('#resetTxt').value.trim().toUpperCase() !== 'EMPEZAR') { toast('Escribe EMPEZAR para confirmar.', true); return; }
+    const ok = await rpcWrite('reset_season', {}, 'Temporada reiniciada: todos empiezan en cero');
+    return;
+  }
   if (e.target.id === 'qForm') {
     e.preventDefault();
     const prompt = $('#qPrompt').value.trim(), options = [0, 1, 2, 3].map(k => $('#qO' + k).value.trim());
@@ -1773,7 +1966,7 @@ $('#adminBody').addEventListener('click', onAdminClick);
 $('#adminBody').addEventListener('submit', onAdminSubmit);
 
 function renderAll() {
-  renderShell(); renderHome(); renderTraining(); renderCasos(); renderCredencial(); renderAcademia(); renderIdeas(); renderEscalafon(); renderAdmin();
+  renderShell(); renderMyDay(); renderHome(); renderTraining(); renderPropose(); renderCasos(); renderCredencial(); renderAcademia(); renderIdeas(); renderEscalafon(); renderTablero(); renderAdmin();
 }
 
 /* =========================================================
@@ -2154,6 +2347,464 @@ function errStep() {
 
 
 /* =========================================================
+   PERSONAJE VIVO: necesidades, emociones, motivación y presencia
+   Las necesidades se llenan con trabajo real y bajan en días hábiles.
+   Si nadie atiende al detective, se desvanece (nunca muere ni quita XP).
+   ========================================================= */
+const limaDay = ts => ts ? new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(new Date(ts)) : null;
+const addDays = (day, n) => { const d = new Date(day + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return isoDay(d); };
+const isWeekend = day => { const wd = new Date(day + 'T12:00:00Z').getUTCDay(); return wd === 0 || wd === 6; };
+const maxDay = arr => arr.filter(Boolean).sort().pop() || null;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function vacOf(id) { const v = (lookOf(id) || {}).vac; return v && v.from && v.until && v.until >= limaToday() ? v : null; }
+function onVacation(id, day) { const v = (lookOf(id) || {}).vac; return !!(v && v.from && v.until && day >= v.from && day <= v.until); }
+/* Días hábiles transcurridos desde `day` hasta hoy (no cuenta fines de semana ni vacaciones) */
+function bdSince(id, day) {
+  if (!day) return null;
+  const today = limaToday(); if (day >= today) return 0;
+  let n = 0, d = day;
+  for (let g = 0; d < today && g < 400; g++) { d = addDays(d, 1); if (!isWeekend(d) && !onVacation(id, d)) n++; }
+  return n;
+}
+function lastDays(id) {
+  const plays = (D.plays || []).filter(p => p.member_key === id);
+  const daily = maxDay(plays.filter(p => p.game === 'diaria').map(p => p.day));
+  const game = maxDay(plays.filter(p => p.game !== 'diaria').map(p => p.day).concat((D.proposals || []).concat(D.questions || []).filter(q => q.by === id).map(q => limaDay(q.created))));
+  const social = maxDay([].concat(
+    D.ideas.filter(i => i.author === id).map(i => limaDay(i.created)),
+    (D.votes || []).filter(v => v.member_key === id).map(v => limaDay(v.created_at)),
+    (D.comments || []).filter(c => c.author === id).map(c => limaDay(c.created_at)),
+    (D.actions || []).filter(a => a.kind === 'reconocimiento' && (a.member_key === id || a.target === id)).map(a => a.day),
+    D.cps.filter(c => c.co === id && c.reviewedAt).map(c => limaDay(c.reviewedAt))));
+  const report = maxDay((D.events || []).filter(e => e.actor === id).map(e => limaDay(e.created_at)));
+  const visit = maxDay((D.actions || []).filter(a => a.kind === 'visita' && a.member_key === id).map(a => a.day));
+  return { daily, game, social, report, visit, any: maxDay([daily, game, social, report, visit]) };
+}
+function ordenOf(id) {
+  if (M(id).comisario) {
+    const waiting = D.cps.filter(c => c.status === 'entregado').length;
+    return clamp(100 - waiting * 15, 0, 100);
+  }
+  let o = 100;
+  CHECKPOINTS.filter(c => c.resp === id && (c.status === 'pendiente' || c.status === 'curso')).forEach(c => {
+    const days = Math.ceil((dueDate(c) - new Date()) / 86400000);
+    if (days < 0) o -= 45;
+    else if (days <= 2) o -= c.status === 'pendiente' ? 25 : 10;
+  });
+  D.cps.filter(c => c.co === id && c.status === 'entregado' && !c.reviewedAt).forEach(() => { o -= 10; });
+  return clamp(o, 0, 100);
+}
+function needsOf(id) {
+  const L = lastDays(id), b = k => bdSince(id, L[k]);
+  const e = L.daily == null ? 40 : clamp(100 - 34 * b('daily'), 0, 100);
+  const k = L.game == null ? 40 : clamp(100 - 12 * b('game'), 0, 100);
+  const a = L.social == null ? 50 : clamp(100 - 12 * b('social'), 0, 100);
+  const o = ordenOf(id);
+  const away = L.any == null ? 1 : b('any');
+  const presence = vacOf(id) ? 1 : away <= 1 ? 1 : away === 2 ? .8 : away === 3 ? .62 : away === 4 ? .45 : .3;
+  return { energia: Math.round(e), orden: Math.round(o), conocimiento: Math.round(k), animo: Math.round(a), presence, away, last: L };
+}
+const NEEDS = [
+  { k: 'energia', n: 'Energía', d: 'Pregunta del día' },
+  { k: 'orden', n: 'Orden', d: 'Reportes al día' },
+  { k: 'conocimiento', n: 'Conocimiento', d: 'Juegos y cursos' },
+  { k: 'animo', n: 'Ánimo', d: 'Ideas, reconocimientos y revisiones' }
+];
+const MOODS = {
+  motivado:      { n: 'Motivado',          c: 'ok' },
+  concentrado:   { n: 'Concentrado',       c: 'info' },
+  tranquilo:     { n: 'Tranquilo',         c: 'info' },
+  preocupado:    { n: 'Preocupado',        c: 'warn' },
+  cansado:       { n: 'Cansado',           c: 'warn' },
+  desanimado:    { n: 'Desanimado',        c: 'warn' },
+  desvaneciendo: { n: 'Desvaneciéndose',   c: 'bad' },
+  viaje:         { n: 'De vacaciones',     c: 'info' }
+};
+function moodOf(id, N) {
+  N = N || needsOf(id);
+  if (vacOf(id) && onVacation(id, limaToday())) return 'viaje';
+  if (N.presence <= .62) return 'desvaneciendo';
+  if (N.orden < 50) return 'preocupado';
+  if (N.energia < 35) return 'cansado';
+  if (N.animo < 35) return 'desanimado';
+  if (N.energia >= 75 && N.orden >= 75 && N.conocimiento >= 75 && N.animo >= 75) return 'motivado';
+  if (N.orden >= 70 && (N.energia + N.conocimiento + N.animo) / 3 >= 55) return 'concentrado';
+  return 'tranquilo';
+}
+const inStreak = (id, N) => { N = N || needsOf(id); return ['energia', 'orden', 'conocimiento', 'animo'].every(k => N[k] >= 70); };
+/* Semanas en racha: al menos 4 preguntas del día y un minijuego en la semana (+5 XP cada una) */
+function rachaWeeks(id) {
+  const by = {};
+  (D.plays || []).filter(p => p.member_key === id).forEach(p => {
+    const w = weekKey(p.day); by[w] = by[w] || { days: new Set(), game: false };
+    if (p.game === 'diaria') by[w].days.add(p.day); else by[w].game = true;
+  });
+  return Object.values(by).filter(w => w.days.size >= 4 && w.game).length;
+}
+function motivationOf(id) {
+  const m = M(id);
+  if (m.comisario) { const w = D.cps.filter(c => c.status === 'entregado').length; return w ? `Quiero validar a tiempo: hay ${w} reporte${w === 1 ? '' : 's'} esperando mi sello.` : 'Quiero que este mes sea un mes perfecto para todo el equipo.'; }
+  const nr = nextRankInfo(id);
+  if (nr && nr.xpMissing) return `Quiero llegar a ${nr.next.name}: me faltan ${nr.xpMissing} XP.`;
+  if (nr && nr.skMissing) {
+    let next = null; treeOf(id).forEach(b => { let prev = true; b.skills.forEach(s => { if (!next && !isDone(s.st) && prev) next = s; prev = isDone(s.st); }); });
+    return `Quiero llegar a ${nr.next.name}: me falta${nr.skMissing === 1 ? '' : 'n'} ${nr.skMissing} habilidad${nr.skMissing === 1 ? '' : 'es'}${next ? ` (próxima: ${next.course})` : ''}.`;
+  }
+  if (perfectState() === 'juego') return 'Quiero cerrar un mes perfecto con el equipo.';
+  return 'Quiero enseñar al equipo lo que aprendí en la Academia.';
+}
+function phraseOf(id, mood, N) {
+  const nm = M(id).nombre;
+  const next = pendingFor(id).sort((a, b) => a.due.localeCompare(b.due))[0];
+  const P = {
+    motivado: [`¡Estamos en racha, ${nm}!`, 'Así da gusto trabajar. Vamos por el siguiente rango.'],
+    concentrado: ['Todo en orden. Sigamos así.', next ? `Siguiente pista: «${next.name}».` : 'Sin pendientes urgentes.'],
+    tranquilo: ['Buen día. ¿Revisamos lo de hoy?', 'Un paso a la vez.'],
+    preocupado: [next ? `«${next.name}» ${dueText(next).t.toLowerCase()}. Me preocupa.` : 'Hay algo pendiente que me preocupa.', '¿Lo marcamos en curso?'],
+    cansado: ['Estoy sin energía…', '¿Respondemos la pregunta del día?'],
+    desanimado: ['Me siento algo solo en la agencia.', '¿Reconocemos a alguien del equipo?'],
+    desvaneciendo: [`Han pasado ${N.away} días hábiles sin noticias tuyas…`, 'Me estoy desvaneciendo. Una acción y vuelvo.'],
+    viaje: ['Estoy de vacaciones. Nos vemos a la vuelta.']
+  };
+  const arr = P[mood] || P.tranquilo; return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/* ---------- Registro de interacción (saludar al detective) ---------- */
+async function recordVisit() {
+  if (!D.v4) return;
+  const today = limaToday();
+  if ((D.actions || []).some(a => a.kind === 'visita' && a.member_key === S.viewer && a.day === today)) return;
+  const r = await sb.from('actions').insert({ member_key: S.viewer, kind: 'visita' }).select();
+  if (!r.error && r.data) { D.actions = D.actions.concat(r.data); renderAll(); }
+}
+
+/* ---------- Mi día ---------- */
+function bar(v) { return `<div class="meter need ${v < 35 ? 'low' : v < 70 ? 'mid' : 'hi'}"><span style="width:${v}%"></span></div>`; }
+function moodChip(id, N) { const md = moodOf(id, N); return `<span class="mood ${MOODS[md].c}">${MOODS[md].n}</span>`; }
+let recoOpen = false;
+function renderMyDay() {
+  const v = S.viewer; if (!v) return;
+  const N = needsOf(v), md = moodOf(v, N);
+  const fading = md === 'desvaneciendo';
+  $('#mdHead').innerHTML = `<div class="md-top">${avatar(v, 44)}<div style="min-width:0"><div class="eyebrow">Mi día · ${new Date().toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+      <div class="md-title">Tu detective está ${moodChip(v, N)}${inStreak(v, N) ? ' <span class="mood ok">En racha</span>' : ''}</div></div></div>
+    <p class="md-motiv">«${esc(motivationOf(v))}»</p>
+    ${fading ? `<div class="md-alert">Tu detective se está desvaneciendo: han pasado ${N.away} días hábiles sin noticias tuyas. Cualquier acción de abajo lo trae de vuelta.</div>` : ''}
+    ${!D.v4 ? '<div class="md-alert soft">Falta la actualización 4 de la base de datos: el detective aún no puede registrar todo lo que haces.</div>' : ''}`;
+  $('#mdNeeds').innerHTML = NEEDS.map(n => `<div class="need-row" title="${esc(n.d)}"><span class="need-n">${n.n}</span>${bar(N[n.k])}<span class="mono need-v">${N[n.k]}</span></div>`).join('');
+  const tasks = [];
+  const today = limaToday();
+  const dailyDone = (D.plays || []).some(p => p.member_key === v && p.game === 'diaria' && p.day === today);
+  tasks.push({ done: dailyDone, need: 'Energía', html: dailyDone ? 'Pregunta del día respondida' : 'Responde la pregunta del día (abajo, 10 segundos)' });
+  if (M(v).comisario) {
+    const waiting = D.cps.filter(c => c.status === 'entregado');
+    tasks.push({ done: !waiting.length, need: 'Orden', html: waiting.length ? `${waiting.length} reporte${waiting.length === 1 ? '' : 's'} esperando tu validación <button class="btn small" data-go="tablero">Validar</button>` : 'Nada por validar' });
+  } else {
+    const mine = pendingFor(v).sort((a, b) => a.due.localeCompare(b.due));
+    if (!mine.length) tasks.push({ done: true, need: 'Orden', html: 'Tus reportes del mes están entregados' });
+    mine.slice(0, 3).forEach(c => { const d = dueText(c); tasks.push({ done: false, need: 'Orden', html: `<b>${esc(c.name)}</b> · <span class="${d.late ? 'neg' : ''}">${d.t}</span>
+      <span class="md-acts">${c.status === 'pendiente' && D.v4 ? `<button class="btn small" data-quick="curso" data-id="${c.id}">En curso</button>` : ''}<button class="btn small" data-open-cp="${c.id}">${D.v4 ? 'Marcar entregado' : 'Ver'}</button></span>` }); });
+    D.cps.filter(c => c.co === v && c.status === 'entregado' && !c.reviewedAt).forEach(c => tasks.push({ done: false, need: 'Orden', html: `Revisa como copiloto: <b>${esc(c.name)}</b> <button class="btn small" data-open-cp="${c.id}">Revisar</button>` }));
+  }
+  const gameOk = N.conocimiento >= 70;
+  tasks.push({ done: gameOk, need: 'Conocimiento', html: gameOk ? 'Entrenamiento de la semana al día' : 'Juega un minijuego (2 minutos) <button class="btn small" data-go="sala">Ir a la sala</button>' });
+  const recoToday = (D.actions || []).some(a => a.kind === 'reconocimiento' && a.member_key === v && a.day === today);
+  tasks.push({ done: recoToday, need: 'Ánimo', html: recoToday ? 'Ya reconociste a alguien hoy' : `Reconoce a un compañero o apoya una idea <button class="btn small" data-reco>${recoOpen ? 'Cerrar' : 'Reconocer'}</button> <button class="btn small" data-go="ideas">Ver ideas</button>` });
+  $('#mdList').innerHTML = tasks.map(t => `<div class="task ${t.done ? 'done' : ''}"><span class="tick"><svg><use href="#i-${t.done ? 'check' : 'circle'}"/></svg></span><span class="task-need">${t.need}</span><span class="task-t">${t.html}</span></div>`).join('')
+    + (recoOpen && !recoToday ? `<form class="reco-form" id="recoForm"><select id="recoTo" class="sel" aria-label="A quién">${MEMBERS.filter(m => m.id !== v).map(m => `<option value="${m.id}">${esc(label(m.id))}</option>`).join('')}</select>
+        <input id="recoNote" maxlength="140" required placeholder="Ej.: Gracias por revisar mi informe a tiempo" aria-label="Motivo"><button class="btn small primary" type="submit">Enviar</button></form>` : '')
+    + `<div class="md-foot">${vacOf(v) ? `De vacaciones hasta el ${fmtDate(vacOf(v).until)} · <button class="linkbtn" data-go="credencial">cambiar</button>` : '<button class="linkbtn" data-go="credencial">¿Vas a salir de vacaciones? Avísale a tu detective</button>'}</div>`;
+  if (window.__scene && window.__scene.setVida) window.__scene.setVida(md, N);
+}
+$('#myDay').addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.go) { location.hash = b.dataset.go; return; }
+  if (b.hasAttribute('data-reco')) { recoOpen = !recoOpen; renderMyDay(); if (recoOpen) setTimeout(() => { const n = $('#recoNote'); if (n) n.focus(); }, 30); return; }
+  if (b.dataset.quick) { await reportProgress(b.dataset.id, b.dataset.quick); return; }
+  if (b.dataset.openCp) { S.openCp = b.dataset.openCp; const c = D.cps.find(x => x.id === b.dataset.openCp); if (c && c.mes !== S.month) { S.month = c.mes; applyMonth(); } S.filter = 'all'; renderCasos(); location.hash = 'casos'; setTimeout(() => { const el = document.querySelector(`[data-cprow="${b.dataset.openCp}"]`); if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 60); }
+});
+$('#myDay').addEventListener('submit', async e => {
+  if (e.target.id !== 'recoForm') return; e.preventDefault();
+  const note = $('#recoNote').value.trim(), to = $('#recoTo').value;
+  if (note.length < 3) { toast('Escribe un motivo corto.', true); return; }
+  if (!D.v4) { toast('Falta la actualización 4 de la base de datos.', true); return; }
+  const ok = await write(() => sb.from('actions').insert({ member_key: S.viewer, kind: 'reconocimiento', target: to, note }).select(), `Reconocimiento enviado a ${nombre(to)}`);
+  if (ok) recoOpen = false; renderMyDay();
+});
+
+/* ---------- Vacaciones (se guardan en el look del perfil) ---------- */
+async function saveVacation(from, until) {
+  const look = Object.assign({}, viewerLook());
+  if (from && until) look.vac = { from, until }; else delete look.vac;
+  await write(() => sb.from('profiles').update({ look }).eq('id', S.uid).select(), from ? 'Vacaciones registradas: tu detective te espera' : 'Vacaciones canceladas');
+}
+
+/* =========================================================
+   REPORTES: avance del responsable, revisión del copiloto, validación e historial
+   ========================================================= */
+const VALIDATED = ['ok', 'obs', 'tarde', 'error', 'tarde_error'];
+const BLOT_PRIVATE = ['obs', 'tarde', 'error', 'tarde_error'];
+const canSeeDetail = c => canAdmin() || c.resp === S.viewer || c.co === S.viewer;
+/* Lo que ve cada persona: las faltas ajenas aparecen como «Validado» */
+function shownStatus(c) { return !canSeeDetail(c) && BLOT_PRIVATE.includes(c.status) ? 'validado' : c.status; }
+const SHOWN_LABEL = Object.assign({}, Object.fromEntries(Object.entries(STATUS).map(([k, v]) => [k, v])), { validado: { label: 'Validado', cls: 'ok' } });
+const fmtDT = ts => new Date(ts).toLocaleString('es-PE', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace('.', '');
+function rpcErr(e) {
+  const m = String((e && e.message) || '');
+  if (/function|PGRST202|not find/i.test(m)) return 'Falta la actualización 4 de la base de datos.';
+  if (e && e.code === '22023') return 'Escribe el motivo: es obligatorio para observaciones, errores o tardanza.';
+  if (e && e.code === '42501') return m && !/row-level|permission/i.test(m) ? m : 'No tienes permiso para hacer este cambio.';
+  return 'No se pudo guardar el cambio. Inténtalo otra vez.';
+}
+async function rpcWrite(name, args, okMsg) {
+  busy = true;
+  const { error } = await sb.rpc(name, args);
+  busy = false;
+  if (error) { toast(rpcErr(error), true); return false; }
+  try { await fetchAll(); await syncFloors(); } catch (x) {}
+  renderAll(); if (okMsg) toast(okMsg);
+  return true;
+}
+async function reportProgress(id, status, evidence, note) {
+  if (!D.v4) { toast('Falta la actualización 4 de la base de datos.', true); return false; }
+  const c = D.cps.find(x => x.id === id);
+  return rpcWrite('report_progress', { p_id: id, p_status: status, p_evidence: evidence || null, p_note: note || null },
+    status === 'entregado' ? `«${c ? c.name : 'Reporte'}» entregado. Queda por validar.` : status === 'curso' ? 'Marcado en curso' : 'Vuelto a pendiente');
+}
+
+/* Detalle desplegable de cada reporte en Casos */
+function cpDetail(c) {
+  const v = S.viewer, isResp = c.resp === v, isCo = c.co === v, see = canSeeDetail(c);
+  const late = c.deliveredAt && limaDay(c.deliveredAt) > c.due;
+  const rows = [];
+  if (c.desc) rows.push(['Descripción', esc(c.desc)]);
+  if (c.deliveredAt) rows.push(['Entregado', `${fmtDT(c.deliveredAt)}${late && see ? ' · <span class="neg">después de la fecha límite</span>' : ''}`]);
+  if (c.evidence && see) rows.push(['Evidencia', /^https?:\/\//i.test(c.evidence) ? `<a href="${esc(c.evidence)}" target="_blank" rel="noopener">${esc(c.evidence)}</a>` : `<span class="mono">${esc(c.evidence)}</span>`]);
+  if (c.reviewedAt) rows.push(['Revisión del copiloto', `${fmtDT(c.reviewedAt)}${c.reviewNote && see ? ' · ' + esc(c.reviewNote) : ''}`]);
+  if (c.valNote && see) rows.push(['Comentario de validación', esc(c.valNote)]);
+  let acts = '';
+  if (D.v4) {
+    if (isResp && ['pendiente', 'curso'].includes(c.status)) acts += `
+      ${c.status === 'pendiente' ? `<button class="btn small" type="button" data-cpact="curso" data-id="${c.id}">Marcar en curso</button>` : ''}
+      <form class="deliver" data-deliver="${c.id}"><input name="ev" maxlength="300" placeholder="Ruta o enlace del entregable (opcional)" aria-label="Evidencia"><input name="note" maxlength="280" placeholder="Nota para el copiloto (opcional)" aria-label="Nota"><button class="btn small primary" type="submit">Marcar entregado</button></form>`;
+    if (isResp && c.status === 'entregado') acts += `<span class="note">Esperando validación de Armando o Alvaro.</span> <button class="btn small" type="button" data-cpact="curso" data-id="${c.id}">Deshacer entrega</button>`;
+    if (isCo && !c.reviewedAt && ['entregado', 'curso'].concat(VALIDATED).includes(c.status)) acts += `<form class="deliver" data-review="${c.id}"><input name="note" maxlength="280" placeholder="Comentario de tu revisión (opcional)" aria-label="Comentario"><button class="btn small" type="submit">Registrar mi revisión (copiloto)</button></form>`;
+    if (canAdmin()) acts += `<button class="btn small primary" type="button" data-validate="${c.id}">${VALIDATED.includes(c.status) ? 'Cambiar sello' : 'Validar'}</button>`;
+  } else if (isResp) acts = '<span class="note">Para marcar tu avance falta la actualización 4 de la base de datos.</span>';
+  const ev = see ? (D.events || []).filter(e => e.cp_id === c.id) : [];
+  const hist = ev.length ? `<div class="hist"><div class="eyebrow">Historial</div>${ev.slice().reverse().map(e => `<div class="hist-row"><span class="mono note">${fmtDT(e.created_at)}</span><span>${esc(nombre(e.actor) || e.actor)} · ${e.kind === 'revision' ? 'revisó' : e.kind === 'validacion' ? 'validó' : 'actualizó'}${e.to_status && e.kind !== 'revision' ? ': <b>' + esc((STATUS[e.to_status] || { label: e.to_status }).label) + '</b>' : ''}${e.note ? ` — «${esc(e.note)}»` : ''}</span></div>`).join('')}</div>` : '';
+  return `<div class="cp-detail">${rows.length ? `<div class="hc-list">${rows.map(r => `<div class="hc-row"><span class="note">${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>` : ''}${acts ? `<div class="cp-acts">${acts}</div>` : ''}${hist}${!rows.length && !acts && !hist ? '<p class="note">Sin detalles adicionales.</p>' : ''}</div>`;
+}
+$('#cpList').addEventListener('click', async e => {
+  const b = e.target.closest('button');
+  if (b && b.dataset.cpact) { await reportProgress(b.dataset.id, b.dataset.cpact); return; }
+  if (b && b.dataset.validate) { openValidate(b.dataset.validate); return; }
+  const row = e.target.closest('[data-cprow]');
+  if (row && !e.target.closest('form, a, input, button')) { S.openCp = S.openCp === row.dataset.cprow ? null : row.dataset.cprow; renderCasos(); }
+});
+$('#cpList').addEventListener('keydown', e => { const r = e.target.closest('[data-cprow]'); if (r && (e.key === 'Enter' || e.key === ' ') && e.target === r) { e.preventDefault(); r.click(); } });
+$('#cpList').addEventListener('submit', async e => {
+  const f = e.target; e.preventDefault();
+  if (f.dataset.deliver) await reportProgress(f.dataset.deliver, 'entregado', f.ev.value.trim(), f.note.value.trim());
+  else if (f.dataset.review) await rpcWrite('report_review', { p_id: f.dataset.review, p_note: f.note.value.trim() || null }, 'Revisión registrada: +Ánimo para tu detective');
+});
+
+/* Ventana de validación (Armando y Alvaro) */
+const valDlg = $('#valDlg');
+let valId = null;
+function openValidate(id) {
+  const c = D.cps.find(x => x.id === id); if (!c) return;
+  valId = id;
+  const late = c.deliveredAt && limaDay(c.deliveredAt) > c.due;
+  const sug = c.status === 'entregado' ? (late ? 'tarde' : 'ok') : c.status;
+  $('#vdTitle').textContent = c.name;
+  $('#valForm').innerHTML = `
+    <div class="hc-list">
+      <div class="hc-row"><span class="note">Responsable</span><span>${esc(label(c.resp))}</span></div>
+      <div class="hc-row"><span class="note">Vence</span><span>${fmtDate(c.due)}</span></div>
+      <div class="hc-row"><span class="note">Entregado</span><span>${c.deliveredAt ? fmtDT(c.deliveredAt) + (late ? ' · <b class="neg">fuera de plazo</b>' : ' · a tiempo') : 'Sin fecha de entrega registrada'}</span></div>
+      ${c.evidence ? `<div class="hc-row"><span class="note">Evidencia</span><span class="mono">${esc(c.evidence)}</span></div>` : ''}
+      <div class="hc-row"><span class="note">Copiloto</span><span>${esc(label(c.co))} · ${c.reviewedAt ? 'revisó el ' + fmtDT(c.reviewedAt) : '<span class="neg">aún no registra su revisión</span>'}</span></div>
+    </div>
+    <div class="field"><label>Sello</label><div class="seal-opts">${['ok', 'obs', 'tarde', 'error', 'tarde_error', 'entregado', 'curso', 'pendiente'].map(k => `<label class="seal"><input type="radio" name="st" value="${k}" ${k === sug ? 'checked' : ''}><span class="pill ${STATUS[k].cls}">${STATUS[k].label}</span><span class="mono note">${XP_RESP[k] ? signed(XP_RESP[k]) + ' XP' : ''}</span></label>`).join('')}</div></div>
+    ${late ? '<p class="note">Sugerencia: se entregó después de la fecha límite, por eso está marcado «Fuera de plazo».</p>' : ''}
+    <div class="field"><label for="vdNote">Motivo o comentario <span class="note">(obligatorio si hay observaciones, errores o tardanza)</span></label><input id="vdNote" maxlength="280" value="${esc(c.valNote || '')}"></div>
+    <p class="login-err" id="vdErr" hidden></p>
+    <div class="gbtns"><button class="btn primary" type="submit">Guardar sello</button><button class="btn" type="button" data-close>Cancelar</button></div>`;
+  try { valDlg.showModal(); } catch (x) { valDlg.setAttribute('open', ''); }
+}
+$('#valForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const st = (new FormData(e.target)).get('st'), note = $('#vdNote').value.trim();
+  if (BLOT_PRIVATE.includes(st) && !note) { const er = $('#vdErr'); er.textContent = 'Escribe el motivo: así el responsable sabe qué corregir.'; er.hidden = false; return; }
+  const ok = await rpcWrite('report_validate', { p_id: valId, p_status: st, p_note: note || null }, (XP_RESP[st] || 0) < 0 ? `Sello guardado. Penalidad ${signed(XP_RESP[st])} XP para ${nombre(D.cps.find(x => x.id === valId).resp)}.` : 'Sello guardado');
+  if (ok) valDlg.close();
+});
+document.addEventListener('click', e => { const b = e.target.closest('dialog [data-close]'); if (b) { const d = b.closest('dialog'); try { d.close(); } catch (x) { d.removeAttribute('open'); } } });
+
+/* =========================================================
+   TABLERO DEL COMISARIO
+   ========================================================= */
+let tabMonth = null;
+function monthStats(mes) {
+  const L = D.cps.filter(c => c.mes === mes);
+  const val = L.filter(c => VALIDATED.includes(c.status));
+  const onTime = val.filter(c => ['ok', 'obs', 'error'].includes(c.status));
+  const clean = val.filter(c => c.status === 'ok');
+  const errs = val.filter(c => ['error', 'tarde_error'].includes(c.status));
+  const deliv = L.filter(c => c.deliveredAt);
+  const avgGap = deliv.length ? deliv.reduce((a, c) => a + (new Date(limaDay(c.deliveredAt) + 'T12:00:00Z') - new Date(c.due + 'T12:00:00Z')) / 86400000, 0) / deliv.length : null;
+  return { L, val, onTime, clean, errs, waiting: L.filter(c => c.status === 'entregado'), open: L.filter(c => ['pendiente', 'curso'].includes(c.status)),
+    pctOnTime: val.length ? Math.round(onTime.length / val.length * 100) : null, pctClean: val.length ? Math.round(clean.length / val.length * 100) : null, avgGap };
+}
+const pctTxt = v => v == null ? '—' : v + ' %';
+function renderTablero() {
+  const body = $('#tabBody');
+  if (!canAdmin()) { body.innerHTML = '<div class="panel lockbox"><svg><use href="#i-lock"/></svg><h2>Solo para el Comisario y el Inspector Jefe</h2></div>'; return; }
+  const ms = monthsList(); if (!tabMonth || !ms.includes(tabMonth)) tabMonth = S.month || ms[0] || null;
+  $('#tabMonth').innerHTML = ms.length ? ms.map(m => `<option value="${m}" ${m === tabMonth ? 'selected' : ''}>${esc(monthLabel(m))}</option>`).join('') : '<option>Sin meses</option>';
+  if (!tabMonth) { body.innerHTML = '<div class="panel"><p class="note">Todavía no hay reportes cargados.</p></div>'; return; }
+  const st = monthStats(tabMonth);
+  const trend = ms.slice(0, 6).reverse().map(m => Object.assign({ m }, monthStats(m)));
+  const W = 560, H = 170, bw = Math.min(34, (W - 40) / Math.max(1, trend.length) / 2.6);
+  const chart = `<svg viewBox="0 0 ${W} ${H + 28}" class="trend" role="img" aria-label="Tendencia de cumplimiento">
+    ${[0, 50, 100].map(v => `<line x1="30" x2="${W}" y1="${10 + (100 - v) / 100 * H}" y2="${10 + (100 - v) / 100 * H}" class="grid"/><text x="0" y="${14 + (100 - v) / 100 * H}" class="ax">${v}%</text>`).join('')}
+    ${trend.map((t, i) => { const x = 40 + i * ((W - 40) / trend.length); const h1 = (t.pctOnTime || 0) / 100 * H, h2 = (t.pctClean || 0) / 100 * H;
+      return `<rect x="${x}" y="${10 + H - h1}" width="${bw}" height="${h1}" rx="3" class="b1"><title>${monthLabel(t.m)}: ${pctTxt(t.pctOnTime)} a tiempo</title></rect><rect x="${x + bw + 4}" y="${10 + H - h2}" width="${bw}" height="${h2}" rx="3" class="b2"><title>${monthLabel(t.m)}: ${pctTxt(t.pctClean)} sin observaciones</title></rect><text x="${x + bw}" y="${H + 26}" text-anchor="middle" class="ax">${monthLabel(t.m).slice(0, 3)} ${t.m.slice(2, 4)}</text>`; }).join('')}
+  </svg>`;
+  const people = DETECTIVES.concat([M('jefe')]).filter(m => st.L.some(c => c.resp === m.id || c.co === m.id) || !m.comisario);
+  const rowsP = people.map(m => { const mine = st.L.filter(c => c.resp === m.id); const v = mine.filter(c => VALIDATED.includes(c.status));
+    const xpm = st.L.reduce((a, c) => a + cpXPFor(c, m.id), 0); const N = needsOf(m.id);
+    const dailies = (D.plays || []).filter(p => p.member_key === m.id && p.game === 'diaria' && p.day.slice(0, 7) === tabMonth).length;
+    return `<tr><td>${person(m.id)}</td><td class="num">${mine.length}</td><td class="num">${v.filter(c => ['ok', 'obs', 'error'].includes(c.status)).length}/${v.length}</td><td class="num">${v.filter(c => c.status === 'obs').length}</td><td class="num ${v.some(c => ['error', 'tarde_error'].includes(c.status)) ? 'neg' : ''}">${v.filter(c => ['error', 'tarde_error'].includes(c.status)).length}</td><td class="num">${m.comisario ? '—' : signed(xpm)}</td><td class="num">${dailies}</td><td>${moodChip(m.id, N)}</td></tr>`; }).join('');
+  const implH = D.ideas.filter(i => i.stage === 'implementada').reduce((a, i) => a + i.hours, 0);
+  body.innerHTML = `
+    <div class="kpi4">
+      <div class="panel"><div class="eyebrow">Entregados a tiempo</div><div class="stat-big">${pctTxt(st.pctOnTime)}</div><div class="stat-sub">${st.onTime.length} de ${st.val.length} validados</div></div>
+      <div class="panel"><div class="eyebrow">Sin observaciones</div><div class="stat-big">${pctTxt(st.pctClean)}</div><div class="stat-sub">${st.clean.length} cerrados limpios</div></div>
+      <div class="panel"><div class="eyebrow">Con errores</div><div class="stat-big ${st.errs.length ? 'neg' : ''}">${st.errs.length}</div><div class="stat-sub">${st.avgGap == null ? 'Sin fechas de entrega aún' : st.avgGap <= 0 ? `Entregan en promedio ${Math.abs(st.avgGap).toFixed(1)} días antes` : `Entregan en promedio ${st.avgGap.toFixed(1)} días tarde`}</div></div>
+      <div class="panel"><div class="eyebrow">Por validar · abiertos</div><div class="stat-big">${st.waiting.length} <span style="font-size:15px;color:var(--muted)">· ${st.open.length}</span></div><div class="stat-sub">Horas ahorradas con ideas: ${implH} h/mes</div></div>
+    </div>
+    ${st.waiting.length ? `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Tu bandeja</div><h2>Entregados que esperan tu sello</h2></div></div>
+      <div class="hc-list">${st.waiting.map(c => `<div class="hc-row"><span><b>${esc(c.name)}</b><small>${esc(label(c.resp))} · entregó ${fmtDT(c.deliveredAt)}${limaDay(c.deliveredAt) > c.due ? ' · <span class="neg">fuera de plazo</span>' : ''} · copiloto ${c.reviewedAt ? 'revisó' : 'sin revisión'}</small></span><span><button class="btn small primary" data-validate="${c.id}">Validar</button></span></div>`).join('')}</div></div>` : ''}
+    <div class="grid-2">
+      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Tendencia · últimos meses</div><h2>Cumplimiento y calidad</h2></div><span class="note"><span class="lg b1"></span> a tiempo &nbsp; <span class="lg b2"></span> sin observaciones</span></div>${chart}</div>
+      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Cómo leerlo</div><h2>Definiciones</h2></div></div>
+        <div class="rules" style="grid-template-columns:auto minmax(0,1fr)"><b>A tiempo</b><span>Validados como cerrado, con observaciones o con errores (no fuera de plazo).</span><b>Sin observaciones</b><span>Validados como «Cerrado».</span><b>Con errores</b><span>«Con errores» o «Tarde y con errores».</span><b>Por validar</b><span>El responsable marcó «Entregado» y falta tu sello.</span></div></div>
+    </div>
+    <div class="panel"><div class="panel-head"><div><div class="eyebrow">${esc(monthLabel(tabMonth))}</div><h2>Por persona</h2></div><span class="note">Solo lo ven Armando y Alvaro</span></div>
+      <div class="table-wrap"><table class="adm"><thead><tr><th>Persona</th><th class="num">Reportes</th><th class="num">A tiempo</th><th class="num">Observ.</th><th class="num">Errores</th><th class="num">XP de reportes</th><th class="num">Preguntas del día</th><th>Detective</th></tr></thead><tbody>${rowsP}</tbody></table></div></div>`;
+}
+$('#tabMonth').addEventListener('change', e => { tabMonth = e.target.value; renderTablero(); });
+$('#tabBody').addEventListener('click', e => { const b = e.target.closest('[data-validate]'); if (b) openValidate(b.dataset.validate); });
+$('#tabPrint').addEventListener('click', () => window.print());
+$('#tabCsv').addEventListener('click', () => {
+  if (!tabMonth) return;
+  const st = monthStats(tabMonth), q = v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+  const lines = [['Brújula P&C — Tablero del Comisario', monthLabel(tabMonth)], [], ['Indicador', 'Valor'],
+    ['Entregados a tiempo', pctTxt(st.pctOnTime)], ['Sin observaciones', pctTxt(st.pctClean)], ['Con errores', st.errs.length], ['Por validar', st.waiting.length], ['Abiertos', st.open.length], [],
+    ['Reporte', 'Vence', 'Responsable', 'Copiloto', 'Estado', 'Entregado', 'Revisión copiloto', 'Comentario de validación', 'Evidencia']]
+    .concat(st.L.map(c => [c.name, c.due, label(c.resp), label(c.co), STATUS[c.status].label, c.deliveredAt ? fmtDT(c.deliveredAt) : '', c.reviewedAt ? fmtDT(c.reviewedAt) : '', c.valNote, c.evidence]));
+  const csv = '﻿' + lines.map(r => r.map(q).join(';')).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = `brujula-tablero-${tabMonth}.csv`; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+});
+
+/* =========================================================
+   GUÍA DE BIENVENIDA
+   ========================================================= */
+const GUIDE = [
+  ['Tu detective vive de tu trabajo', 'Tiene cuatro necesidades: <b>Energía</b> (pregunta del día), <b>Orden</b> (tus reportes al día), <b>Conocimiento</b> (un juego o curso por semana) y <b>Ánimo</b> (ideas, reconocimientos y revisiones). Bajan en días hábiles. Si no lo atiendes, se desvanece; con una sola acción vuelve. Nunca te quita XP.'],
+  ['Empieza por «Mi día»', 'Al entrar verás qué necesita tu detective, convertido en tareas concretas: la pregunta del día, tus reportes por vencer y lo que puedes hacer para el equipo. Con dos minutos al día basta.'],
+  ['Marca tus reportes', 'En <b>Casos del Mes</b>, toca un reporte para marcarlo «En curso» o «Entregado» y adjuntar la ruta del archivo. Tu copiloto registra su revisión y Armando o Alvaro ponen el sello final, con comentario si hay observaciones.'],
+  ['XP, rangos y reglas', 'Ganas XP por reportes, ideas, cursos y juegos. Entregar tarde o con errores resta, pero el rango ganado queda protegido. Las penalidades solo las ves tú y la Comisaría. Todos empiezan en cero el día del lanzamiento.<br><br><b>Importante:</b> los XP y rangos son un juego interno del equipo. No forman parte de la evaluación de desempeño oficial ni de la remuneración.']
+];
+let guideStep = 0;
+const guideDlg = $('#guideDlg');
+function renderGuide() {
+  const [t, b] = GUIDE[guideStep];
+  $('#guBody').innerHTML = `<div class="gprog"><span class="note">${guideStep + 1} de ${GUIDE.length}</span><div class="seg">${GUIDE.map((_, k) => `<span class="${k <= guideStep ? 'ok' : ''}"></span>`).join('')}</div></div>
+    <h3 class="gu-t">${t}</h3><p class="gu-b">${b}</p>
+    <div class="gbtns">${guideStep ? '<button class="btn" type="button" data-gu="-1">Anterior</button>' : ''}<button class="btn primary" type="button" data-gu="${guideStep < GUIDE.length - 1 ? 1 : 'fin'}">${guideStep < GUIDE.length - 1 ? 'Siguiente' : 'Entendido'}</button></div>`;
+}
+function openGuide() { guideStep = 0; renderGuide(); try { guideDlg.showModal(); } catch (x) { guideDlg.setAttribute('open', ''); } }
+$('#guBody').addEventListener('click', async e => {
+  const b = e.target.closest('[data-gu]'); if (!b) return;
+  if (b.dataset.gu === 'fin') { guideDlg.close(); return; }
+  guideStep = clamp(guideStep + +b.dataset.gu, 0, GUIDE.length - 1); renderGuide();
+});
+guideDlg.addEventListener('close', async () => {
+  if (S.viewer && !viewerLook().guide) { const look = Object.assign({}, viewerLook(), { guide: 1 }); await sb.from('profiles').update({ look }).eq('id', S.uid).select(); try { await fetchAll(); } catch (x) {} }
+});
+$('#guideBtn').addEventListener('click', openGuide);
+
+/* =========================================================
+   CONTRASEÑA PERSONAL EN EL PRIMER INGRESO
+   ========================================================= */
+const pwDlg = $('#pwDlg');
+pwDlg.addEventListener('cancel', e => e.preventDefault());   // no se puede saltar
+function needsPassword(session) { const md = (session && session.user && session.user.user_metadata) || {}; return md.pw_changed !== true; }
+function askPassword() { return new Promise(res => { pwDlg._done = res; try { pwDlg.showModal(); } catch (x) { pwDlg.setAttribute('open', ''); } setTimeout(() => $('#pf1').focus(), 50); }); }
+$('#pwFirst').addEventListener('submit', async e => {
+  e.preventDefault();
+  const a = $('#pf1').value, b = $('#pf2').value, er = $('#pfErr');
+  if (a.length < 8) { er.textContent = 'Usa al menos 8 caracteres.'; er.hidden = false; return; }
+  if (a !== b) { er.textContent = 'Las dos contraseñas no coinciden.'; er.hidden = false; return; }
+  const { error } = await sb.auth.updateUser({ password: a, data: { pw_changed: true } });
+  if (error) { er.textContent = 'No se pudo guardar. Inténtalo otra vez.'; er.hidden = false; return; }
+  $('#pf1').value = ''; $('#pf2').value = ''; er.hidden = true;
+  pwDlg.close(); toast('Contraseña personal guardada'); if (pwDlg._done) pwDlg._done();
+});
+
+/* =========================================================
+   PREGUNTAS PROPUESTAS POR EL EQUIPO (Sala de entrenamiento)
+   ========================================================= */
+function renderPropose() {
+  const v = S.viewer; if (!v) return;
+  const mineP = (D.proposals || []).filter(q => q.by === v).length, mineA = (D.questions || []).filter(q => q.by === v).length;
+  $('#qPropose').innerHTML = `<div class="panel-head"><div><div class="eyebrow">Banco de preguntas</div><h2>Propón una pregunta para el equipo</h2></div><span class="note">${mineP} en revisión · ${mineA} aprobada${mineA === 1 ? '' : 's'}${canAdmin() ? '' : ' (+5 XP c/u)'}</span></div>
+    <p class="note" style="margin-bottom:12px">Escribir una buena pregunta también es aprender. Armando o Alvaro la revisan y, si la aprueban, entra al Interrogatorio y a la Pregunta del día. No incluyas cifras reservadas de la Caja.</p>
+    ${D.v4 ? `<form id="propForm" class="adm-form" autocomplete="off">
+      <div class="field" style="flex-basis:100%"><label for="ppQ">Pregunta</label><input id="ppQ" maxlength="300" required placeholder="Ej.: ¿Qué indicador mide la cobertura de la cartera atrasada?"></div>
+      ${[0, 1, 2, 3].map(k => `<div class="field"><label for="ppO${k}">Opción ${'ABCD'[k]}</label><input id="ppO${k}" maxlength="120" required></div>`).join('')}
+      <div class="field" style="flex:0 0 150px"><label for="ppA">Correcta</label><select id="ppA">${[0, 1, 2, 3].map(k => `<option value="${k}">Opción ${'ABCD'[k]}</option>`).join('')}</select></div>
+      <div class="field" style="flex-basis:100%"><label for="ppE">Explicación y fuente</label><input id="ppE" maxlength="400" placeholder="Ej.: Provisiones / cartera atrasada. Fuente: glosario SBS."></div>
+      <button class="btn primary" type="submit">Enviar a revisión</button></form>` : '<p class="note">Disponible cuando se ejecute la actualización 4 de la base de datos.</p>'}`;
+}
+$('#qPropose').addEventListener('submit', async e => {
+  if (e.target.id !== 'propForm') return; e.preventDefault();
+  const prompt = $('#ppQ').value.trim(), options = [0, 1, 2, 3].map(k => $('#ppO' + k).value.trim());
+  if (prompt.length < 5 || options.some(x => !x) || new Set(options).size < 4) { toast('Completa la pregunta y cuatro opciones distintas.', true); return; }
+  await write(() => sb.from('questions').insert({ prompt, options, answer: +$('#ppA').value, explain: $('#ppE').value.trim(), created_by: S.viewer, status: canAdmin() ? 'aprobada' : 'propuesta' }).select(), canAdmin() ? 'Pregunta agregada' : 'Pregunta enviada a revisión');
+});
+
+/* =========================================================
+   IDEAS: apoyos y comentarios
+   ========================================================= */
+let ideaOpen = null;
+function ideaExtras(i) {
+  const votes = (D.votes || []).filter(x => x.idea_id === i.id), mine = votes.some(x => x.member_key === S.viewer);
+  const com = (D.comments || []).filter(x => x.idea_id === i.id);
+  return `${i.owner || i.next ? `<div class="idea-next">${i.owner ? `<b>${esc(nombre(i.owner))}</b> · ` : ''}${esc(i.next || 'Siguiente paso por definir')}</div>` : ''}
+    ${D.v4 ? `<div class="idea-acts"><button class="chipbtn ${mine ? 'on' : ''}" data-vote="${i.id}" aria-pressed="${mine}"><svg><use href="#i-heart"/></svg>${votes.length || ''} ${mine ? 'Apoyas' : 'Apoyar'}</button><button class="chipbtn" data-com="${i.id}">${com.length} comentario${com.length === 1 ? '' : 's'}</button></div>
+    ${ideaOpen === i.id ? `<div class="idea-com">${com.map(c => `<div class="ic"><b>${esc(nombre(c.author))}</b> ${esc(c.body)}</div>`).join('') || '<div class="note">Sé el primero en comentar.</div>'}<form data-comform="${i.id}"><input maxlength="280" required placeholder="Escribe un comentario" aria-label="Comentario"><button class="btn small" type="submit">Enviar</button></form></div>` : ''}` : ''}`;
+}
+$('#board').addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.com) { ideaOpen = ideaOpen === b.dataset.com ? null : b.dataset.com; renderIdeas(); return; }
+  if (b.dataset.vote) {
+    const mine = (D.votes || []).some(x => x.idea_id === b.dataset.vote && x.member_key === S.viewer);
+    if (mine) await write(() => sb.from('idea_votes').delete().eq('idea_id', b.dataset.vote).eq('member_key', S.viewer).select());
+    else await write(() => sb.from('idea_votes').insert({ idea_id: b.dataset.vote, member_key: S.viewer }).select(), 'Apoyo registrado');
+  }
+});
+$('#board').addEventListener('submit', async e => {
+  const f = e.target; if (!f.dataset.comform) return; e.preventDefault();
+  const body = f.querySelector('input').value.trim(); if (!body) return;
+  await write(() => sb.from('idea_comments').insert({ idea_id: f.dataset.comform, author: S.viewer, body }).select(), 'Comentario publicado');
+});
+
+/* =========================================================
    VESTIDOR
    ========================================================= */
 let wdSlot = 'outfit', wdOffset = 0, preview = null, wdMode = 'items';
@@ -2235,12 +2886,12 @@ $('#bell').addEventListener('click', () => { S.filter = 'mine'; renderCasos(); l
 /* =========================================================
    NAVEGACIÓN
    ========================================================= */
-const VIEWS = ['cuartel', 'casos', 'credencial', 'academia', 'ideas', 'escalafon', 'admin'];
+const VIEWS = ['cuartel', 'sala', 'casos', 'credencial', 'academia', 'ideas', 'escalafon', 'tablero', 'admin'];
 let currentView = 'cuartel';
 function route() {
   let v = (location.hash || '').replace('#', '');
-  const toTraining = v === 'entrenamiento';
-  if (toTraining) v = 'cuartel';
+  if (v === 'entrenamiento') v = 'sala';
+  const toTraining = false;
   if (!VIEWS.includes(v)) v = 'cuartel';
   currentView = v;
   document.querySelectorAll('.view[data-view]').forEach(s => s.hidden = s.dataset.view !== v);
@@ -2460,9 +3111,9 @@ function makeFigureKit(T, WARDROBE) {
     const cut = (style.cut || [.1]).concat([-9, -9]).slice(0, 2);
     return new T.ShaderMaterial({
       side: side || T.FrontSide, toneMapped: false,
-      uniforms: { uC: { value: c }, uL: { value: L }, uT: { value: new T.Vector3(tones[0], tones[1] || tones[0], tones[2] || tones[1] || tones[0]) }, uK: { value: new T.Vector2(cut[0], cut[1]) }, uSoft: { value: style.soft ? 1 : 0 }, uRim: { value: style.rim || 0 }, uGrain: { value: style.grain ? 1 : 0 }, uN: { value: (style.tones || [1, .8]).length } },
+      uniforms: { uC: { value: c }, uL: { value: L }, uT: { value: new T.Vector3(tones[0], tones[1] || tones[0], tones[2] || tones[1] || tones[0]) }, uK: { value: new T.Vector2(cut[0], cut[1]) }, uSoft: { value: style.soft ? 1 : 0 }, uRim: { value: style.rim || 0 }, uGrain: { value: style.grain ? 1 : 0 }, uN: { value: (style.tones || [1, .8]).length }, uAlpha: { value: 1 }, uSat: { value: 1 } },
       vertexShader: 'varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
-      fragmentShader: `uniform vec3 uC; uniform vec3 uL; uniform vec3 uT; uniform vec2 uK; uniform float uSoft; uniform float uRim; uniform float uGrain; uniform float uN;
+      fragmentShader: `uniform vec3 uC; uniform vec3 uL; uniform vec3 uT; uniform vec2 uK; uniform float uSoft; uniform float uRim; uniform float uGrain; uniform float uN; uniform float uAlpha; uniform float uSat;
         varying vec3 vN; varying vec3 vV;
         float h(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233))) * 43758.5453); }
         void main(){
@@ -2476,7 +3127,8 @@ function makeFigureKit(T, WARDROBE) {
           float r = pow(1.0 - max(dot(n, vV), 0.0), 3.0);
           col += uRim * r * vec3(1.0, .93, .82);
           if (uGrain > .5) { float g = h(floor(gl_FragCoord.xy / 1.5)); col *= .93 + .07 * g; }
-          gl_FragColor = vec4(col, 1.0);
+          col = mix(vec3(dot(col, vec3(.299, .587, .114))), col, uSat);
+          gl_FragColor = vec4(col, uAlpha);
         }`
     });
   }
@@ -2486,7 +3138,9 @@ function makeFigureKit(T, WARDROBE) {
     const o = new T.Mesh(mesh.geometry, m); o.userData.isOutline = true; return o;
   }
 
-  function build(look, styleId) {
+  function build(look, styleId, mood) {
+    mood = mood || 'tranquilo';
+    const SAD = ['desanimado', 'preocupado', 'desvaneciendo'].includes(mood), TIRED = mood === 'cansado' || mood === 'desvaneciendo', HAPPY = ['motivado', 'concentrado', 'tranquilo', 'viaje'].includes(mood);
     const style = STYLES[styleId] || STYLES.realista;
     const toon = style.finish === 'toon', satin = style.finish === 'satin';
     function M(color, o) {
@@ -2775,9 +3429,10 @@ function makeFigureKit(T, WARDROBE) {
       [-1, 1].forEach(s => { const w = ellipsoid(.013, .011, .012, skinM, 16); w.position.set(s * .019, -.118, faceZ(s * .019, -.118) + .003); head.add(w); });
     }
     function brows(r, lift, arch) {
+      const worry = SAD ? .009 : 0, up = mood === 'motivado' ? .004 : 0;
       [-1, 1].forEach(s => {
-        const y = eyeY + .052 + (lift || 0);
-        const pts = [-.03, -.008, .016, .034].map((dx, i) => { const x = s * (eyeX + dx); const yy = y + [.002, .007 + (arch || 0) * .6, .006 + (arch || 0), -.004][i]; return V3(x, yy, faceZ(x, yy) + .003); });
+        const y = eyeY + .052 + (lift || 0) + up - (TIRED ? .004 : 0);
+        const pts = [-.03, -.008, .016, .034].map((dx, i) => { const x = s * (eyeX + dx); const yy = y + [.002 + worry, .007 + (arch || 0) * .6 + worry * .5, .006 + (arch || 0), -.004 - worry * .3][i]; return V3(x, yy, faceZ(x, yy) + .003); });
         head.add(tube(pts, r, browM, 18, 6));
       });
     }
@@ -2811,18 +3466,21 @@ function makeFigureKit(T, WARDROBE) {
       if (fem) {
         // ojos algo más grandes, línea de pestañas con remate hacia afuera, labios con color
         [-1, 1].forEach(s => {
-          const x = s * eyeX; const e = ellipsoid(.0125, .0165, .005, ink, 16); e.position.set(x, eyeY - .002, faceZ(x, eyeY) + .001); head.add(e);
-          const hl = ellipsoid(.0035, .0035, .002, new T.MeshBasicMaterial({ color: 0xFFFFFF }), 8); hl.position.set(x + .004, eyeY + .004, faceZ(x, eyeY) + .006); head.add(hl);
+          const x = s * eyeX; const e = ellipsoid(.0125, .0165 * (TIRED ? .42 : 1), .005, ink, 16); e.position.set(x, eyeY - .002 - (TIRED ? .004 : 0), faceZ(x, eyeY) + .001); head.add(e);
+          if (!TIRED) { const hl = ellipsoid(.0035, .0035, .002, new T.MeshBasicMaterial({ color: 0xFFFFFF }), 8); hl.position.set(x + .004, eyeY + .004, faceZ(x, eyeY) + .006); head.add(hl); }
           head.add(tube([-.02, -.006, .01, .022, .03].map((dx, i) => { const yy = eyeY + [.006, .016, .017, .012, .019][i]; return V3(x + s * dx, yy, faceZ(x + s * dx, yy) + .002); }), .0026, ink, 16, 5));
         });
         brows(.0036, .014, .012); flatNose(.8);
         const lipF = M(new T.Color(sk.hex).lerp(new T.Color(0xB5474F), .55).getHex(), { noOutline: true });
         const up = ellipsoid(.021, .0055, .006, lipF, 20); up.position.set(0, -.163, faceZ(0, -.163) + .0005); head.add(up);
         const lo = ellipsoid(.018, .0075, .007, lipF, 20); lo.position.set(0, -.174, faceZ(0, -.174) + .0005); head.add(lo);
+        const cv = HAPPY ? .005 : SAD ? -.005 : 0;   // comisuras: arriba = sonrisa, abajo = tristeza
+        head.add(tube([-.027, -.02, 0, .02, .027].map((dx, i) => { const yy = -.1685 + [cv, cv * .4, 0, cv * .4, cv][i]; return V3(dx, yy, faceZ(dx, yy) + .0018); }), .0017, M(new T.Color(sk.hex).lerp(new T.Color(0x6A2A2C), .6).getHex(), { noOutline: true }), 14, 5));
       } else {
-        [-1, 1].forEach(s => { const x = s * eyeX; const e = ellipsoid(.011, .015, .005, ink, 16); e.position.set(x, eyeY, faceZ(x, eyeY) + .001); head.add(e); });
+        [-1, 1].forEach(s => { const x = s * eyeX; const e = ellipsoid(.011, .015 * (TIRED ? .42 : 1), .005, ink, 16); e.position.set(x, eyeY - (TIRED ? .004 : 0), faceZ(x, eyeY) + .001); head.add(e); });
         brows(.0062, .004, .003); flatNose(1);
-        const pts = [-.024, 0, .024].map((dx, i) => V3(dx, -.168 - (i === 1 ? .004 : 0), faceZ(dx, -.168) + .002)); head.add(tube(pts, .0034, M(0x6A3430, { noOutline: true }), 12));
+        const mid = HAPPY ? (mood === 'motivado' ? -.009 : -.005) : SAD ? .005 : 0;
+        const pts = [-.026, -.012, 0, .012, .026].map((dx, i) => { const yy = -.168 + [0, mid * .7, mid, mid * .7, 0][i]; return V3(dx, yy, faceZ(dx, yy) + .002); }); head.add(tube(pts, .0034, M(0x6A3430, { noOutline: true }), 14));
       }
     } else if (F === 'none') {
       const ridge = ellipsoid(.018, .05, .016, skinM, 24); ridge.position.set(0, -.085, faceZ(0, -.085) - .009); ridge.rotation.x = -.2; head.add(ridge); [-1, 1].forEach(s => { const br = ellipsoid(.04, .012, .012, skinM, 16); br.position.set(s * eyeX, eyeY + .035, faceZ(s * eyeX, eyeY + .035) - .008); head.add(br); });
@@ -2969,7 +3627,18 @@ function makeFigureKit(T, WARDROBE) {
     g.userData.anim = { upper, head, arms, legs };
     return g;
   }
-  return { build, STYLES };
+  /* Presencia del detective: 1 = pleno; baja hasta 0.3 (casi invisible y sin color) */
+  function setVitality(group, p) {
+    const sat = Math.pow(p, 1.4);
+    group.traverse(m => {
+      if (!m.isMesh || !m.material) return;
+      const mt = m.material;
+      if (mt.uniforms && mt.uniforms.uAlpha) { mt.uniforms.uAlpha.value = p; mt.uniforms.uSat.value = sat; mt.transparent = p < .99; }
+      else { if (mt.userData.baseOpacity == null) mt.userData.baseOpacity = mt.opacity; mt.opacity = mt.userData.baseOpacity * p; mt.transparent = mt.userData.baseOpacity < 1 || p < .99; }
+      mt.needsUpdate = true;
+    });
+  }
+  return { build, STYLES, setVitality };
 }
 
 function initScene() {
@@ -3248,11 +3917,41 @@ function initScene() {
 
   /* ---- Detective ---- */
   const KIT = makeFigureKit(T, WARDROBE);
-  let figure = null;
+  let figure = null, lastLook = null;
+  const vida = { mood: 'tranquilo', presence: 1, N: null, greeted: false };
   function setLook(look) {
+    lastLook = look;
     if (figure) { walker.remove(figure); figure.traverse(m => { if (m.isMesh && !m.userData.isOutline) m.geometry.dispose(); }); }
-    figure = KIT.build(look, FIGURE_STYLE); walker.add(figure);
+    figure = KIT.build(look, FIGURE_STYLE, vida.mood); walker.add(figure);
+    KIT.setVitality(figure, vida.presence);
     requestRender();
+  }
+  /* El entorno refleja las necesidades: planta (Conocimiento), lámpara y café (Energía), papeles (Orden) */
+  const leafBase = new T.Color(0x3E6B48), leafDry = new T.Color(0x8A6A3C);
+  const mess = new T.Group(); scene.add(mess);
+  const paperM = mat(0xF1EDE3, { roughness: .9, side: T.DoubleSide });
+  for (let i = 0; i < 12; i++) {
+    const p = new T.Mesh(new T.PlaneGeometry(.21, .28), paperM); p.rotation.x = -Math.PI / 2; p.rotation.z = rnd() * Math.PI;
+    if (i < 5) { p.position.set(2.55 - .8 + rnd() * 1.1, DESK_Y + .005 + i * .002, -2.6 - .3 + rnd() * .6); }
+    else { p.position.set(-1.6 + rnd() * 3.6, .012 + i * .001, -2.2 + rnd() * 1.2); p.rotation.y = rnd(); }
+    p.visible = false; mess.add(p);
+  }
+  function applyNeeds(N) {
+    if (!N) return;
+    const k = N.conocimiento / 100;
+    leaves.scale.set(1, .55 + .45 * k, 1); leaves.rotation.x = (1 - k) * .35;
+    leafM.color.copy(leafBase).lerp(leafDry, Math.max(0, .7 - k));
+    lampLight.intensity = lampOn ? .25 + 1.15 * (N.energia / 100) : 0;
+    coffee.visible = N.energia >= 35;
+    const nPapers = Math.round((1 - N.orden / 100) * mess.children.length);
+    mess.children.forEach((p, i) => { p.visible = i < nPapers; });
+    requestRender();
+  }
+  function setVida(mood, N) {
+    const changed = mood !== vida.mood;
+    vida.mood = mood; vida.presence = N ? N.presence : 1; vida.N = N;
+    if (changed && lastLook) setLook(lastLook); else if (figure) { KIT.setVitality(figure, vida.presence); requestRender(); }
+    applyNeeds(N);
   }
   let wave = 0;           // segundos restantes del saludo
   let walk = null;        // { to: Vector3, onPed: bool }
@@ -3261,10 +3960,15 @@ function initScene() {
     if (!figure) return;
     const an = figure.userData.anim;
     const moving = !!walk;
+    const md = vida.mood, low = md === 'cansado' || md === 'desanimado' || md === 'desvaneciendo', hi = md === 'motivado';
+    const sp = low ? .55 : hi ? 1.35 : 1;
+    an.upper.rotation.x = low ? .1 : hi ? -.03 : 0;
+    an.head.rotation.x = low ? .22 : md === 'preocupado' ? .08 : hi ? -.06 : 0;
     if (!reduce) {
-      an.upper.position.y = moving ? Math.abs(Math.sin(walkPhase)) * .012 : Math.sin(t * 1.7) * .004;
-      an.head.rotation.z = Math.sin(t * .7) * .03;
-      an.head.rotation.y = moving ? 0 : Math.sin(t * .45) * .1;
+      an.upper.position.y = moving ? Math.abs(Math.sin(walkPhase)) * .012 : Math.sin(t * 1.7 * sp) * (hi ? .008 : .004);
+      an.head.rotation.z = Math.sin(t * .7 * sp) * (md === 'preocupado' ? .08 : .03);
+      an.head.rotation.y = moving ? 0 : Math.sin(t * .45 * sp) * (md === 'preocupado' ? .22 : .1);
+      if (md === 'cansado' && (t % 9) < 1.4) an.head.rotation.x = -.25 * Math.sin((t % 9) / 1.4 * Math.PI);  // bosteza
     }
     const swing = moving ? Math.sin(walkPhase) * .42 : 0;
     if (an.legs) { an.legs[-1].rotation.x = swing; an.legs[1].rotation.x = -swing; }
@@ -3289,7 +3993,7 @@ function initScene() {
     camera.aspect = aspect;
     const wide = window.matchMedia('(min-width: 901px)').matches;
     const dist = aspect < 1.3 ? 5.0 + (1.3 - aspect) * 3.2 : 5.0;
-    const xShift = wide ? .55 : 0; // deja espacio al vestidor de la derecha
+    const xShift = wide && $('#scene').classList.contains('dressing') ? .55 : 0; // deja espacio al vestidor
     camBase.pos.set(xShift, 1.65, dist); camBase.look.set(xShift, 1.0, 0);
     if (!focused && !camAnim) { camNow.pos.copy(camBase.pos); camNow.look.copy(camBase.look); }
     camera.updateProjectionMatrix();
@@ -3417,7 +4121,7 @@ function initScene() {
   let onPed = true;
   function walkTo(p, toPed) {
     const to = toPed ? new T.Vector3(0, 0, 0) : new T.Vector3(Math.max(-4.1, Math.min(4.1, p.x)), 0, Math.max(-1.75, Math.min(2.1, p.z)));
-    walk = { to, toPed: !!toPed }; onPed = false; $('#pedBtn').hidden = false; requestRender();
+    walk = { to, toPed: !!toPed }; onPed = false; requestRender();
   }
   function stepWalk(dt) {
     if (!walk) return;
@@ -3425,7 +4129,7 @@ function initScene() {
     const d = walk.to.clone().sub(cur); const dist = d.length();
     if (dist < .03 || reduce) {
       walker.position.x = walk.to.x; walker.position.z = walk.to.z; const wasPed = walk.toPed; walk = null;
-      if (wasPed) { onPed = true; $('#pedBtn').hidden = true; rot = walker.rotation.y; }
+      if (wasPed) { onPed = true; rot = walker.rotation.y; }
       turnTo = Math.atan2(camera.position.x - walker.position.x, camera.position.z - walker.position.z);
       return;
     }
@@ -3437,24 +4141,11 @@ function initScene() {
   }
   let turnTo = null;
   const lerpAngle = (a, b, k) => { let d = ((b - a + Math.PI) % (Math.PI * 2)) - Math.PI; if (d < -Math.PI) d += Math.PI * 2; return a + d * k; };
-  $('#pedBtn').addEventListener('click', () => walkTo(null, true));
 
-  /* ---- Ordenar el escritorio ---- */
-  let arranging = false, saved = null;
-  function setArrange(on) {
-    arranging = on; $('#arrangeBar').hidden = !on; $('#arrangeBtn').setAttribute('aria-pressed', String(on));
-    stage.classList.toggle('arranging', on);
-    if (on) { saved = currentDesk(); unfocus(); closeProps(); }
-    requestRender();
-  }
-  $('#arrangeBtn').addEventListener('click', () => setArrange(!arranging));
-  $('#arrangeCancel').addEventListener('click', () => { applyDesk(saved); setArrange(false); });
-  $('#arrangeSave').addEventListener('click', async () => {
-    const desk = currentDesk();
-    const look = Object.assign({}, viewerLook(), { desk });
-    const ok = await write(() => sb.from('profiles').update({ look }).eq('id', S.uid).select(), 'Escritorio guardado');
-    if (ok) setArrange(false);
-  });
+  /* ---- Personalizar (vestidor) ---- */
+  let arranging = false;
+  const sceneEl = $('#scene');
+  $('#dressBtn').addEventListener('click', () => { const on = !sceneEl.classList.contains('dressing'); sceneEl.classList.toggle('dressing', on); $('#dressBtn').setAttribute('aria-pressed', String(on)); unfocus(); closeProps(); setTimeout(resize, 30); });
 
   /* ---- Puntero: girar, señalar, tocar, arrastrar ---- */
   const ray = new T.Raycaster(), ndc = new T.Vector2();
@@ -3506,17 +4197,15 @@ function initScene() {
     const h = pickHot();
     if (h) { if (!arranging) interact(h); return; }
     if (arranging) return;
-    if (pickFigure()) { wave = 1.6; speak(); requestRender(); return; }
-    if (focused) { unfocus(); closeProps(); return; }
-    const hit = ray.intersectObjects(floorTargets, false)[0];
-    if (hit) { const p = hit.point; if (Math.hypot(p.x, p.z) < PED_R) walkTo(null, true); else walkTo(p); }
+    if (pickFigure()) { wave = 1.6; say((window.__greet && window.__greet()) || PHRASES[Math.floor(Math.random() * PHRASES.length)]); requestRender(); return; }
+    if (focused) { unfocus(); closeProps(); }
   }
   canvas.addEventListener('pointerup', endPointer); canvas.addEventListener('pointercancel', endPointer);
   canvas.addEventListener('pointerleave', () => { if (!down) hideTip(); });
 
   const PHRASES = ['Listo para el cierre.', 'Las cifras no mienten.', '¿Ya revisaste tu copiloto?', 'Hoy cerramos sin observaciones.', 'Una pista: revisa las variaciones.', 'El mes perfecto está en juego.'];
   let bubbleT = 0;
-  function speak() { bubble.textContent = PHRASES[Math.floor(Math.random() * PHRASES.length)]; bubble.hidden = false; bubbleT = 2.6; placeBubble(); }
+  function say(text, secs) { bubble.textContent = text; bubble.hidden = false; bubbleT = secs || 4.5; placeBubble(); requestRender(); }
   const headPos = new T.Vector3();
   function placeBubble() {
     if (bubble.hidden || !figure) return;
@@ -3570,9 +4259,9 @@ function initScene() {
   setLook(currentLook());
   applyDesk(viewerLook().desk);
   return {
-    setLook, applyDesk, setPhoneAlert,
+    setLook, applyDesk, setPhoneAlert, setVida, say,
     setActive(on) { active = on; if (on) { last = performance.now(); resize(); requestRender(); } else { hideTip(); } },
-    debug: { HOT, interact, walkTo, get walker() { return walker; }, get onPed() { return onPed; }, setArrange, currentDesk, unfocus }
+    debug: { HOT, interact, get walker() { return walker; }, get vida() { return vida; }, get figure() { return figure; }, unfocus }
   };
 }
 
@@ -3620,6 +4309,11 @@ async function enterApp(session) {
   $('#splash').hidden = true; $('#login').hidden = true; $('.app').hidden = false;
   renderAll(); wardrobeSync(); route();
   startScene(); startPolling();
+  window.__greet = () => { recordVisit(); const N = needsOf(S.viewer); return phraseOf(S.viewer, moodOf(S.viewer, N), N); };
+  renderMyDay();
+  setTimeout(() => { if (window.__scene && window.__scene.say && currentView === 'cuartel') { const N = needsOf(S.viewer); window.__scene.say(phraseOf(S.viewer, moodOf(S.viewer, N), N), 6); } }, 1400);
+  if (needsPassword(session)) await askPassword();
+  if (!viewerLook().guide) openGuide();
   return true;
 }
 
