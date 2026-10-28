@@ -886,7 +886,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
     <div class="field"><label for="pf1">Nueva contraseña</label><div class="pw-wrap"><input id="pf1" type="password" minlength="8" autocomplete="new-password" required><button class="pw-eye" type="button" data-for="pf1" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
     <div class="field"><label for="pf2">Repítela</label><div class="pw-wrap"><input id="pf2" type="password" minlength="8" autocomplete="new-password" required><button class="pw-eye" type="button" data-for="pf2" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
     <p class="login-err" id="pfErr" hidden></p>
-    <div class="gbtns"><button class="btn primary" type="submit">Guardar y entrar</button></div>
+    <div class="gbtns"><button class="btn primary" type="submit">Guardar y entrar</button><button class="btn" type="button" id="pfLogout">Salir y entrar con otro usuario</button></div>
   </form>
 </dialog>
 <dialog class="game-dlg" id="gameDlg" aria-labelledby="gdTitle">
@@ -3090,6 +3090,21 @@ $('#guideBtn').addEventListener('click', openGuide);
    ========================================================= */
 const pwDlg = $('#pwDlg');
 pwDlg.addEventListener('cancel', e => e.preventDefault());   // no se puede saltar
+/* Traduce los motivos con que Supabase rechaza una contraseña */
+function pwErrMsg(err) {
+  const c = String((err && err.code) || ''), m = String((err && err.message) || '');
+  const reasons = (err && err.reasons) || [];
+  if (c === 'same_password' || /different from the old/i.test(m)) return 'Debe ser distinta a tu contraseña actual. Elige una nueva.';
+  if (c === 'weak_password' || /weak|should contain|at least/i.test(m)) {
+    if (reasons.includes('pwned') || /pwned|leaked|known/i.test(m)) return 'Esa contraseña aparece en listas de contraseñas filtradas en internet. Elige otra menos común.';
+    if (reasons.includes('characters') || /should contain/i.test(m)) return 'Supabase pide combinar mayúsculas, minúsculas, números y un símbolo (por ejemplo: Brujula#2026).';
+    return 'La contraseña es muy débil. Usa al menos 8 caracteres combinando letras, números y un símbolo.';
+  }
+  if (c === 'reauthentication_needed' || /reauth/i.test(m)) return 'Por seguridad, sal y vuelve a entrar con tu contraseña inicial; luego cámbiala.';
+  if (/session|jwt|expired/i.test(c + m)) return 'Tu sesión venció. Sal y vuelve a entrar.';
+  if (/fetch|network/i.test(m)) return 'Sin conexión con el servidor. Revisa tu internet e inténtalo otra vez.';
+  return 'No se pudo guardar: ' + (m || 'error desconocido') + '.';
+}
 function needsPassword(session) { const md = (session && session.user && session.user.user_metadata) || {}; return md.pw_changed !== true; }
 function askPassword() { return new Promise(res => { pwDlg._done = res; try { pwDlg.showModal(); } catch (x) { pwDlg.setAttribute('open', ''); } setTimeout(() => $('#pf1').focus(), 50); }); }
 $('#pwFirst').addEventListener('submit', async e => {
@@ -3097,8 +3112,10 @@ $('#pwFirst').addEventListener('submit', async e => {
   const a = $('#pf1').value, b = $('#pf2').value, er = $('#pfErr');
   if (a.length < 8) { er.textContent = 'Usa al menos 8 caracteres.'; er.hidden = false; return; }
   if (a !== b) { er.textContent = 'Las dos contraseñas no coinciden.'; er.hidden = false; return; }
+  const btn = e.target.querySelector('button[type=submit]'); btn.disabled = true;
   const { error } = await sb.auth.updateUser({ password: a, data: { pw_changed: true } });
-  if (error) { er.textContent = 'No se pudo guardar. Inténtalo otra vez.'; er.hidden = false; return; }
+  btn.disabled = false;
+  if (error) { er.textContent = pwErrMsg(error); er.hidden = false; console.warn('updateUser', error.code, error.message); return; }
   $('#pf1').value = ''; $('#pf2').value = ''; er.hidden = true;
   pwDlg.close(); toast('Contraseña personal guardada'); if (pwDlg._done) pwDlg._done();
 });
@@ -4846,6 +4863,7 @@ document.addEventListener('click', e => {
   inp.focus();
 });
 $('#logout').addEventListener('click', async () => { try { await sb.auth.signOut(); } catch (e) {} location.reload(); });
+$('#pfLogout').addEventListener('click', async () => { try { await sb.auth.signOut(); } catch (e) {} location.reload(); });
 $('#pwForm').addEventListener('submit', async e => {
   e.preventDefault();
   const a = $('#pw1').value, b = $('#pw2').value;
@@ -4854,7 +4872,7 @@ $('#pwForm').addEventListener('submit', async e => {
   busy = true;
   const { error } = await sb.auth.updateUser({ password: a });
   busy = false;
-  if (error) { toast('No se pudo cambiar la contraseña. Inténtalo otra vez.', true); return; }
+  if (error) { toast(pwErrMsg(error), true); return; }
   $('#pw1').value = ''; $('#pw2').value = '';
   toast('Contraseña actualizada.');
 });
