@@ -7,8 +7,9 @@ Plataforma del equipo de Planeamiento Financiero y Control de Gestión para segu
 - `supabase/actualizacion-2.sql`: penalidades, rango protegido y Sala de entrenamiento.
 - `supabase/actualizacion-3.sql`: fotos del equipo en un espacio privado de Supabase Storage.
 - `supabase/actualizacion-4.sql`: personaje vivo, entrega y validación de reportes con historial, reconocimientos, preguntas del equipo, apoyos y comentarios en ideas, y reinicio de temporada.
+- `supabase/actualizacion-5.sql`: borrar el historial de un reporte o de un expediente, nombres de cursos editables desde la Academia y fecha de cada avance de la Academia.
 
-Los archivos SQL se ejecutan en orden: `schema.sql`, `actualizacion-2`, `-3` y `-4`.
+Los archivos SQL se ejecutan en orden: `schema.sql`, `actualizacion-2`, `-3`, `-4` y `-5`.
 
 ## Cómo funciona
 - La web se publica con GitHub Pages.
@@ -18,10 +19,13 @@ Los archivos SQL se ejecutan en orden: `schema.sql`, `actualizacion-2`, `-3` y `
 
 ## Qué incluye
 - **Mi día**: lo primero al entrar. Muestra cómo está tu detective y qué necesita, convertido en tareas concretas.
-- **Personaje vivo**: cuatro necesidades (Energía, Orden, Conocimiento y Ánimo) que se llenan con trabajo real y bajan en días hábiles. Tiene emociones visibles, una motivación propia y, si no se le atiende, se desvanece. Nunca muere ni quita XP. Tiene modo vacaciones. El equipo ve el estado de cada detective.
+- **Personaje vivo**: cinco cualidades en un gráfico de araña (Energía, Orden, Conocimiento, Ánimo y Precisión) y una frase financiera del día. Las cuatro primeras que se llenan con trabajo real y bajan en días hábiles. Tiene emociones visibles, una motivación propia y, si no se le atiende, se desvanece. Nunca muere ni quita XP. Tiene modo vacaciones. El equipo ve el estado de cada detective.
 - **Reportes**: el responsable marca «En curso» o «Entregado» con evidencia, el copiloto registra su revisión y la Comisaría pone el sello con comentario obligatorio en observaciones, errores o tardanza. Todo queda en un historial. Las penalidades solo las ven el interesado y la Comisaría.
+- **Detective del mes**: el 1 de cada mes se muestra el top 3 del mes anterior (sin el Comisario) por XP ganados en ese mes, y en vivo cómo va el mes en curso.
+- **Insignias mensuales**: siete insignias que se ganan cada mes (plazo, cero errores, copiloto, aprendizaje, ideas, reconocimientos y Detective del mes). Si se repiten suben de nivel. La credencial muestra también las habilidades que el equipo refuerza en conjunto.
+- **Academia**: el avance de cada curso y los nombres de cursos y habilidades se editan en la misma página, solo Armando y Alvaro.
 - **Tablero del Comisario**: indicadores del mes, tendencia, bandeja de validación, detalle por persona y exportación a Excel (CSV) o PDF.
-- **Sala de entrenamiento**: Pregunta del día, 5 minijuegos y preguntas propuestas por el equipo.
+- **Sala de entrenamiento**: Pregunta del día con sustento de la respuesta correcta, 5 minijuegos (Interrogatorio, ¿Verdad o mito?, Palabra oculta, ¿Sube o baja?, Ordena el proceso) y preguntas propuestas por el equipo.
 - **Ideas** con responsable, siguiente paso, apoyos y comentarios. **Reconocimientos** entre compañeros.
 - Guía de bienvenida, cambio de contraseña obligatorio en el primer ingreso, fotos privadas y reinicio de temporada para empezar todos en cero.
 - Los XP y rangos son un juego interno del equipo: no forman parte de la evaluación de desempeño oficial ni de la remuneración.

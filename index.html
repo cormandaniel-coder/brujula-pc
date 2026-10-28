@@ -650,30 +650,132 @@ td.neg { color: var(--stamp); font-weight: 600; }
 .chip.placed { background: var(--manila-soft); border-color: var(--manila-fill); }
 .chip.right { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
 .chip.wrong { border-color: var(--stamp); color: var(--stamp); background: transparent; }
-.pairs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.card { min-height: 84px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--ink); color: var(--manila-fill); font-size: 12.5px; font-weight: 600; padding: 8px; display: grid; place-items: center; text-align: center; line-height: 1.3; }
-.card svg { width: 20px; height: 20px; opacity: .6; }
-.card.up { background: var(--surface); color: var(--ink); border-color: var(--manila-fill); }
-.card.up.concept { background: var(--manila-soft); font-family: var(--font-display); font-size: 15px; font-weight: 400; }
-.card.done { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); }
-.err-t td { white-space: nowrap; }
-.err-t tr.tot td { font-weight: 700; border-top: 2px solid var(--ink); }
-.cell { border: 1px dashed transparent; background: none; padding: 3px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
-.cell:hover:not(:disabled) { border-color: var(--manila-fill); background: var(--manila-soft); }
-.cell:disabled { cursor: default; }
-.cell.wrongcell { border: 2px solid var(--stamp); color: var(--stamp); font-weight: 700; }
-.cell.miss { text-decoration: line-through; color: var(--muted); }
+.word { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 14px 0 6px; }
+.word span { width: 30px; height: 42px; border-bottom: 2px solid var(--ink); display: grid; place-items: end center; padding-bottom: 4px; font-family: var(--font-display); font-size: 24px; font-weight: 600; }
+.word span.miss { color: var(--stamp); }
+.keys { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 5px; }
+.key { height: 36px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface-2); font-family: var(--font-mono); font-weight: 600; font-size: 14px; }
+.key:hover:not(:disabled) { border-color: var(--manila-fill); background: var(--manila-soft); }
+.key.hit { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.key.fail { background: transparent; color: var(--muted); text-decoration: line-through; }
+.key:disabled { cursor: default; }
 @media (max-width: 900px) {
   .train-grid { grid-template-columns: minmax(0, 1fr); }
-  .pairs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
   .opts, .ord { grid-template-columns: minmax(0, 1fr); }
-  .pairs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .keys { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .word span { width: 24px; height: 36px; font-size: 20px; }
+}
+
+/* ---------- Radar de cualidades (Mi día) ---------- */
+.md-needs { justify-items: center; }
+.radar { width: 100%; max-width: 300px; height: auto; display: block; overflow: visible; }
+.rd-grid { fill: none; stroke: var(--line); stroke-width: 1; }
+.rd-grid.out { stroke: color-mix(in srgb, var(--muted) 45%, transparent); }
+.rd-axis { stroke: var(--line); stroke-width: 1; }
+.rd-area { fill: color-mix(in srgb, var(--manila-fill) 30%, transparent); stroke: var(--manila); stroke-width: 2; stroke-linejoin: round; }
+.rd-dot { fill: var(--manila); }
+.rd-n { font-size: 11px; font-weight: 600; fill: var(--muted); font-family: var(--font-body, inherit); }
+.rd-v { font-size: 12px; font-weight: 700; font-family: var(--font-mono); }
+.rd-v.hi { fill: var(--ok); } .rd-v.mid { fill: var(--manila); } .rd-v.low { fill: var(--stamp); }
+.rd-help { text-align: center; margin: -4px 0 0; }
+.md-motiv .eyebrow { display: block; font-family: var(--font-body, inherit); margin-bottom: 2px; }
+.opt-tag { display: inline-block; margin-left: 6px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; opacity: .85; }
+.hist-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+
+/* ---------- Detective del mes ---------- */
+.pod-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: end; }
+.podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: end; }
+.pod { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; position: relative; min-width: 0; }
+.pod .avatar { border: 3px solid var(--surface); box-shadow: 0 0 0 2px var(--line); }
+.pod.p1 .avatar { box-shadow: 0 0 0 3px var(--manila-fill); }
+.pod-name { font-family: var(--font-display); font-weight: 600; font-size: 16px; margin-top: 6px; }
+.pod .note { font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.pod-crown { position: absolute; top: -14px; color: var(--manila-fill); }
+.pod-crown svg { width: 22px; height: 22px; }
+.pod-step { width: 100%; margin-top: 8px; border-radius: var(--r-sm) var(--r-sm) 0 0; background: var(--surface-2); border: 1px solid var(--line); border-bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 12.5px; }
+.pod-n { font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+.pod.p1 .pod-step { height: 96px; background: var(--manila-soft); border-color: var(--manila-fill); }
+.pod.p2 .pod-step { height: 70px; }
+.pod.p3 .pod-step { height: 52px; }
+.pod-empty { display: flex; gap: 12px; align-items: center; background: var(--surface-2); border-radius: var(--r-md); padding: 16px; }
+.pod-empty svg { width: 28px; height: 28px; color: var(--manila-fill); flex: none; }
+.pod-empty p { margin: 0; font-size: 13.5px; }
+.pod-live { background: var(--surface-2); border-radius: var(--r-md); padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.live-row { display: grid; grid-template-columns: 14px 26px minmax(0, 76px) minmax(0, 1fr) 44px; gap: 8px; align-items: center; font-size: 13px; }
+.live-row.me .live-n { font-weight: 700; }
+.live-row .avatar { width: 26px; height: 26px; font-size: 10px; }
+.live-bar { height: 7px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.live-bar > span { display: block; height: 100%; background: var(--manila-fill); border-radius: 99px; }
+.live-x { text-align: right; font-size: 12.5px; }
+.live-x.neg { color: var(--stamp); }
+
+/* ---------- Insignias mensuales ---------- */
+.ins-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.ins-card { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px; background: var(--surface); }
+.ins-card.off { background: transparent; border-style: dashed; }
+.ins-card.off .ins-n { color: var(--muted); }
+.ins-n { font-weight: 600; font-size: 13.5px; }
+.ins-medal { --c: var(--line); width: 44px; height: 44px; flex: none; border-radius: 50%; display: grid; place-items: center; position: relative; color: var(--muted); background: var(--surface-2); border: 2px dashed var(--line); }
+.ins-medal svg { width: 20px; height: 20px; }
+.ins-medal.sm { width: 32px; height: 32px; } .ins-medal.sm svg { width: 15px; height: 15px; }
+.ins-medal.lv1 { border: 3px solid #B07A45; background: color-mix(in srgb, #B07A45 16%, var(--surface)); color: #8A5A2E; }
+.ins-medal.lv2 { border: 3px solid #8E99A6; background: color-mix(in srgb, #8E99A6 22%, var(--surface)); color: #4E5A68; box-shadow: 0 0 0 3px color-mix(in srgb, #8E99A6 25%, transparent); }
+.ins-medal.lv3 { border: 3px solid var(--manila-fill); background: var(--manila-soft); color: var(--manila); box-shadow: 0 0 0 4px color-mix(in srgb, var(--manila-fill) 30%, transparent); }
+.ins-x { position: absolute; right: -8px; top: -6px; background: var(--ink); color: var(--bg); border-radius: 99px; font: 700 10.5px/1 var(--font-mono); padding: 3px 5px; }
+.ins-lives { display: grid; gap: 6px; margin-top: 10px; }
+.ins-live { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+.ins-live svg { width: 16px; height: 16px; flex: none; margin-top: 1px; color: var(--muted); }
+.ins-live.ok svg { color: var(--ok); }
+details.fold > summary { cursor: pointer; font-weight: 600; font-size: 14px; list-style: none; display: flex; align-items: center; gap: 8px; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before { content: "▸"; color: var(--muted); transition: transform .15s; display: inline-block; }
+details.fold[open] > summary::before { transform: rotate(90deg); }
+.tsk { display: flex; flex-direction: column; }
+.tsk-row { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.tsk-row:first-child { border-top: 0; }
+.tsk-who { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.tsk-p { display: inline-flex; align-items: center; gap: 2px; font-size: 11.5px; }
+.tsk-p .avatar { width: 26px; height: 26px; font-size: 10px; }
+.badge-rank { margin-top: 10px; font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--manila); }
+.badge-xp { margin-top: 2px; font-size: 13px; }
+.set-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+#credSettings #pwPanel { border-top: 1px dashed var(--line); padding-top: 12px; }
+
+/* ---------- Academia ---------- */
+.how-steps { list-style: none; counter-reset: st; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.how-steps li { counter-increment: st; background: var(--surface-2); border-radius: var(--r-md); padding: 12px 12px 12px 46px; position: relative; display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+.how-steps li::before { content: counter(st); position: absolute; left: 12px; top: 12px; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font: 700 12px/1 var(--font-mono); }
+.how-steps li span { color: var(--muted); }
+.aca-bar { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.aca-tree { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.aca-branch h3, .aca-sub { display: flex; justify-content: space-between; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+.aca-sub { margin-top: 18px; }
+.aca-row { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); }
+.aca-ic { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--line); color: var(--muted); }
+.aca-ic svg { width: 14px; height: 14px; }
+.aca-ic.on { background: var(--manila-fill); border-color: var(--manila-fill); color: #fff; }
+.aca-ic.half { border-color: var(--info); color: var(--info); }
+.aca-st { display: flex; justify-content: flex-end; }
+.aca-edit { display: grid; gap: 6px; min-width: 0; }
+.aca-edit label { display: grid; gap: 2px; }
+.aca-edit input { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 6px 8px; font-size: 13px; color: var(--ink); width: 100%; }
+.sel.small { padding: 5px 8px; font-size: 12.5px; }
+.photo-bulk { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+@media (max-width: 900px) {
+  .pod-grid { grid-template-columns: minmax(0, 1fr); }
+  .aca-tree, .how-steps { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .aca-row { grid-template-columns: 32px minmax(0, 1fr); }
+  .aca-row > :last-child { grid-column: 2; justify-content: flex-start; }
+  .tsk-row { grid-template-columns: 32px minmax(0, 1fr); }
+  .tsk-who { grid-column: 2; justify-content: flex-start; }
 }
 
 /* ---------- Títulos con Fraunces ---------- */
-.brand-name, .login-card h1, .page-head h1, .cap-alias, .case-file, .rung-name, .badge-alias, .stamp, .gd-head h2, .hot-card h3, .card.up.concept, .badge-top { font-weight: 600 !important; letter-spacing: -0.01em; }
+.brand-name, .login-card h1, .page-head h1, .cap-alias, .case-file, .rung-name, .badge-alias, .stamp, .gd-head h2, .hot-card h3, .badge-top { font-weight: 600 !important; letter-spacing: -0.01em; }
 .stamp, .badge-top { letter-spacing: .04em; }
 
 /* ---------- Base de página (GitHub Pages) ---------- */
@@ -888,6 +990,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
         </div>
       </div>
       </div>
+      <div class="panel" id="podium"></div>
       <div class="grid-3" id="homeCards"></div>
       <div class="panel" id="teamStrip"></div>
     </section>
@@ -947,39 +1050,39 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
       </div>
       <div class="grid-2">
         <div class="panel">
-          <div class="panel-head"><div><div class="eyebrow">Reglas</div><h2>Cómo se gana y se pierde XP</h2></div></div>
+          <div class="panel-head"><div><div class="eyebrow">Reglas</div><h2>Cómo se gana y se pierde XP</h2></div><span class="note">De mayor a menor puntaje</span></div>
           <div class="rules">
-            <span><b>Responsable</b> · cerrado a tiempo y sin observaciones</span><span class="x">+15</span>
-            <span>Responsable · con observaciones menores</span><span class="x">+10</span>
-            <span>Responsable · fuera de plazo</span><span class="x neg">−10</span>
-            <span>Responsable · con errores</span><span class="x neg">−15</span>
-            <span>Responsable · tarde y con errores</span><span class="x neg">−25</span>
-            <span><b>Copiloto</b> · revisión de un reporte cerrado o con observaciones</span><span class="x">+5</span>
-            <span>Copiloto · el reporte salió con errores</span><span class="x neg">−5</span>
-            <span>Proponer una idea</span><span class="x">+10</span>
-            <span>Idea implementada, por hora ahorrada al mes</span><span class="x">+5</span>
-            <span>Completar un curso de la Academia</span><span class="x">+15</span>
-            <span>Enseñarlo al equipo</span><span class="x">+20</span>
             <span>Mes perfecto del equipo, para cada detective</span><span class="x">+25</span>
-            <span>Sala de entrenamiento, por respuesta correcta (máx. 10 por semana)</span><span class="x">+2</span>
+            <span>Enseñar al equipo un curso de la Academia</span><span class="x">+20</span>
+            <span><b>Responsable</b> · reporte cerrado a tiempo y sin observaciones</span><span class="x">+15</span>
+            <span>Completar un curso de la Academia</span><span class="x">+15</span>
+            <span>Responsable · reporte con observaciones menores</span><span class="x">+10</span>
+            <span>Proponer una idea</span><span class="x">+10</span>
+            <span><b>Copiloto</b> · revisión de un reporte cerrado o con observaciones</span><span class="x">+5</span>
+            <span>Idea implementada, por cada hora ahorrada al mes</span><span class="x">+5</span>
             <span>Semana en racha (4 preguntas del día y un minijuego)</span><span class="x">+5</span>
             <span>Pregunta tuya aprobada para el banco</span><span class="x">+5</span>
+            <span>Sala de entrenamiento, por respuesta correcta (máx. 10 por semana)</span><span class="x">+2</span>
+            <span>Copiloto · el reporte salió con errores</span><span class="x neg">−5</span>
+            <span>Responsable · reporte fuera de plazo</span><span class="x neg">−10</span>
+            <span>Responsable · reporte con errores</span><span class="x neg">−15</span>
+            <span>Responsable · reporte tarde y con errores</span><span class="x neg">−25</span>
           </div>
           <p class="note" style="margin-top:12px">El rango está protegido: si una penalidad baja tus XP, conservas el rango que ya ganaste. Para el siguiente ascenso sí necesitas recuperar los XP.</p>
           <p class="note" style="margin-top:6px">Privacidad: las observaciones, errores y tardanzas de un reporte solo las ven su responsable, su copiloto y la Comisaría. Para el resto aparece como «Validado».</p>
           <p class="note" style="margin-top:6px">Los XP y rangos son un juego interno del equipo: no forman parte de la evaluación de desempeño oficial ni de la remuneración.</p>
         </div>
         <div class="panel">
-          <div class="panel-head"><div><div class="eyebrow">Estados</div><h2>Qué significa cada sello</h2></div></div>
+          <div class="panel-head"><div><div class="eyebrow">Estados</div><h2>Qué significa cada sello</h2></div><span class="note">Del mejor al de mayor impacto negativo</span></div>
           <div class="rules" style="grid-template-columns: auto minmax(0,1fr); align-items:center">
-            <span class="pill ok">Cerrado</span><span>Entregado a tiempo y sin observaciones.</span>
-            <span class="pill obs">Con observaciones</span><span>A tiempo, pero se pidieron correcciones menores de forma.</span>
-            <span class="pill tarde">Fuera de plazo</span><span>Se entregó después de la fecha límite.</span>
-            <span class="pill error">Con errores</span><span>Cifras incorrectas, datos que no cuadran o información que hubo que rehacer.</span>
-            <span class="pill tarde_error">Tarde y con errores</span><span>Las dos faltas a la vez.</span>
-            <span class="pill entregado">Entregado · por validar</span><span>El responsable lo entregó; falta el sello de Armando o Alvaro.</span>
-            <span class="pill curso">En curso</span><span>El responsable ya está trabajando en él.</span>
-            <span class="pill pendiente">Pendiente</span><span>Aún no se ha empezado.</span>
+            <span class="pill ok">Cerrado</span><span>Entregado a tiempo y sin observaciones. <b class="mono">+15</b></span>
+            <span class="pill obs">Con observaciones</span><span>A tiempo, pero se pidieron correcciones menores de forma. <b class="mono">+10</b></span>
+            <span class="pill entregado">Entregado · por validar</span><span>El responsable lo entregó; falta el sello de Armando o Alvaro. <b class="mono">0</b> hasta el sello</span>
+            <span class="pill curso">En curso</span><span>El responsable ya está trabajando en él. <b class="mono">0</b></span>
+            <span class="pill pendiente">Pendiente</span><span>Aún no se ha empezado. <b class="mono">0</b></span>
+            <span class="pill tarde">Fuera de plazo</span><span>Se entregó después de la fecha límite. <b class="mono neg">−10</b></span>
+            <span class="pill error">Con errores</span><span>Cifras incorrectas, datos que no cuadran o información que hubo que rehacer. <b class="mono neg">−15</b></span>
+            <span class="pill tarde_error">Tarde y con errores</span><span>Las dos faltas a la vez. <b class="mono neg">−25</b></span>
           </div>
         </div>
       </div>
@@ -991,12 +1094,13 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
         <div>
           <div class="eyebrow">Mi credencial</div>
           <h1 id="credTitle">Credencial de detective</h1>
-          <p>Tu identificación dentro de la agencia: especialidad, rango, experiencia y las habilidades que has desbloqueado en la Academia.</p>
+          <p>Tu rango, tus XP y las insignias que ganas cada mes.</p>
         </div>
       </div>
       <div class="badge-wrap" id="credWrap"></div>
-      <div class="panel" id="pwPanel">
-        <div class="panel-head"><div><div class="eyebrow">Seguridad</div><h2>Cambiar mi contraseña</h2></div></div>
+      <div class="view" id="credMore" style="gap:16px"></div>
+      <div id="pwPanel" hidden>
+        <div class="eyebrow" style="margin-top:6px">Cambiar mi contraseña</div>
         <form class="inline-form" id="pwForm" autocomplete="off">
           <div class="field"><label for="pw1">Nueva contraseña (mínimo 8 caracteres)</label><div class="pw-wrap"><input id="pw1" type="password" minlength="8" autocomplete="new-password" required><button class="pw-eye" type="button" data-for="pw1" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
           <div class="field"><label for="pw2">Repítela</label><div class="pw-wrap"><input id="pw2" type="password" minlength="8" autocomplete="new-password" required><button class="pw-eye" type="button" data-for="pw2" aria-label="Mostrar contraseña" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div></div>
@@ -1011,7 +1115,7 @@ table.adm td:first-child input[type=date] { min-width: 132px; }
         <div>
           <div class="eyebrow">Academia</div>
           <h1 id="acaTitle">Árbol de habilidades</h1>
-          <p>Cada habilidad se desbloquea al completar un curso real. Enseñar lo aprendido al equipo da XP extra.</p>
+          <p>Cada habilidad se desbloquea al completar un curso real. Aquí ves tu avance y, si eres Alvaro o Armando, lo actualizas.</p>
         </div>
       </div>
       <div id="acaBody" class="view" style="gap:16px"></div>
@@ -1096,15 +1200,16 @@ const RANKS = [
   { name: 'Leyenda de la Agencia', xp: 1200, skills: 6 }
 ];
 
+/* Ordenados por impacto: del mejor resultado al de mayor penalidad */
 const STATUS = {
   ok:        { label: 'Cerrado',           cls: 'ok' },
   obs:       { label: 'Con observaciones', cls: 'obs' },
   entregado: { label: 'Entregado · por validar', cls: 'entregado' },
+  curso:     { label: 'En curso',          cls: 'curso' },
+  pendiente: { label: 'Pendiente',         cls: 'pendiente' },
   tarde:     { label: 'Fuera de plazo',    cls: 'tarde' },
   error:     { label: 'Con errores',       cls: 'error' },
-  tarde_error: { label: 'Tarde y con errores', cls: 'tarde_error' },
-  curso:     { label: 'En curso',          cls: 'curso' },
-  pendiente: { label: 'Pendiente',         cls: 'pendiente' }
+  tarde_error: { label: 'Tarde y con errores', cls: 'tarde_error' }
 };
 
 const STAGES = [
@@ -1178,31 +1283,44 @@ const WARDROBE = {
     { id: 's5', name: 'Oscuro',         hex: 0x6B432A, sw: '#6B432A', rank: 0, desc: 'Tono de piel oscuro.' }
   ],
   hair: [
-    { id: 'corto',     name: 'Corto',            style: 'corto',    color: 0x2E2019, sw: '#2E2019', rank: 0, desc: 'Corto y peinado hacia un lado.' },
-    { id: 'ondulado',  name: 'Ondulado',         style: 'ondulado', color: 0x1E1714, sw: '#1E1714', rank: 0, desc: 'Rulos con volumen.' },
-    { id: 'rapado',    name: 'Rapado',           style: 'rapado',   color: 0x1A1512, sw: '#1A1512', rank: 0, desc: 'Cortito y práctico.' },
-    { id: 'bob',       name: 'Bob',              style: 'bob',      color: 0x4A3022, sw: '#4A3022', rank: 0, desc: 'Melena corta a la altura del mentón.' },
-    { id: 'cola',      name: 'Cola de caballo',  style: 'cola',     color: 0x1E1714, sw: '#1E1714', rank: 0, desc: 'Recogido para los días de cierre.' },
-    { id: 'largo',     name: 'Melena larga',     style: 'largo',    color: 0x5A3722, sw: '#5A3722', rank: 0, desc: 'Cabello largo y suelto.' },
-    { id: 'mono',      name: 'Moño alto',        style: 'mono',     color: 0x2A1D16, sw: '#2A1D16', rank: 0, desc: 'Moño en lo alto de la cabeza.' },
-    { id: 'cobrizo',   name: 'Melena cobriza',   style: 'largo',    color: 0x8A4A26, sw: '#8A4A26', rank: 0, desc: 'Cabello largo color cobre.' },
-    { id: 'canas',     name: 'Corto con canas',  style: 'corto',    color: 0x8E8A86, brow: 0x5E5A56, sw: '#8E8A86', rank: 0, desc: 'Experiencia a la vista.' }
+    { id: 'corto',     name: 'Corto clásico',     style: 'corto',    color: 0x2E2019, sw: '#2E2019', rank: 0, desc: 'Corto, con raya al costado.' },
+    { id: 'rapado',    name: 'Degradado con tupé', style: 'tupe',    color: 0x1A1512, sw: '#1A1512', rank: 0, desc: 'Costados al ras y volumen arriba.' },
+    { id: 'atras',     name: 'Hacia atrás',       style: 'atras',    color: 0x22180F, sw: '#22180F', rank: 0, desc: 'Peinado hacia atrás, estilo ejecutivo.' },
+    { id: 'ondulado',  name: 'Ondulado',          style: 'ondulado', color: 0x1E1714, sw: '#1E1714', rank: 0, desc: 'Ondas con volumen.' },
+    { id: 'rizos',     name: 'Rizos',             style: 'rizos',    color: 0x17110D, sw: '#17110D', rank: 0, desc: 'Rizos cortos y marcados.' },
+    { id: 'calvo',     name: 'Calvo con costados', style: 'calvo',   color: 0x2E2019, sw: '#2E2019', rank: 0, desc: 'Sin cabello arriba, corto a los lados.' },
+    { id: 'media',     name: 'Media melena',      style: 'media',    color: 0x3A2618, sw: '#3A2618', rank: 0, desc: 'Hasta los hombros, con raya al medio.' },
+    { id: 'bob',       name: 'Bob',               style: 'bob',      color: 0x4A3022, sw: '#4A3022', rank: 0, desc: 'Melena corta a la altura del mentón.' },
+    { id: 'cola',      name: 'Cola de caballo',   style: 'cola',     color: 0x1E1714, sw: '#1E1714', rank: 0, desc: 'Recogido para los días de cierre.' },
+    { id: 'trenza',    name: 'Trenza al costado', style: 'trenza',   color: 0x2A1D16, sw: '#2A1D16', rank: 0, desc: 'Trenza que cae sobre el hombro.' },
+    { id: 'largo',     name: 'Melena larga',      style: 'largo',    color: 0x5A3722, sw: '#5A3722', rank: 0, desc: 'Cabello largo y suelto.' },
+    { id: 'mono',      name: 'Moño alto',         style: 'mono',     color: 0x2A1D16, sw: '#2A1D16', rank: 0, desc: 'Moño en lo alto de la cabeza.' },
+    { id: 'cobrizo',   name: 'Melena cobriza',    style: 'largo',    color: 0x8A4A26, sw: '#8A4A26', rank: 0, desc: 'Cabello largo color cobre.' },
+    { id: 'canas',     name: 'Corto con canas',   style: 'corto',    color: 0x8E8A86, brow: 0x5E5A56, sw: '#8E8A86', rank: 0, desc: 'Experiencia a la vista.' }
   ],
   glasses: [
-    { id: 'none',     name: 'Sin lentes',  sw: '#E8E4DC', rank: 0, desc: 'Sin lentes.' },
-    { id: 'redondos', name: 'Redondos',    sw: '#3A2E26', rank: 0, desc: 'Montura redonda y delgada.' },
-    { id: 'pasta',    name: 'De pasta',    sw: '#15171A', rank: 0, desc: 'Montura gruesa y moderna.' },
-    { id: 'sol',      name: 'De sol',      sw: '#111418', rank: 1, desc: 'Para el trabajo de campo.' },
-    { id: 'dorados',  name: 'Dorados',     sw: '#D9B062', rank: 3, desc: 'Montura dorada de Investigador Especial.' }
+    { id: 'none',     name: 'Sin lentes',    sw: '#E8E4DC', rank: 0, desc: 'Sin lentes.' },
+    { id: 'redondos', name: 'Redondos',      sw: '#3A2E26', rank: 0, desc: 'Montura redonda y delgada.' },
+    { id: 'pasta',    name: 'De pasta',      sw: '#15171A', rank: 0, desc: 'Montura rectangular gruesa.' },
+    { id: 'browline', name: 'Media montura', sw: '#2A1E16', rank: 0, desc: 'Marco grueso arriba y fino abajo.' },
+    { id: 'sol',      name: 'De sol',        sw: '#111418', rank: 1, desc: 'Montura gruesa con lunas oscuras.' },
+    { id: 'aviador',  name: 'Aviador',       sw: '#B8955A', rank: 2, desc: 'Lunas en gota con doble puente.' },
+    { id: 'dorados',  name: 'Dorados',       sw: '#D9B062', rank: 3, desc: 'Montura dorada de Investigador Especial.' }
   ],
   outfit: [
     { id: 'gab-arena',     name: 'Gabardina arena',        outer: 'coat',   oc: 0xB89565, trim: 0x7A5B35, top: 0xF2F0EA, bottom: 'pants', bc: 0x2B3442, sw: '#B89565', rank: 0, desc: 'La gabardina de detective, en versión actual.' },
     { id: 'blazer-tinta',  name: 'Blazer azul tinta',      outer: 'blazer', oc: 0x24364F, trim: 0x152030, top: 0xF4F4F2, bottom: 'pants', bc: 0x5B6068, sw: '#24364F', rank: 0, desc: 'Sobrio para reuniones con Gerencia.' },
-    { id: 'blazer-camel',  name: 'Blazer camel con falda', outer: 'blazer', oc: 0xB98B5A, trim: 0x7E5C38, top: 0xF3EBDD, bottom: 'skirt', bc: 0x30343B, sw: '#B98B5A', rank: 0, desc: 'Blazer camel con falda gris oscuro.' },
+    { id: 'camisa',        name: 'Camisa celeste y chino', outer: 'none',   oc: 0xCFE0EE, trim: 0xA9BFD3, top: 0xCFE0EE, bottom: 'pants', bc: 0xB59E7A, sw: '#CFE0EE', rank: 0, desc: 'Camisa remangada para el día a día.' },
+    { id: 'traje-azul',    name: 'Traje azul marino',      outer: 'blazer', oc: 0x1F2F4A, trim: 0x131D2E, top: 0xFFFFFF, bottom: 'pants', bc: 0x1F2F4A, tie: 0x6A2430, sw: '#1F2F4A', rank: 0, desc: 'Traje completo con corbata vino.' },
+    { id: 'blazer-gris',   name: 'Blazer gris y jean',     outer: 'blazer', oc: 0x5E646C, trim: 0x3E434A, top: 0x1E2228, bottom: 'pants', bc: 0x2E3B52, sw: '#5E646C', rank: 0, desc: 'Blazer gris sobre polo negro, con jean.' },
+    { id: 'sueter',        name: 'Suéter sobre camisa',    outer: 'sweater', oc: 0x2F4A3E, trim: 0x22382E, top: 0xF4F4F2, bottom: 'pants', bc: 0x3A4150, sw: '#2F4A3E', rank: 0, desc: 'Suéter verde con cuello de camisa.' },
+    { id: 'blazer-camel-p',name: 'Blazer camel',           outer: 'blazer', oc: 0xB98B5A, trim: 0x7E5C38, top: 0xF3EBDD, bottom: 'pants', bc: 0x30343B, sw: '#B98B5A', rank: 0, desc: 'Blazer camel con pantalón gris oscuro.' },
+    { id: 'blazer-camel',  name: 'Blazer camel con falda', only: 'fem', outer: 'blazer', oc: 0xB98B5A, trim: 0x7E5C38, top: 0xF3EBDD, bottom: 'skirt', bc: 0x30343B, sw: '#B98B5A', rank: 0, desc: 'Blazer camel con falda gris oscuro.' },
     { id: 'polera',        name: 'Polera con capucha',     outer: 'hoodie', oc: 0x6E7682, trim: 0x565D68, top: 0x6E7682, bottom: 'pants', bc: 0x2E3B52, shoes: 0xF1F0EC, sw: '#6E7682', rank: 0, desc: 'Cómoda para los viernes.' },
     { id: 'chaleco',       name: 'Chaleco acolchado',      outer: 'vest',   oc: 0x2F5D4E, trim: 0x22463A, top: 0xCFE0EE, bottom: 'pants', bc: 0xB59E7A, sw: '#2F5D4E', rank: 1, desc: 'Chaleco verde sobre camisa celeste.' },
     { id: 'traje-carbon',  name: 'Traje carbón',           outer: 'blazer', oc: 0x2A2B2F, trim: 0x18191C, top: 0xFFFFFF, bottom: 'pants', bc: 0x2A2B2F, tie: 0x8E2F2A, sw: '#2A2B2F', rank: 1, desc: 'Traje completo con corbata rojo sello.' },
-    { id: 'vestido',       name: 'Vestido y blazer',       outer: 'blazer', oc: 0x1F2A3A, trim: 0x131A24, top: 0x8E2F3A, bottom: 'skirt', bc: 0x8E2F3A, sw: '#8E2F3A', rank: 1, desc: 'Vestido vino con blazer azul noche.' },
+    { id: 'vestido',       name: 'Vestido y blazer',       only: 'fem', outer: 'blazer', oc: 0x1F2A3A, trim: 0x131A24, top: 0x8E2F3A, bottom: 'skirt', bc: 0x8E2F3A, sw: '#8E2F3A', rank: 1, desc: 'Vestido vino con blazer azul noche.' },
+    { id: 'gab-negra',     name: 'Gabardina negra',        outer: 'coat',   oc: 0x1D1F23, trim: 0x0F1012, top: 0xF2F0EA, bottom: 'pants', bc: 0x2A2B2F, sw: '#1D1F23', rank: 1, desc: 'Gabardina larga para las noches de cierre.' },
     { id: 'bomber',        name: 'Bomber negra',           outer: 'bomber', oc: 0x1F2226, trim: 0x3A3F45, top: 0xE9E6DF, bottom: 'pants', bc: 0x3A4150, shoes: 0xF1F0EC, sw: '#1F2226', rank: 2, desc: 'Casaca bomber con zapatillas blancas.' },
     { id: 'abrigo-burdeos',name: 'Abrigo burdeos',         outer: 'coat',   oc: 0x6A2430, trim: 0x3A1218, top: 0xEEE8DE, bottom: 'pants', bc: 0x23262B, sw: '#6A2430', rank: 2, desc: 'Abrigo largo color vino.' },
     { id: 'blazer-marfil', name: 'Blazer marfil de gala',  outer: 'blazer', oc: 0xECE5D6, trim: 0xC9A04E, top: 0x1E2228, bottom: 'pants', bc: 0xECE5D6, sw: '#ECE5D6', rank: 3, desc: 'Para la ceremonia de ascensos.' },
@@ -1225,6 +1343,11 @@ const WARDROBE = {
     { id: 'libreta',   name: 'Libreta',              sw: '#D8B871', rank: 0, desc: 'Donde se anotan las pistas del mes.' },
     { id: 'audifonos', name: 'Audífonos',            sw: '#1B1E22', rank: 0, desc: 'Para concentrarse en el análisis.' },
     { id: 'gafete',    name: 'Gafete de la agencia', sw: '#B0392D', rank: 0, desc: 'Credencial colgada al cuello.' },
+    { id: 'calculadora', name: 'Calculadora financiera', sw: '#24364F', rank: 0, desc: 'Para sacar tasas y cuotas al vuelo.' },
+    { id: 'expediente', name: 'Expediente',         sw: '#D9B97A', rank: 0, desc: 'La carpeta manila del caso del mes.' },
+    { id: 'reloj',     name: 'Reloj de pulsera',     sw: '#D9B062', rank: 0, desc: 'Porque los plazos se cumplen.' },
+    { id: 'bufanda',   name: 'Bufanda',              sw: '#8E2F3A', rank: 0, desc: 'Para las mañanas de invierno.' },
+    { id: 'mochila',   name: 'Mochila',              sw: '#3A4150', rank: 0, desc: 'Laptop, cargador y expedientes.' },
     { id: 'laptop',    name: 'Laptop',               sw: '#B8BCC2', rank: 1, desc: 'Bajo el brazo, rumbo a la reunión.' },
     { id: 'maletin',   name: 'Maletín',              sw: '#4A2E1C', rank: 1, desc: 'Para llevar los expedientes a Directorio.' },
     { id: 'lupa-oro',  name: 'Lupa dorada',          sw: '#D9B062', rank: 3, desc: 'Solo para Investigadores Especiales.' }
@@ -1260,7 +1383,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const S = { viewer: null, uid: null, month: null, filter: 'all' };
 const D = { profiles: {}, cps: [], ideas: [], progress: {}, floors: {}, plays: [], questions: [], migrated: true, photos: {}, photosReady: false,
-  v4: false, events: [], actions: [], votes: [], comments: [], proposals: [] };
+  v4: false, events: [], actions: [], votes: [], comments: [], proposals: [], v5: false, academy: {}, progressAt: {} };
 let CHECKPOINTS = [];            // reportes del mes que se está viendo
 let busy = false;
 
@@ -1312,14 +1435,18 @@ async function fetchAll() {
     sb.from('idea_comments').select('*').order('created_at', { ascending: true })
   ]);
   D.v4 = D.migrated && !v4.some(r => r.error);
+  // actualización 5: nombres editables de la Academia
+  const v5 = await sb.from('academy_items').select('*');
+  D.v5 = D.v4 && !v5.error;
+  D.academy = {}; (v5.data || []).forEach(r => { D.academy[r.item_id] = r; });
   D.events = v4[0].data || []; D.actions = v4[1].data || []; D.votes = v4[2].data || []; D.comments = v4[3].data || [];
   D.profiles = {};
   rs[0].data.forEach(p => { D.profiles[p.member_key] = p; });
   D.cps = rs[1].data.map(r => ({ id: r.id, mes: r.mes, name: r.name, desc: r.descr || '', due: r.due, resp: r.resp, co: r.co, status: r.status,
     deliveredAt: r.delivered_at || null, evidence: r.evidence || '', reviewedAt: r.reviewed_at || null, reviewNote: r.review_note || '', valNote: r.validation_note || '' }));
   D.ideas = rs[2].data.map(r => ({ id: r.id, title: r.title, desc: r.descr || '', author: r.author, stage: r.stage, hours: Number(r.hours) || 0, created: r.created_at, owner: r.owner || null, next: r.next_step || '' }));
-  D.progress = {};
-  rs[3].data.forEach(r => { D.progress[r.member_key + ':' + r.item_id] = r.state; });
+  D.progress = {}; D.progressAt = {};
+  rs[3].data.forEach(r => { D.progress[r.member_key + ':' + r.item_id] = r.state; if (r.updated_at) D.progressAt[r.member_key + ':' + r.item_id] = r.updated_at; });
   applyMonth();
 }
 
@@ -1386,10 +1513,13 @@ function perfectState() {
   if (sts.every(s => s === 'ok')) return 'logrado';
   return 'juego';
 }
+/* Nombres de cursos y habilidades: los editados desde la Academia reemplazan a los de fábrica */
+function acaName(item) { const o = (D.academy || {})[item.id]; return Object.assign({}, item, o ? { name: o.skill || item.name, course: o.course || item.course } : {}); }
+function commonList() { return COMMON.map(c => { const o = (D.academy || {})[c.id]; return Object.assign({}, c, o ? { name: o.course || c.name } : {}); }); }
 function treeOf(id) {
   const tree = TREES[M(id).clase];
   if (!tree) return [];
-  return tree.map(b => ({ name: b.name, skills: b.skills.map(sk => Object.assign({}, sk, { st: stOf(id, sk.id) })) }));
+  return tree.map(b => ({ name: b.name, skills: b.skills.map(sk => Object.assign(acaName(sk), { st: stOf(id, sk.id) })) }));
 }
 function skillsOf(id) { return treeOf(id).flatMap(b => b.skills); }
 function skillCount(id) { return skillsOf(id).filter(s => isDone(s.st)).length; }
@@ -1609,90 +1739,6 @@ function renderCasos() {
   $('#cpList').innerHTML = `<div class="cp head"><div>Vence</div><div>Checkpoint</div><div class="c-resp">Responsable</div><div class="c-co">Copiloto</div><div>Estado</div><div style="text-align:right">Tu XP</div></div>` + (rows || `<p class="note" style="padding:12px 4px">${CHECKPOINTS.length ? 'No tienes reportes asignados en este expediente.' : 'Todavía no hay reportes cargados para este mes. Armando o Alvaro pueden crearlos en Administrar.'}</p>`);
 }
 
-function renderCredencial() {
-  const v = S.viewer, m = M(v);
-  $('#credTitle').textContent = 'Credencial de ' + m.nombre;
-  const xp = xpOf(v), nr = nextRankInfo(v);
-  const skills = skillsOf(v).filter(s => isDone(s.st));
-  const commons = COMMON.filter(c => isDone(stOf(v, c.id)));
-  const asResp = CHECKPOINTS.filter(c => c.resp === v && isClosed(cpStatus(c))).length;
-  const asCo = CHECKPOINTS.filter(c => c.co === v && isClosed(cpStatus(c))).length;
-  const myIdeas = D.ideas.filter(i => i.author === v);
-  const impl = myIdeas.filter(i => i.stage === 'implementada').length;
-
-  const reqs = nr ? `<div class="req-list">
-      <div class="${nr.xpMissing ? 'unmet' : 'met'}"><svg><use href="#i-${nr.xpMissing ? 'circle' : 'check'}"/></svg>${nr.next.xp} XP (tienes ${nr.xp})</div>
-      <div class="${nr.skMissing ? 'unmet' : 'met'}"><svg><use href="#i-${nr.skMissing ? 'circle' : 'check'}"/></svg>${nr.next.skills} habilidades de la Academia (tienes ${nr.sk})</div>
-    </div>` : '';
-
-  const badge = `<div class="badge">
-    <div class="badge-top"><span>BRÚJULA P&amp;C</span><span>CREDENCIAL</span></div>
-    <div class="badge-body">
-      <div class="badge-photo" style="background:${m.color}">${D.photos[v] ? `<img src="${esc(D.photos[v])}" alt="Foto de ${esc(m.nombre)}">` : m.ini}</div>
-      <div style="min-width:0">
-        <div class="badge-alias">${esc(m.nombre)}</div>
-        <div class="badge-field">Alias<b>${esc(alias(v))}</b></div>
-        <div class="badge-field">Especialidad<b>${esc(m.clase)}</b></div>
-        <div class="badge-field">Rango<b>${esc(rankName(v))}${rankProtected(v) ? ' <span class="pill manila" title="Una penalidad bajó tus XP, pero el rango ganado se conserva">protegido</span>' : ''}</b></div>
-        <div class="badge-field">Puesto<b>${esc(m.rol)}</b></div>
-      </div>
-    </div>
-    <div class="badge-foot">
-      <div class="row"><span class="badge-no">PLACA ${m.placa}</span><span class="mono" style="color:var(--manila)">${m.comisario ? '' : xp.total + ' XP'}</span></div>
-      ${nr && !m.comisario ? `<div class="meter"><span style="width:${Math.round(nr.progress * 100)}%"></span></div><div class="note">Siguiente rango: ${esc(nr.next.name)}</div>` : ''}
-      ${D.photosReady ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px"><label class="btn small photo-btn">${D.photos[v] ? 'Cambiar mi foto' : 'Subir mi foto'}<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${v}"></label>${D.photos[v] ? `<button class="btn small" type="button" data-photo-del="${v}">Quitar</button>` : ''}</div>` : ''}
-    </div>
-  </div>`;
-
-  let right;
-  if (m.comisario) {
-    right = `<div class="view" style="gap:16px">
-      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Rol del Comisario</div><h2>Fuera del escalafón</h2></div></div>
-        <p style="max-width:62ch">El Comisario no compite ni acumula XP. Abre y cierra expedientes, valida los checkpoints, aprueba ideas y entrega las insignias en la ceremonia de ascensos.</p></div>
-      <div class="panel"><div class="field"><label for="aliasIn">Alias en la agencia</label>
-        <div class="inline-form"><input id="aliasIn" maxlength="28" value="${esc(alias(v))}" style="flex:1;min-width:160px"><button class="btn" id="aliasSave" type="button">Guardar alias</button></div></div></div>
-    </div>`;
-  } else {
-    right = `<div class="view" style="gap:16px">
-      <div class="stats4">
-        <div><div class="eyebrow">Checkpoints</div><div class="stat-big">${asResp}</div><div class="stat-sub">entregados este mes</div></div>
-        <div><div class="eyebrow">Copiloto</div><div class="stat-big">${asCo}</div><div class="stat-sub">revisiones hechas</div></div>
-        <div><div class="eyebrow">Ideas</div><div class="stat-big">${myIdeas.length}</div><div class="stat-sub">${impl} implementada${impl === 1 ? '' : 's'}</div></div>
-        <div><div class="eyebrow">Habilidades</div><div class="stat-big">${skills.length}<span style="font-size:14px;color:var(--muted)"> / 6</span></div><div class="stat-sub">desbloqueadas</div></div>
-      </div>
-      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Insignias</div><h2>Habilidades desbloqueadas</h2></div><span class="note">Las doradas ya fueron enseñadas al equipo</span></div>
-        <div class="insignias">${skills.concat(commons.map(c => ({ name: c.name, st: stOf(v, c.id) }))).map(s => `<span class="insignia ${s.st === 'taught' ? 'taught' : ''}"><span class="ic"><svg><use href="#i-star"/></svg></span>${esc(s.name)}</span>`).join('') || '<span class="note">Aún no hay insignias.</span>'}</div></div>
-      <div class="grid-2">
-        <div class="panel"><div class="panel-head"><div><div class="eyebrow">Próximo ascenso</div><h2>${nr ? esc(nr.next.name) : 'Rango máximo'}</h2></div></div>${reqs}</div>
-        <div class="panel"><div class="panel-head"><div><div class="eyebrow">De dónde vienen tus XP</div><h2>${xp.total} XP en total</h2></div></div>
-          <div class="rules">
-            <span>Reportes entregados y revisados</span><span class="x">${xp.cases}</span>
-            ${xp.pen ? `<span>Penalidades por reportes</span><span class="x neg">${signed(xp.pen)}</span>` : ''}
-            <span>Ideas</span><span class="x">${xp.ideas}</span>
-            <span>Academia</span><span class="x">${xp.aca}</span>
-            ${xp.perfect ? `<span>Mes perfecto</span><span class="x">${xp.perfect}</span>` : ''}
-            ${xp.games ? `<span>Sala de entrenamiento</span><span class="x">${xp.games}</span>` : ''}
-            ${xp.racha ? `<span>Semanas en racha</span><span class="x">${xp.racha}</span>` : ''}
-            ${xp.preguntas ? `<span>Preguntas aprobadas</span><span class="x">${xp.preguntas}</span>` : ''}
-          </div></div>
-      </div>
-      <div class="panel"><div class="field"><label for="aliasIn">Alias de detective</label>
-        <div class="inline-form"><input id="aliasIn" maxlength="28" value="${esc(alias(v))}" style="flex:1;min-width:160px"><button class="btn" id="aliasSave" type="button">Guardar alias</button></div></div></div>
-    </div>`;
-  }
-  const vac = (viewerLook() || {}).vac;
-  const vacPanel = `<div class="panel" style="grid-column:1/-1"><div class="panel-head"><div><div class="eyebrow">Vacaciones o licencia</div><h2>Avísale a tu detective</h2></div><span class="note">Mientras estés fuera, sus necesidades no bajan y no se desvanece</span></div>
-    <form class="inline-form" id="vacForm"><div class="field"><label for="vacFrom">Desde</label><input id="vacFrom" type="date" value="${vac ? vac.from : ''}" required></div><div class="field"><label for="vacUntil">Hasta</label><input id="vacUntil" type="date" value="${vac ? vac.until : ''}" required></div>
-    <button class="btn primary" type="submit">Guardar</button>${vac ? '<button class="btn" type="button" id="vacClear">Quitar</button>' : ''}</form></div>`;
-  $('#credWrap').innerHTML = badge + right + vacPanel;
-  $('#vacForm').addEventListener('submit', e => { e.preventDefault(); const f = $('#vacFrom').value, u = $('#vacUntil').value; if (!f || !u || u < f) { toast('Revisa las fechas.', true); return; } saveVacation(f, u); });
-  const vc = $('#vacClear'); if (vc) vc.addEventListener('click', () => saveVacation(null, null));
-  $('#aliasSave').addEventListener('click', () => {
-    const val = $('#aliasIn').value.trim();
-    saveAlias(val);
-  });
-}
-
 function nodeState(skill, prevUnlocked) {
   if (isDone(skill.st)) return { cls: 'unlocked', html: `<span class="pill ok">${skill.st === 'taught' ? 'Desbloqueada · enseñada' : 'Desbloqueada'}</span><span class="mono note">+${skill.st === 'taught' ? 35 : 15} XP</span>`, icon: 'check' };
   if (skill.st.startsWith('progress')) { const p = pct(skill.st); return { cls: 'progress', html: `<div class="meter"><span style="width:${p}%"></span></div><span class="note mono">${p}% del curso</span>`, icon: 'book' }; }
@@ -1704,37 +1750,6 @@ function stateLabel(st) {
   if (st === 'done') return '<span class="pill ok">Completado</span>';
   if (st && st.startsWith('progress')) return `<span style="display:flex;gap:8px;align-items:center"><span class="meter" style="width:90px;height:6px"><span style="width:${pct(st)}%;background:var(--info)"></span></span><span class="note mono">${pct(st)}%</span></span>`;
   return '<span class="pill pendiente">Por iniciar</span>';
-}
-
-function renderAcademia() {
-  const v = S.viewer, m = M(v);
-  const body = $('#acaBody');
-  if (m.comisario) {
-    $('#acaTitle').textContent = 'Avance del equipo';
-    body.innerHTML = `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Vista del Comisario</div><h2>Habilidades por especialidad</h2></div><span class="note">Cada punto es una habilidad de su árbol</span></div>
-      ${DETECTIVES.map(d => { const sk = skillsOf(d.id); return `<div class="team-skill"><div>${person(d.id)}<div class="note" style="margin-top:3px">${esc(d.clase)}</div></div>
-        <div class="dots">${sk.map(s => `<span class="${isDone(s.st) ? 'on' : s.st.startsWith('progress') ? 'half' : ''}" title="${esc(s.name)}"></span>`).join('')}</div>
-        <div class="mono" style="text-align:right">${sk.filter(s => isDone(s.st)).length} / ${sk.length}</div></div>`; }).join('')}</div>
-      <div class="panel"><div class="panel-head"><div><div class="eyebrow">Cursos comunes</div><h2>Formación compartida</h2></div></div>
-      ${COMMON.map(c => `<div class="course-row"><div style="font-weight:600">${esc(c.name)}</div><div class="c-state note">${DETECTIVES.filter(d => isDone(stOf(d.id, c.id))).length} de ${DETECTIVES.length} lo completaron</div><div></div></div>`).join('')}</div>`;
-    return;
-  }
-  $('#acaTitle').textContent = 'Árbol del ' + m.clase;
-  const tree = treeOf(v);
-  const branches = tree.map(b => {
-    let prev = true;
-    const nodes = b.skills.map(s => {
-      const ns = nodeState(s, prev);
-      prev = isDone(s.st);
-      return `<div class="node ${ns.cls}"><div class="node-ic"><svg><use href="#i-${ns.icon}"/></svg></div>
-        <div style="min-width:0"><div class="node-name">${esc(s.name)}</div><div class="node-course">Curso: ${esc(s.course)}</div><div class="node-state">${ns.html}</div></div></div>`;
-    }).join('');
-    const done = b.skills.filter(s => isDone(s.st)).length;
-    return `<div class="branch"><h3><span>Rama ${esc(b.name)}</span><span class="mono note">${done}/3</span></h3>${nodes}</div>`;
-  }).join('');
-  body.innerHTML = `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Especialidad</div><h2>${esc(m.clase)}</h2></div><span class="note">${skillCount(v)} de 6 habilidades · cuentan para ascender</span></div><div class="tree">${branches}</div></div>
-    <div class="panel"><div class="panel-head"><div><div class="eyebrow">Cursos comunes</div><h2>Para todo el equipo</h2></div><span class="note">Dan XP e insignia, pero no cuentan como habilidad de especialidad</span></div>
-      ${COMMON.map(c => { const st = stOf(v, c.id); return `<div class="course-row"><div style="font-weight:600">${esc(c.name)}</div><div class="c-state">${stateLabel(st)}</div><div class="mono" style="text-align:right;color:var(--manila)">${st === 'taught' ? '+35' : isDone(st) ? '+15' : '+15'}</div></div>`; }).join('')}</div>`;
 }
 
 function renderIdeas() {
@@ -1829,6 +1844,7 @@ function renderAdmin() {
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
           <select id="admMonth" class="sel" aria-label="Mes">${months.length ? months.map(m => `<option value="${m}" ${m === S.month ? 'selected' : ''}>${esc(monthLabel(m))}</option>`).join('') : '<option>Sin meses</option>'}</select>
           <button class="btn" type="button" id="nextMonth" ${(!CHECKPOINTS.length || nextExists) ? 'disabled' : ''} title="Crea los mismos reportes en el mes siguiente, todos pendientes">Copiar a ${esc(monthLabel(next))}</button>
+          ${D.v4 && S.month && (D.events || []).some(ev => CHECKPOINTS.some(c => c.id === ev.cp_id)) ? `<button class="btn danger" type="button" id="clearMonthHist" title="Borra el historial de todos los reportes de este mes. No cambia sellos ni XP.">${histArmed === 'mes:' + S.month ? '¿Seguro? Borrar historial' : 'Borrar historial del expediente'}</button>` : ''}
         </div></div>
       <p class="note" style="margin-bottom:12px">Los cambios se guardan al salir de cada casilla. Al copiar un mes, los reportes pasan al mes siguiente con el mismo día de vencimiento y estado pendiente; revisa las fechas si caen en fin de semana.</p>
       ${CHECKPOINTS.length ? `<div class="table-wrap"><table class="adm"><thead><tr><th>Vence</th><th>Reporte</th><th>Responsable</th><th>Copiloto</th><th>Estado</th><th></th></tr></thead><tbody>${cpRows}</tbody></table></div>` : '<p class="note">Este mes todavía no tiene reportes. Agrégalos abajo.</p>'}
@@ -1849,10 +1865,8 @@ function renderAdmin() {
       ${D.ideas.length ? `<div class="table-wrap"><table class="adm"><thead><tr><th>Idea</th><th>Autor</th><th>Horas/mes</th><th>Etapa</th>${D.v4 ? '<th>Responsable y siguiente paso</th><th class="num">Apoyos</th>' : ''}<th></th></tr></thead><tbody>${ideaRows}</tbody></table></div>` : '<p class="note">Aún no hay ideas propuestas.</p>'}
     </div>
     <div class="panel">
-      <div class="panel-head"><div><div class="eyebrow">Academia</div><h2>Validar cursos de ${esc(label(admMember))}</h2></div>
-        <select id="admMember" class="sel" aria-label="Persona">${opts(admMember, DETECTIVES.map(d => [d.id, label(d.id)]))}</select></div>
-      <p class="note" style="margin-bottom:12px">Marca un curso como completado solo cuando lo hayas verificado. Cada habilidad completada suma XP automáticamente.</p>
-      <div class="table-wrap"><table class="adm"><thead><tr><th>${esc(mm.clase)}</th><th>Estado</th></tr></thead><tbody>${progRows}</tbody></table></div>
+      <div class="panel-head"><div><div class="eyebrow">Academia</div><h2>Cursos y habilidades</h2></div><a class="btn" href="#academia">Ir a la Academia</a></div>
+      <p class="note">Ahora todo se hace en la página Academia: eliges a la persona, cambias el estado de cada curso y, si quieres, editas el nombre del curso o la habilidad.</p>
     </div>
     <div class="panel">
       <div class="panel-head"><div><div class="eyebrow">Sala de entrenamiento</div><h2>Preguntas del equipo</h2></div><span class="note">${BANK.length} preguntas base · ${D.questions.length} agregadas</span></div>
@@ -1861,7 +1875,7 @@ function renderAdmin() {
         <div class="field" style="flex-basis:100%"><label for="qPrompt">Pregunta</label><input id="qPrompt" maxlength="300" required placeholder="Ej.: ¿Qué área consolida el presupuesto de las agencias?"></div>
         ${[0, 1, 2, 3].map(k => `<div class="field"><label for="qO${k}">Opción ${'ABCD'[k]}</label><input id="qO${k}" maxlength="120" required></div>`).join('')}
         <div class="field" style="flex:0 0 150px"><label for="qAns">Respuesta correcta</label><select id="qAns">${[0, 1, 2, 3].map(k => `<option value="${k}">Opción ${'ABCD'[k]}</option>`).join('')}</select></div>
-        <div class="field" style="flex-basis:100%"><label for="qExp">Explicación (se muestra al responder)</label><input id="qExp" maxlength="400"></div>
+        <div class="field" style="flex-basis:100%"><label for="qExp">Sustento de la respuesta correcta (se muestra al responder)</label><input id="qExp" maxlength="400" required placeholder="Ej.: Lo establece el reglamento de… / Se calcula como…"></div>
         <button class="btn primary" type="submit">Agregar pregunta</button>
       </form>
       ${D.questions.length ? `<div class="table-wrap" style="margin-top:14px"><table class="adm"><thead><tr><th>Pregunta</th><th>Respuesta</th><th>Autor</th><th></th></tr></thead><tbody>${D.questions.map(q => `<tr><td style="min-width:260px">${esc(q.q)}</td><td>${esc(q.o[q.a])}</td><td>${esc(nombre(q.by))}</td><td>${delBtn('q:' + q.id)}</td></tr>`).join('')}</tbody></table></div>` : ''}`
@@ -1873,7 +1887,8 @@ function renderAdmin() {
     </div>` : ''}
     <div class="panel">
       <div class="panel-head"><div><div class="eyebrow">Fotos del equipo</div><h2>Foto de cada credencial</h2></div><span class="note">Se guardan en un espacio privado: solo se ven con sesión iniciada</span></div>
-      ${D.photosReady ? `<div class="team">${MEMBERS.map(t => `<div class="team-card" style="flex-direction:column;align-items:flex-start;gap:8px">${avatar(t.id, 56)}<div class="team-name">${esc(t.nombre)}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><label class="btn small photo-btn">${D.photos[t.id] ? 'Cambiar' : 'Subir'}<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${t.id}"></label>${D.photos[t.id] ? `<button class="btn small" type="button" data-photo-del="${t.id}">Quitar</button>` : ''}</div></div>`).join('')}</div>`
+      ${D.photosReady ? `<div class="photo-bulk"><label class="btn primary small photo-btn">Subir varias a la vez<input type="file" multiple accept="image/jpeg,image/png,image/webp" data-photo-multi></label><span class="note">Nombra cada archivo con el nombre de la persona (armando.jpg, alvaro.jpg, joel.jpg, fernando.jpg, isabel.jpg) y selecciónalos juntos.</span></div>
+      <div class="team">${MEMBERS.map(t => `<div class="team-card" style="flex-direction:column;align-items:flex-start;gap:8px">${avatar(t.id, 56)}<div class="team-name">${esc(t.nombre)}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><label class="btn small photo-btn">${D.photos[t.id] ? 'Cambiar' : 'Subir'}<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${t.id}"></label>${D.photos[t.id] ? `<button class="btn small" type="button" data-photo-del="${t.id}">Quitar</button>` : ''}</div></div>`).join('')}</div>`
         : '<p class="note"><b>Falta la actualización 3.</b> Ejecuta <span class="mono">supabase/actualizacion-3.sql</span> en Supabase para activar las fotos.</p>'}
     </div>
     ${D.v4 ? `<div class="panel danger">
@@ -1930,6 +1945,7 @@ async function onAdminClick(e) {
     await write(() => sb.from({ cp: 'checkpoints', idea: 'ideas', q: 'questions' }[kind]).delete().eq('id', id).select(), 'Borrado');
     return;
   }
+  if (b.id === 'clearMonthHist') { if (armHist('mes:' + S.month, renderAdmin)) await clearHistory({ p_cp: null, p_mes: S.month }, 'Historial del expediente ' + monthLabel(S.month) + ' borrado'); return; }
   if (b.id === 'nextMonth') {
     const next = addMonth(S.month);
     const rows = CHECKPOINTS.map(c => ({ mes: next, name: c.name, descr: c.desc, due: shiftDue(c.due, next), resp: c.resp, co: c.co, status: 'pendiente' }));
@@ -1950,6 +1966,7 @@ async function onAdminSubmit(e) {
     const prompt = $('#qPrompt').value.trim(), options = [0, 1, 2, 3].map(k => $('#qO' + k).value.trim());
     if (prompt.length < 5 || options.some(x => !x)) { toast('Completa la pregunta y las cuatro opciones.', true); return; }
     if (new Set(options).size < 4) { toast('Las cuatro opciones deben ser distintas.', true); return; }
+    if ($('#qExp').value.trim().length < 10) { toast('Escribe el sustento de la respuesta correcta: se muestra a quien falla.', true); return; }
     await write(() => sb.from('questions').insert({ prompt, options, answer: +$('#qAns').value, explain: $('#qExp').value.trim(), created_by: S.viewer }).select(), 'Pregunta agregada');
     return;
   }
@@ -1965,8 +1982,286 @@ $('#adminBody').addEventListener('change', onAdminChange);
 $('#adminBody').addEventListener('click', onAdminClick);
 $('#adminBody').addEventListener('submit', onAdminSubmit);
 
+/* =========================================================
+   DETECTIVE DEL MES, INSIGNIAS MENSUALES Y HABILIDADES DEL EQUIPO
+   ========================================================= */
+const mesNow = () => limaToday().slice(0, 7);
+const limaMes = ts => ts ? (limaDay(ts) || '').slice(0, 7) : '';
+function perfectOf(mes) { const sts = D.cps.filter(c => c.mes === mes).map(c => c.status); return sts.length > 0 && sts.every(s => s === 'ok'); }
+/* XP de minijuegos por mes, con el tope semanal aplicado en orden cronológico */
+function gamesByMonth(id) {
+  const used = {}, out = {};
+  (D.plays || []).filter(p => p.member_key === id).slice().sort((a, b) => a.day < b.day ? -1 : a.day > b.day ? 1 : 0).forEach(p => {
+    const w = weekKey(p.day), g = Math.min(Math.max(0, XP_GAMES_CAP - (used[w] || 0)), p.correct * XP_PER_CORRECT);
+    used[w] = (used[w] || 0) + g; const m = p.day.slice(0, 7); out[m] = (out[m] || 0) + g;
+  });
+  return out;
+}
+function rachaWeekKeys(id) {
+  const by = {};
+  (D.plays || []).filter(p => p.member_key === id).forEach(p => {
+    const w = weekKey(p.day); by[w] = by[w] || { days: new Set(), game: false };
+    if (p.game === 'diaria') by[w].days.add(p.day); else by[w].game = true;
+  });
+  return Object.keys(by).filter(w => by[w].days.size >= 4 && by[w].game);
+}
+/* XP ganados dentro de un mes calendario (para el ranking mensual) */
+function monthXP(id, mes) {
+  const r = { cases: 0, pen: 0, ideas: 0, aca: 0, games: 0, racha: 0, perfect: 0, preguntas: 0, total: 0 };
+  if (M(id).comisario) return r;
+  D.cps.filter(c => c.mes === mes).forEach(c => { const x = cpXPFor(c, id); if (x >= 0) r.cases += x; else r.pen += x; });
+  r.ideas = 10 * D.ideas.filter(i => i.author === id && limaMes(i.created) === mes).length;
+  Object.keys(D.progressAt || {}).forEach(k => { const i = k.indexOf(':'); if (k.slice(0, i) !== id || limaMes(D.progressAt[k]) !== mes) return; const st = D.progress[k]; if (isDone(st)) r.aca += 15 + (st === 'taught' ? 20 : 0); });
+  r.games = gamesByMonth(id)[mes] || 0;
+  r.racha = 5 * rachaWeekKeys(id).filter(w => w.slice(0, 7) === mes).length;
+  r.perfect = perfectOf(mes) ? 25 : 0;
+  if (!['jefe', 'lider'].includes(id)) r.preguntas = 5 * (D.questions || []).filter(q => q.by === id && limaMes(q.created) === mes).length;
+  r.total = r.cases + r.pen + r.ideas + r.aca + r.games + r.racha + r.perfect + r.preguntas;
+  return r;
+}
+/* Ranking del mes: todo el equipo menos el Comisario. Desempate: menos penalidades, más XP por reportes, nombre. */
+const rankCache = {};
+function monthRanking(mes) {
+  return DETECTIVES.map(d => ({ id: d.id, x: monthXP(d.id, mes) }))
+    .sort((a, b) => b.x.total - a.x.total || b.x.pen - a.x.pen || b.x.cases - a.x.cases || nombre(a.id).localeCompare(nombre(b.id)));
+}
+function mvpOf(mes) { const rk = monthRanking(mes); return rk[0] && rk[0].x.total > 0 ? rk[0].id : null; }
+
+function renderPodium() {
+  const el = $('#podium'); if (!el) return;
+  const now = mesNow(), prev = addMonth(now, -1);
+  const rk = monthRanking(prev), act = rk.some(r => r.x.total > 0);
+  const cur = monthRanking(now);
+  const fresh = +limaToday().slice(8, 10) <= 7;
+  const place = (r, n) => r ? `<div class="pod p${n}">${n === 1 ? '<span class="pod-crown"><svg><use href="#i-star"/></svg></span>' : ''}${avatar(r.id, n === 1 ? 68 : 54)}
+      <div class="pod-name">${esc(nombre(r.id))}</div><div class="note">${esc(M(r.id).rol)}</div>
+      <div class="pod-step"><span class="pod-n">${n}°</span><span class="mono">${signed(r.x.total)} XP</span></div></div>` : '';
+  const podium = act ? `<div class="podium">${place(rk[1], 2)}${place(rk[0], 1)}${place(rk[2], 3)}</div>`
+    : `<div class="pod-empty"><svg><use href="#i-star"/></svg><p>En ${esc(monthLabel(prev).toLowerCase())} no se registraron XP. El primer Detective del mes se anuncia el 1 de ${esc(monthLabel(addMonth(now, 1)).split(' ')[0].toLowerCase())}, con lo que hagan en ${esc(monthLabel(now).split(' ')[0].toLowerCase())}.</p></div>`;
+  const maxCur = Math.max(1, ...cur.map(r => Math.abs(r.x.total)));
+  el.innerHTML = `<div class="panel-head"><div><div class="eyebrow">Detective del mes${fresh && act ? ' <span class="pill manila">Nuevo</span>' : ''}</div><h2>Así nos fue en ${esc(monthLabel(prev).toLowerCase())}</h2></div><span class="note">Top 3 por XP ganados en el mes · el ranking se reinicia cada mes</span></div>
+    <div class="pod-grid">${podium}
+      <div class="pod-live"><div class="eyebrow">${esc(monthLabel(now).split(' ')[0])} en juego</div>
+        ${cur.map((r, i) => `<div class="live-row ${r.id === S.viewer ? 'me' : ''}"><span class="mono note">${i + 1}</span>${avatar(r.id, 26)}<span class="live-n">${esc(nombre(r.id))}</span><span class="live-bar"><span style="width:${Math.max(0, r.x.total) / maxCur * 100}%"></span></span><span class="mono live-x ${r.x.total < 0 ? 'neg' : ''}">${signed(r.x.total)}</span></div>`).join('')}
+        <p class="note" style="margin-top:8px">Cuentan los reportes del mes, ideas, cursos, juegos, rachas y preguntas aprobadas. Gana quien más XP sume del 1 al último día.</p>
+      </div></div>`;
+}
+
+/* ---------- Insignias que se ganan cada mes ---------- */
+const INSIGNIAS = [
+  { id: 'mvp',       n: 'Detective del mes',  d: 'Primer lugar del ranking mensual.', ic: 'star' },
+  { id: 'puntual',   n: 'Guardián del plazo', d: 'Todos tus reportes del mes, entregados a tiempo.', ic: 'bell' },
+  { id: 'preciso',   n: 'Ojo de auditor',     d: 'Todos tus reportes del mes, cerrados sin observaciones ni errores.', ic: 'loupe' },
+  { id: 'copiloto',  n: 'Copiloto confiable', d: 'Tu revisión registrada en todos los reportes donde fuiste copiloto.', ic: 'check' },
+  { id: 'estudioso', n: 'Aprendiz constante', d: '8 preguntas del día respondidas o un curso completado en el mes.', ic: 'book' },
+  { id: 'innovador', n: 'Mente innovadora',   d: 'Al menos una idea propuesta en el mes.', ic: 'bulb' },
+  { id: 'equipo',    n: 'Espíritu de equipo', d: 'Dos o más reconocimientos dados a compañeros en el mes.', ic: 'heart' }
+];
+const LATE = ['tarde', 'tarde_error'];
+/* ok: la ganó en ese mes · prog: texto de avance (para el mes en curso) */
+function insigniaCheck(id, mes, closedMonth) {
+  const resp = D.cps.filter(c => c.mes === mes && c.resp === id), co = D.cps.filter(c => c.mes === mes && c.co === id);
+  const val = resp.filter(c => isClosed(c.status));
+  const onTime = resp.filter(c => (isClosed(c.status) || c.status === 'entregado') && !LATE.includes(c.status) && !(c.deliveredAt && limaDay(c.deliveredAt) > c.due)).length;
+  const clean = resp.filter(c => c.status === 'ok').length;
+  const reviewed = co.filter(c => c.reviewedAt).length;
+  const daily = (D.plays || []).filter(p => p.member_key === id && p.game === 'diaria' && p.day.slice(0, 7) === mes).length;
+  const course = Object.keys(D.progressAt || {}).some(k => k.startsWith(id + ':') && limaMes(D.progressAt[k]) === mes && isDone(D.progress[k]));
+  const ideas = D.ideas.filter(i => i.author === id && limaMes(i.created) === mes).length;
+  const recos = (D.actions || []).filter(a => a.kind === 'reconocimiento' && a.member_key === id && String(a.day).slice(0, 7) === mes).length;
+  const mvp = closedMonth ? mvpOf(mes) === id : false;
+  return {
+    mvp:       { ok: mvp, prog: closedMonth ? '' : 'Se define al cerrar el mes' },
+    puntual:   { ok: resp.length > 0 && val.length === resp.length && !resp.some(c => LATE.includes(c.status)), prog: resp.length ? `${onTime} de ${resp.length} reportes a tiempo` : 'Sin reportes a tu cargo este mes' },
+    preciso:   { ok: resp.length > 0 && clean === resp.length, prog: resp.length ? `${clean} de ${resp.length} cerrados sin observaciones` : 'Sin reportes a tu cargo este mes' },
+    copiloto:  { ok: co.length > 0 && reviewed === co.length, prog: co.length ? `${reviewed} de ${co.length} revisiones registradas` : 'No eres copiloto este mes' },
+    estudioso: { ok: daily >= 8 || course, prog: course ? 'Curso completado' : `${Math.min(daily, 8)} de 8 preguntas del día` },
+    innovador: { ok: ideas > 0, prog: ideas ? `${ideas} idea${ideas === 1 ? '' : 's'} propuesta${ideas === 1 ? '' : 's'}` : 'Aún sin ideas este mes' },
+    equipo:    { ok: recos >= 2, prog: `${Math.min(recos, 2)} de 2 reconocimientos` }
+  };
+}
+function activeMonths() {
+  const s = new Set(D.cps.map(c => c.mes));
+  (D.plays || []).forEach(p => s.add(p.day.slice(0, 7)));
+  (D.actions || []).forEach(a => s.add(String(a.day).slice(0, 7)));
+  D.ideas.forEach(i => s.add(limaMes(i.created)));
+  s.delete('');
+  return [...s].sort();
+}
+/* Insignias ganadas en los meses ya cerrados: { id: [meses] } */
+function insigniasOf(id) {
+  const out = {}; INSIGNIAS.forEach(i => { out[i.id] = []; });
+  if (M(id).comisario) return out;
+  const now = mesNow();
+  activeMonths().filter(m => m < now).forEach(m => { const ck = insigniaCheck(id, m, true); INSIGNIAS.forEach(i => { if (ck[i.id].ok) out[i.id].push(m); }); });
+  return out;
+}
+const LEVELS = ['', 'Nivel 1', 'Nivel 2 · mejorada', 'Nivel 3 · dorada'];
+function insToken(ins, n, size) {
+  const lv = Math.min(3, n);
+  return `<span class="ins-medal lv${lv}${size ? ' ' + size : ''}" aria-hidden="true"><svg><use href="#i-${ins.ic}"/></svg>${n > 1 ? `<span class="ins-x">×${n}</span>` : ''}</span>`;
+}
+function insigniasPanel(v) {
+  const got = insigniasOf(v), now = mesNow(), ck = insigniaCheck(v, now, false);
+  const total = INSIGNIAS.reduce((a, i) => a + got[i.id].length, 0);
+  const cards = INSIGNIAS.map(i => { const n = got[i.id].length, last = got[i.id].slice(-1)[0];
+    return `<div class="ins-card ${n ? 'won' : 'off'}" title="${esc(i.d)}">${insToken(i, n)}<div style="min-width:0"><div class="ins-n">${esc(i.n)}</div>
+      <div class="note">${n ? `${LEVELS[Math.min(3, n)]}${n > 3 ? ' · ×' + n : ''} · última: ${esc(monthLabel(last).toLowerCase())}` : 'Aún no ganada'}</div></div></div>`; }).join('');
+  const live = INSIGNIAS.map(i => `<div class="ins-live ${ck[i.id].ok ? 'ok' : ''}"><svg><use href="#i-${ck[i.id].ok ? 'check' : 'circle'}"/></svg><span><b>${esc(i.n)}</b> · ${esc(ck[i.id].ok ? 'en camino, se entrega al cerrar el mes' : ck[i.id].prog)}</span></div>`).join('');
+  return `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Mis insignias</div><h2>${total ? total + (total === 1 ? ' insignia ganada' : ' insignias ganadas') : 'Empiezas sin insignias'}</h2></div><span class="note">Se ganan cada mes. Si repites una, sube de nivel.</span></div>
+      <div class="ins-grid">${cards}</div>
+      <details class="fold" data-k="live" style="margin-top:14px"${total ? '' : ' open'}><summary>Qué puedes ganar en ${esc(monthLabel(now).toLowerCase())}</summary><div class="ins-lives">${live}</div></details>
+    </div>`;
+}
+function teamSkillsPanel() {
+  const by = {}; DETECTIVES.forEach(d => { by[d.id] = insigniasOf(d.id); });
+  const rows = INSIGNIAS.map(i => {
+    const holders = DETECTIVES.filter(d => by[d.id][i.id].length).map(d => ({ id: d.id, n: by[d.id][i.id].length }));
+    const tot = holders.reduce((a, h) => a + h.n, 0);
+    return `<div class="tsk-row"><span class="ins-medal lv${tot ? Math.min(3, Math.max(1, Math.ceil(tot / 2))) : 0} sm"><svg><use href="#i-${i.ic}"/></svg></span>
+      <div style="min-width:0"><div class="ins-n">${esc(i.n)}</div><div class="note">${tot ? `Ganada ${tot} ${tot === 1 ? 'vez' : 'veces'} en el equipo` : 'Nadie la tiene todavía'}</div></div>
+      <div class="tsk-who">${holders.map(h => `<span class="tsk-p" title="${esc(nombre(h.id))}: ${h.n} ${h.n === 1 ? 'vez' : 'veces'}">${avatar(h.id, 26)}${h.n > 1 ? `<b>×${h.n}</b>` : ''}</span>`).join('')}</div></div>`;
+  }).join('');
+  const acaTeam = DETECTIVES.reduce((a, d) => a + skillCount(d.id), 0);
+  return `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Habilidades del equipo</div><h2>Lo que reforzamos juntos</h2></div><span class="note">${acaTeam} habilidad${acaTeam === 1 ? '' : 'es'} de la Academia desbloqueada${acaTeam === 1 ? '' : 's'} entre todos</span></div>
+    <div class="tsk">${rows}</div></div>`;
+}
+
+/* ---------- Credencial (versión simple) ---------- */
+function renderCredencial() {
+  const v = S.viewer, m = M(v);
+  $('#credTitle').textContent = 'Credencial de ' + m.nombre;
+  const xp = xpOf(v), nr = nextRankInfo(v);
+  const need = nr ? [nr.xpMissing ? nr.xpMissing + ' XP' : '', nr.skMissing ? nr.skMissing + (nr.skMissing === 1 ? ' habilidad de la Academia' : ' habilidades de la Academia') : ''].filter(Boolean).join(' y ') : '';
+  const badge = `<div class="badge">
+    <div class="badge-top"><span>BRÚJULA P&amp;C</span><span class="badge-no">PLACA ${m.placa}</span></div>
+    <div class="badge-body">
+      <div class="badge-photo" style="background:${m.color}">${D.photos[v] ? `<img src="${esc(D.photos[v])}" alt="Foto de ${esc(m.nombre)}">` : m.ini}</div>
+      <div style="min-width:0">
+        <div class="badge-alias">${esc(m.nombre)}</div>
+        <div class="note" style="margin-top:2px">${esc(m.rol)} · ${esc(m.clase)}</div>
+        <div class="badge-rank">${esc(rankName(v))}${rankProtected(v) ? ' <span class="pill manila" title="Una penalidad bajó tus XP, pero el rango ganado se conserva">protegido</span>' : ''}</div>
+        ${m.comisario ? '' : `<div class="badge-xp mono">${xp.total} XP</div>`}
+      </div>
+    </div>
+    <div class="badge-foot">
+      ${m.comisario ? '<div class="note">El Comisario no compite: valida reportes y entrega las insignias.</div>'
+        : nr ? `<div class="meter"><span style="width:${Math.round(nr.progress * 100)}%"></span></div><div class="note">${need ? `Te faltan <b>${esc(need)}</b> para <b>${esc(nr.next.name)}</b>.` : `Ya cumples los requisitos de <b>${esc(nr.next.name)}</b>.`}</div>` : '<div class="note">Rango máximo alcanzado.</div>'}
+      ${D.photosReady ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px"><label class="btn small photo-btn">${D.photos[v] ? 'Cambiar mi foto' : 'Subir mi foto'}<input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${v}"></label>${D.photos[v] ? `<button class="btn small" type="button" data-photo-del="${v}">Quitar</button>` : ''}</div>` : ''}
+    </div>
+  </div>`;
+  const xpRows = [['Reportes entregados y revisados', xp.cases], ['Penalidades por reportes', xp.pen], ['Ideas', xp.ideas], ['Academia', xp.aca], ['Mes perfecto', xp.perfect], ['Sala de entrenamiento', xp.games], ['Semanas en racha', xp.racha], ['Preguntas aprobadas', xp.preguntas]].filter(r => r[1]);
+  const xpDetail = m.comisario ? '' : `<details class="panel fold" data-k="xp"><summary>De dónde vienen mis ${xp.total} XP</summary>
+      <div class="rules" style="margin-top:12px">${xpRows.length ? xpRows.map(r => `<span>${r[0]}</span><span class="x ${r[1] < 0 ? 'neg' : ''}">${signed(r[1])}</span>`).join('') : '<span class="note">Todavía no sumas XP. Empieza por la pregunta del día.</span><span></span>'}</div></details>`;
+  const vac = (viewerLook() || {}).vac;
+  const settings = `<details class="panel fold" id="credSettings" data-k="set"><summary>Ajustes: alias, vacaciones y contraseña</summary>
+      <div class="set-grid">
+        <div class="field"><label for="aliasIn">${m.comisario ? 'Alias en la agencia' : 'Alias de detective'}</label>
+          <div class="inline-form"><input id="aliasIn" maxlength="28" value="${esc(alias(v))}" style="flex:1;min-width:160px"><button class="btn" id="aliasSave" type="button">Guardar alias</button></div></div>
+        <form class="inline-form" id="vacForm"><div class="field"><label for="vacFrom">Vacaciones o licencia: desde</label><input id="vacFrom" type="date" value="${vac ? vac.from : ''}" required></div><div class="field"><label for="vacUntil">Hasta</label><input id="vacUntil" type="date" value="${vac ? vac.until : ''}" required></div>
+          <button class="btn" type="submit">Guardar</button>${vac ? '<button class="btn" type="button" id="vacClear">Quitar</button>' : ''}</form>
+        <p class="note">Mientras estés de vacaciones, tu detective no se desvanece.</p>
+      </div></details>`;
+  const right = m.comisario
+    ? `<div class="view" style="gap:16px">${teamSkillsPanel()}</div>`
+    : `<div class="view" style="gap:16px">${insigniasPanel(v)}${teamSkillsPanel()}</div>`;
+  // conservar qué secciones desplegables estaban abiertas y sacar el formulario de contraseña antes de redibujar
+  const opened = new Set([...document.querySelectorAll('#v-credencial details[data-k]')].filter(d => d.open).map(d => d.dataset.k));
+  const pw0 = $('#pwPanel'); if (pw0) { pw0.hidden = true; $('#v-credencial').appendChild(pw0); }
+  $('#credWrap').innerHTML = badge + right;
+  $('#credMore').innerHTML = xpDetail + settings;
+  document.querySelectorAll('#v-credencial details[data-k]').forEach(d => { if (opened.has(d.dataset.k)) d.open = true; });
+  const pw = $('#pwPanel'); const host = $('#credSettings .set-grid'); if (pw && host) { host.appendChild(pw); pw.hidden = false; }
+  $('#vacForm').addEventListener('submit', e => { e.preventDefault(); const f = $('#vacFrom').value, u = $('#vacUntil').value; if (!f || !u || u < f) { toast('Revisa las fechas.', true); return; } saveVacation(f, u); });
+  const vc = $('#vacClear'); if (vc) vc.addEventListener('click', () => saveVacation(null, null));
+  $('#aliasSave').addEventListener('click', () => saveAlias($('#aliasIn').value.trim()));
+}
+
+/* ---------- Academia: se ve y se administra en la misma página ---------- */
+let acaMember = null, acaEdit = false;
+function acaRow(it, adm) {
+  const st = it.st;
+  const list = PROG_OPTS.some(o => o[0] === st) ? PROG_OPTS : PROG_OPTS.concat([[st, 'En curso · ' + pct(st) + '%']]);
+  const sel = `<select class="sel small" data-aca-prog="${it.id}" aria-label="Estado de ${esc(it.course)}">${list.map(([k, l]) => `<option value="${k}" ${k === st ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
+  return adm ? sel : stateLabel(st);
+}
+function renderAcademia() {
+  const v = S.viewer, adm = canAdmin(), body = $('#acaBody');
+  const pickable = DETECTIVES.map(d => d.id);
+  if (!acaMember || !pickable.includes(acaMember) || (!adm && acaMember !== v)) acaMember = M(v).comisario ? 'analista' : v;
+  if (!adm && M(v).comisario) acaMember = 'analista';
+  const who = acaMember, wm = M(who), edit = adm && acaEdit && D.v5;
+  $('#acaTitle').textContent = adm ? 'Academia del equipo' : 'Mi Academia';
+  const how = `<div class="panel aca-how"><div class="eyebrow">Cómo funciona</div>
+      <ol class="how-steps">
+        <li><b>Elige un curso</b><span>Cada habilidad de tu árbol tiene un curso real asociado (plataforma de la Caja, RR.HH. u otro).</span></li>
+        <li><b>Complétalo</b><span>Al terminarlo, avisa a Alvaro o Armando con tu constancia.</span></li>
+        <li><b>Se valida aquí</b><span>${adm ? 'Tú cambias el estado en la lista de abajo: se guarda solo.' : 'Ellos lo marcan como completado en esta misma página.'} La habilidad se desbloquea y suma XP (+15; +20 más si lo enseñas al equipo).</span></li>
+      </ol></div>`;
+  const tabs = adm ? `<div class="aca-bar"><div class="toggle" role="group" aria-label="Detective">${DETECTIVES.map(d => `<button type="button" data-aca-member="${d.id}" aria-pressed="${d.id === who}">${esc(d.nombre)}</button>`).join('')}</div>
+      ${D.v5 ? `<button class="btn small ${edit ? 'primary' : ''}" type="button" id="acaEditBtn">${edit ? 'Listo, terminar de editar' : 'Editar nombres de cursos'}</button>` : '<span class="note">Para editar los nombres de los cursos falta la actualización 5.</span>'}</div>` : '';
+  const tree = treeOf(who);
+  const skillRow = s => edit
+    ? `<div class="aca-row edit"><div class="aca-ic ${isDone(s.st) ? 'on' : ''}"><svg><use href="#i-${isDone(s.st) ? 'check' : 'book'}"/></svg></div>
+        <div class="aca-edit"><label class="note">Habilidad<input data-aca-name="${s.id}" data-f="skill" maxlength="60" value="${esc(s.name)}"></label><label class="note">Curso<input data-aca-name="${s.id}" data-f="course" maxlength="120" value="${esc(s.course)}"></label></div>
+        <div>${acaRow(s, adm)}</div></div>`
+    : `<div class="aca-row"><div class="aca-ic ${isDone(s.st) ? 'on' : s.st.startsWith('progress') ? 'half' : ''}"><svg><use href="#i-${isDone(s.st) ? 'check' : 'book'}"/></svg></div>
+        <div style="min-width:0"><div class="node-name">${esc(s.name)}</div><div class="node-course">Curso: ${esc(s.course)}</div></div>
+        <div class="aca-st">${acaRow(s, adm)}</div></div>`;
+  const branches = tree.map(b => `<div class="aca-branch"><h3><span>Rama ${esc(b.name)}</span><span class="mono note">${b.skills.filter(s => isDone(s.st)).length}/${b.skills.length}</span></h3>${b.skills.map(skillRow).join('')}</div>`).join('');
+  const commons = commonList().map(c => { const st = stOf(who, c.id);
+    return edit ? `<div class="aca-row edit"><div class="aca-ic ${isDone(st) ? 'on' : ''}"><svg><use href="#i-book"/></svg></div><div class="aca-edit"><label class="note">Curso común<input data-aca-name="${c.id}" data-f="course" maxlength="120" value="${esc(c.name)}"></label></div><div>${acaRow({ id: c.id, course: c.name, st }, adm)}</div></div>`
+      : `<div class="aca-row"><div class="aca-ic ${isDone(st) ? 'on' : st.startsWith('progress') ? 'half' : ''}"><svg><use href="#i-book"/></svg></div><div style="min-width:0"><div class="node-name">${esc(c.name)}</div><div class="node-course">Curso común · da XP, no cuenta como habilidad</div></div><div class="aca-st">${acaRow({ id: c.id, course: c.name, st }, adm)}</div></div>`; }).join('');
+  const team = adm ? `<div class="panel"><div class="panel-head"><div><div class="eyebrow">Resumen</div><h2>Avance del equipo</h2></div><span class="note">Cada punto es una habilidad</span></div>
+      ${DETECTIVES.map(d => { const sk = skillsOf(d.id); return `<div class="team-skill"><div>${person(d.id)}<div class="note" style="margin-top:3px">${esc(d.clase)}</div></div>
+        <div class="dots">${sk.map(s => `<span class="${isDone(s.st) ? 'on' : s.st.startsWith('progress') ? 'half' : ''}" title="${esc(s.name)}"></span>`).join('')}</div>
+        <div class="mono" style="text-align:right">${sk.filter(s => isDone(s.st)).length} / ${sk.length}</div></div>`; }).join('')}</div>` : '';
+  body.innerHTML = how + `<div class="panel">${tabs}
+      <div class="panel-head" style="margin-top:${adm ? 14 : 0}px"><div><div class="eyebrow">Especialidad · ${esc(wm.clase)}</div><h2>${adm && who !== v ? 'Árbol de ' + esc(wm.nombre) : 'Tu árbol de habilidades'}</h2></div><span class="note">${skillCount(who)} de 6 habilidades · cuentan para ascender</span></div>
+      ${edit ? '<p class="note" style="margin-bottom:10px">Escribe el nuevo nombre y sal de la casilla: se guarda solo y cambia para todo el equipo. Si borras el texto, vuelve el nombre original.</p>' : ''}
+      <div class="aca-tree">${branches}</div>
+      <h3 class="aca-sub">Cursos comunes para todo el equipo</h3>${commons}
+    </div>` + team;
+}
+const ACA_DEFAULT = id => { for (const t of Object.values(TREES)) for (const b of t) for (const s of b.skills) if (s.id === id) return { skill: s.name, course: s.course }; const c = COMMON.find(x => x.id === id); return c ? { skill: null, course: c.name } : null; };
+$('#acaBody').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.acaMember) { acaMember = b.dataset.acaMember; renderAcademia(); return; }
+  if (b.id === 'acaEditBtn') { acaEdit = !acaEdit; renderAcademia(); }
+});
+$('#acaBody').addEventListener('change', async e => {
+  const el = e.target;
+  if (el.dataset.acaProg) { await write(() => sb.from('progress').upsert({ member_key: acaMember, item_id: el.dataset.acaProg, state: el.value }, { onConflict: 'member_key,item_id' }).select(), 'Avance de ' + nombre(acaMember) + ' actualizado'); return; }
+  if (el.dataset.acaName) {
+    const id = el.dataset.acaName, def = ACA_DEFAULT(id); if (!def) return;
+    const cur = Object.assign({}, def, D.academy[id] ? { skill: D.academy[id].skill || def.skill, course: D.academy[id].course || def.course } : {});
+    cur[el.dataset.f] = el.value.trim() || def[el.dataset.f];
+    if (cur.course.length < 3 || (cur.skill && cur.skill.length < 2)) { toast('El nombre es muy corto.', true); renderAcademia(); return; }
+    if (cur.skill === def.skill && cur.course === def.course) { if (D.academy[id]) await write(() => sb.from('academy_items').delete().eq('item_id', id).select(), 'Nombre original restaurado'); else renderAcademia(); return; }
+    await write(() => sb.from('academy_items').upsert({ item_id: id, skill: cur.skill, course: cur.course, updated_by: S.viewer }, { onConflict: 'item_id' }).select(), 'Nombre guardado para todo el equipo');
+  }
+});
+
+/* ---------- Fotos: subir varias a la vez (por nombre de archivo) ---------- */
+const plain = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+function photoKeyFor(fname) { const f = plain(fname); const m = MEMBERS.find(x => f.includes(plain(x.nombre)) || f.split(/[^a-z]/).includes(x.id)); return m ? m.id : null; }
+document.addEventListener('change', async e => {
+  const inp = e.target.closest('input[type=file][data-photo-multi]'); if (!inp || !inp.files || !inp.files.length) return;
+  const files = [...inp.files]; inp.value = '';
+  const plan = files.map(f => ({ f, k: photoKeyFor(f.name) }));
+  const miss = plan.filter(p => !p.k).map(p => p.f.name);
+  let ok = 0;
+  for (const p of plan.filter(p => p.k)) {
+    let blob; try { blob = await photoBlob(p.f); } catch (x) { miss.push(p.f.name); continue; }
+    const { error } = await sb.storage.from('fotos').upload(p.k + '.jpg', blob, { upsert: true, contentType: 'image/jpeg', cacheControl: '60' });
+    if (error) miss.push(p.f.name); else ok++;
+  }
+  await fetchPhotos(); renderAll();
+  toast(ok ? `${ok} foto${ok === 1 ? '' : 's'} subida${ok === 1 ? '' : 's'}${miss.length ? '. No se reconoció: ' + miss.join(', ') : ''}` : 'No se reconoció ningún archivo. Nómbralos con el nombre de cada persona, por ejemplo joel.jpg.', !ok);
+});
+
 function renderAll() {
-  renderShell(); renderMyDay(); renderHome(); renderTraining(); renderPropose(); renderCasos(); renderCredencial(); renderAcademia(); renderIdeas(); renderEscalafon(); renderTablero(); renderAdmin();
+  renderShell(); renderMyDay(); renderHome(); renderPodium(); renderTraining(); renderPropose(); renderCasos(); renderCredencial(); renderAcademia(); renderIdeas(); renderEscalafon(); renderTablero(); renderAdmin();
 }
 
 /* =========================================================
@@ -2055,39 +2350,61 @@ const SEQUENCES = [
   { n: 'Tipos de crédito MYPE y no minorista según su endeudamiento (de menor a mayor)', s: ['Microempresa (hasta S/ 20 mil)', 'Pequeña empresa (hasta S/ 300 mil)', 'Mediana empresa', 'Gran empresa', 'Corporativo'] }
 ];
 
-/* Parejas: concepto ↔ definición */
-const PAIRS = [
-  ['Morosidad', 'Cartera atrasada / créditos directos'],
-  ['Cartera atrasada', 'Créditos vencidos + en cobranza judicial'],
-  ['Alto riesgo', 'Atrasada + refinanciada + reestructurada'],
-  ['Cobertura', 'Provisiones / cartera atrasada'],
-  ['ROE', 'Utilidad neta / patrimonio'],
-  ['ROA', 'Utilidad neta / activo total'],
-  ['TCEA', 'Costo total del crédito: intereses, comisiones y gastos'],
-  ['TREA', 'Rendimiento real de un depósito'],
-  ['Encaje', 'Reserva de depósitos exigida por el BCRP'],
-  ['Castigo', 'Retiro del balance de un crédito en pérdida'],
-  ['Refinanciado', 'Crédito con plazo o monto modificado por dificultad de pago'],
-  ['Capital global', 'Patrimonio efectivo / activos ponderados por riesgo'],
-  ['Forecast', 'Proyección actualizada del cierre del año'],
-  ['CPP', 'Deudor con problemas potenciales (9 a 30 días)'],
-  ['FSD', 'Fondo que protege los depósitos del público'],
-  ['SBS', 'Regula y supervisa al sistema financiero']
+/* ¿Verdad o mito? Afirmaciones de cultura financiera general (no usan datos internos) */
+const VERDAD = [
+  { q: 'La TCEA de un crédito incluye intereses, comisiones y gastos.', a: true, e: 'Por eso sirve para comparar créditos: refleja el costo total que paga el cliente.' },
+  { q: 'Una tasa efectiva anual de 12 % equivale exactamente a 1 % mensual.', a: false, e: 'Por la capitalización, 1 % mensual equivale a 12.68 % anual. 12 % anual equivale a unos 0.95 % mensuales.' },
+  { q: 'Los depósitos en una Caja Municipal están protegidos por el Fondo de Seguro de Depósitos.', a: true, e: 'Las Cajas Municipales son miembros del FSD, igual que los bancos y las financieras.' },
+  { q: 'La inflación reduce el poder de compra del dinero que se guarda sin intereses.', a: true, e: 'Con los mismos soles se compran menos cosas cuando los precios suben.' },
+  { q: 'El ROE mide la utilidad respecto del activo total.', a: false, e: 'Eso es el ROA. El ROE compara la utilidad con el patrimonio.' },
+  { q: 'Las provisiones por riesgo de crédito son un gasto que reduce la utilidad.', a: true, e: 'Se registran como gasto del periodo, por eso más provisiones significan menos utilidad.' },
+  { q: 'Si los ingresos presupuestados eran 100 y los reales 90, la variación es favorable.', a: false, e: 'En ingresos, quedar por debajo del presupuesto es desfavorable. En gastos sería al revés.' },
+  { q: 'El Banco Central de Reserva es quien supervisa a las Cajas Municipales.', a: false, e: 'La supervisión la hace la SBS. El BCRP conduce la política monetaria.' },
+  { q: 'El interés compuesto genera intereses sobre los intereses ya ganados.', a: true, e: 'Los intereses se suman al capital y, en el siguiente periodo, también generan intereses.' },
+  { q: 'El encaje es dinero que la entidad puede prestar libremente.', a: false, e: 'Es justamente la parte de los depósitos que debe quedar como reserva.' },
+  { q: 'Un forecast reemplaza al presupuesto aprobado.', a: false, e: 'El forecast estima cómo cerrará el año; el presupuesto aprobado sigue siendo la meta de referencia.' },
+  { q: 'El margen financiero es la diferencia entre ingresos y gastos financieros.', a: true, e: 'Es lo que queda de los intereses cobrados después de pagar los intereses de depósitos y adeudados.' },
+  { q: 'A mayor ratio de capital global, más respaldo patrimonial frente a los riesgos.', a: true, e: 'Indica cuánto patrimonio efectivo respalda los activos ponderados por riesgo.' },
+  { q: 'Gastar S/ 110 con un presupuesto de S/ 100 es una ejecución de 90 %.', a: false, e: 'Ejecución = real / presupuesto = 110 / 100 = 110 %.' },
+  { q: 'Castigar un crédito significa que el cliente ya no debe nada.', a: false, e: 'El crédito sale del balance, pero la deuda sigue existiendo y se puede seguir cobrando.' },
+  { q: 'Un crédito a microempresa con 35 días de atraso ya figura como vencido.', a: true, e: 'En créditos MYPE, pasa a vencido con más de 30 días de atraso.' },
+  { q: 'Diversificar la cartera ayuda a reducir el riesgo de concentración.', a: true, e: 'Si se reparte entre más clientes, sectores y zonas, un problema puntual afecta menos.' },
+  { q: 'Un crédito refinanciado deja de formar parte de la cartera de alto riesgo.', a: false, e: 'Sale de la cartera atrasada, pero sigue dentro de la cartera de alto riesgo.' },
+  { q: 'La TREA sirve para comparar depósitos entre entidades.', a: true, e: 'Muestra lo que realmente gana el ahorrista, ya descontadas comisiones y gastos.' },
+  { q: 'Subir la tasa de los depósitos a plazo aumenta los gastos financieros.', a: true, e: 'Los intereses pagados a los ahorristas son gastos financieros.' }
 ];
 
-/* Tablas para «Detective de errores» (datos ficticios, se generan al azar) */
-const AGENCIAS = ['Ica Centro', 'Pisco', 'Chincha', 'Nasca', 'Cañete', 'Palpa', 'Arequipa', 'Huamanga', 'Abancay'];
-const RUBROS = ['Personal', 'Servicios de terceros', 'Alquileres', 'Publicidad', 'Mantenimiento', 'Tributos', 'Capacitación'];
+/* Palabra oculta: adivina el término letra por letra */
+const PALABRAS = [
+  { w: 'MOROSIDAD', h: 'Indicador: cartera atrasada entre créditos directos.' },
+  { w: 'ENCAJE', h: 'Parte de los depósitos que se guarda como reserva.' },
+  { w: 'PROVISION', h: 'Gasto que cubre la pérdida esperada de un crédito.' },
+  { w: 'CASTIGO', h: 'Retiro del balance de un crédito en pérdida.' },
+  { w: 'FORECAST', h: 'Proyección actualizada de cómo cerrará el año.' },
+  { w: 'PRESUPUESTO', h: 'Meta financiera aprobada para el año.' },
+  { w: 'LIQUIDEZ', h: 'Capacidad de pagar las obligaciones de corto plazo.' },
+  { w: 'SOLVENCIA', h: 'Capacidad de responder con patrimonio a todas las deudas.' },
+  { w: 'RENTABILIDAD', h: 'Lo que se gana en relación con lo invertido.' },
+  { w: 'COBERTURA', h: 'Provisiones entre cartera atrasada.' },
+  { w: 'PATRIMONIO', h: 'Lo que pertenece a los accionistas.' },
+  { w: 'INFLACION', h: 'Subida general y sostenida de los precios.' },
+  { w: 'COLOCACIONES', h: 'Créditos otorgados por la entidad.' },
+  { w: 'AMORTIZACION', h: 'Parte de la cuota que reduce el capital de la deuda.' },
+  { w: 'VARIACION', h: 'Diferencia entre lo real y lo presupuestado.' },
+  { w: 'DEPOSITO', h: 'Dinero que el público confía a la entidad.' },
+  { w: 'MARGEN', h: 'Ingresos menos gastos; en finanzas, suele ser el financiero.' },
+  { w: 'EFICIENCIA', h: 'Gastos de operación entre margen financiero: cuanto más bajo, mejor.' }
+];
 
 /* =========================================================
    SALA DE ENTRENAMIENTO · lógica
    ========================================================= */
 const GAMES = [
   { id: 'quiz',     name: 'Interrogatorio',       desc: '5 preguntas sobre Caja Ica, regulación e indicadores.', icon: 'loupe' },
-  { id: 'errores',  name: 'Detective de errores', desc: 'Encuentra la cifra que no cuadra en 4 reportes.',        icon: 'folder' },
+  { id: 'verdad',   name: '¿Verdad o mito?',      desc: '8 afirmaciones rápidas de cultura financiera.',          icon: 'check' },
+  { id: 'palabra',  name: 'Palabra oculta',       desc: 'Adivina 3 términos financieros letra por letra.',        icon: 'folder' },
   { id: 'subebaja', name: '¿Sube o baja?',        desc: 'Causa y efecto en los indicadores. 6 casos.',            icon: 'ladder' },
-  { id: 'ordena',   name: 'Ordena el proceso',    desc: 'Pon en orden los pasos de 2 procesos del negocio.',      icon: 'check' },
-  { id: 'parejas',  name: 'Parejas',              desc: 'Une cada concepto con su definición.',                   icon: 'star' }
+  { id: 'ordena',   name: 'Ordena el proceso',    desc: 'Pon en orden los pasos de 2 procesos del negocio.',      icon: 'star' }
 ];
 const XP_GAMES_CAP = 10, XP_PER_CORRECT = 2;
 const limaToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(new Date());
@@ -2156,9 +2473,11 @@ function renderTraining() {
   let body;
   if (mine || dailyPick != null) {
     const right = mine ? mine.correct > 0 : dailyPick === q.a;
+    let picked = dailyPick; if (picked == null) { try { const v2 = localStorage.getItem('brujula-diaria-' + v + '-' + today); if (v2 != null) picked = +v2; } catch (x) {} }
     body = `<p class="dq">${esc(q.q)}</p>
-      <div class="opts">${q.o.map((o, i) => `<button class="opt ${i === q.a ? 'right' : (dailyPick === i ? 'wrong' : '')}" disabled>${esc(o)}</button>`).join('')}</div>
-      <div class="explain ${right ? 'ok' : 'bad'}"><b>${right ? 'Correcto.' : 'No esta vez.'}</b> ${esc(q.e)}</div>${team}`;
+      <div class="opts">${q.o.map((o, i) => `<button class="opt ${i === q.a ? 'right' : (picked === i && !right ? 'wrong' : '')}" disabled>${esc(o)}${i === q.a ? ' <span class="opt-tag">correcta</span>' : picked === i && !right ? ' <span class="opt-tag">tu respuesta</span>' : ''}</button>`).join('')}</div>
+      <div class="explain ${right ? 'ok' : 'bad'}"><b>${right ? 'Correcto.' : 'No esta vez.'}</b> ${right ? '' : `La respuesta correcta es <b>«${esc(q.o[q.a])}»</b>.`}
+        <div style="margin-top:6px"><b>Sustento:</b> ${esc(q.e || 'Sin explicación registrada para esta pregunta.')}</div></div>${team}`;
   } else {
     body = `<p class="dq">${esc(q.q)}</p>
       <div class="opts" id="dailyOpts">${q.o.map((o, i) => `<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div>
@@ -2171,6 +2490,7 @@ function renderTraining() {
 $('#daily').addEventListener('click', async e => {
   const b = e.target.closest('button[data-i]'); if (!b || dailyPick != null) return;
   dailyPick = +b.dataset.i;
+  try { localStorage.setItem('brujula-diaria-' + S.viewer + '-' + limaToday(), String(dailyPick)); } catch (x) {}
   const q = dailyQuestion(); const right = dailyPick === q.a;
   renderTraining();
   const res = await savePlay('diaria', right ? 1 : 0, 1);
@@ -2187,7 +2507,7 @@ function openGame(id) {
   $('#gdEyebrow').textContent = 'Sala de entrenamiento';
   $('#gdTitle').textContent = meta.name;
   G = { id, i: 0, score: 0 };
-  ({ quiz: startQuiz, errores: startErrores, subebaja: startUpDown, ordena: startOrdena, parejas: startParejas })[id]();
+  ({ quiz: startQuiz, verdad: startVerdad, palabra: startPalabra, subebaja: startUpDown, ordena: startOrdena })[id]();
   if (!dlg.open) { try { dlg.showModal(); } catch (x) { dlg.setAttribute('open', ''); } }
   if (window.__scene) window.__scene.setActive(false);
 }
@@ -2217,7 +2537,7 @@ function quizStep() {
     const b = e.target.closest('[data-k]'); if (!b) return;
     const k = +b.dataset.k, right = k === q.a; if (right) G.score++;
     $('#gdBody .opts').querySelectorAll('.opt').forEach((x, j) => { x.disabled = true; if (j === q.a) x.classList.add('right'); else if (j === k) x.classList.add('wrong'); });
-    nextBtn(right, q.e, () => { G.i++; G.i < G.items.length ? quizStep() : finish(G.score, G.items.length); });
+    nextBtn(right, (right ? '' : `La respuesta correcta es <b>«${esc(q.o[q.a])}»</b>. `) + esc(q.e || ''), () => { G.i++; G.i < G.items.length ? quizStep() : finish(G.score, G.items.length); });
   };
 }
 function nextBtn(right, expl, go) {
@@ -2267,84 +2587,46 @@ function ordRender(checked) {
   };
 }
 
-/* Parejas */
-function startParejas() {
-  const ps = pick(PAIRS, 6);
-  G.cards = shuffle(ps.flatMap((p, k) => [{ k, t: p[0], c: true }, { k, t: p[1], c: false }])).map((c, n) => Object.assign(c, { n }));
-  G.open = []; G.done = new Set(); G.miss = 0; G.lock = false;
-  parRender();
-}
-function parRender() {
-  gbody(`<p class="note" style="margin-bottom:10px">Voltea dos cartas: un concepto y su definición. Encuentra las 6 parejas con la menor cantidad de errores.</p>
-    <div class="pairs">${G.cards.map(c => { const up = G.open.includes(c.n) || G.done.has(c.k); return `<button class="card ${up ? 'up' : ''} ${G.done.has(c.k) ? 'done' : ''} ${c.c ? 'concept' : ''}" data-n="${c.n}" ${G.done.has(c.k) ? 'disabled' : ''}>${up ? esc(c.t) : '<svg><use href="#i-loupe"/></svg>'}</button>`; }).join('')}</div>
-    <div class="note" style="margin-top:10px">Parejas: ${G.done.size} de 6 · Errores: ${G.miss}</div>`);
-  $('#gdBody .pairs').onclick = e => {
-    const b = e.target.closest('[data-n]'); if (!b || G.lock) return;
-    const n = +b.dataset.n; if (G.open.includes(n)) return;
-    G.open.push(n);
-    if (G.open.length === 2) {
-      const [a, c] = G.open.map(x => G.cards[x]);
-      if (a.k === c.k && a.c !== c.c) { G.done.add(a.k); G.open = []; parRender(); if (G.done.size === 6) { const correct = Math.max(0, Math.min(6, 6 - Math.floor(Math.max(0, G.miss - 3) / 2))); setTimeout(() => finish(correct, 6, `<p class="note">Terminaste con ${G.miss} error${G.miss === 1 ? '' : 'es'}. Hasta 3 errores conservas los 6 puntos.</p>`), 500); } }
-      else { G.miss++; G.lock = true; parRender(); setTimeout(() => { G.open = []; G.lock = false; if (G && G.id === 'parejas') parRender(); }, 1100); }
-    } else parRender();
+/* ¿Verdad o mito? */
+function startVerdad() { G.items = pick(VERDAD, 8); G.i = 0; G.score = 0; vmStep(); }
+function vmStep() {
+  const q = G.items[G.i];
+  gbody(`${progress(G.i, G.items.length)}<p class="gq">${esc(q.q)}</p>
+    <div class="opts" style="grid-template-columns:1fr 1fr"><button class="opt" data-k="1">Verdad</button><button class="opt" data-k="0">Mito</button></div><div id="gfb"></div>`);
+  $('#gdBody .opts').onclick = e => {
+    const b = e.target.closest('[data-k]'); if (!b) return;
+    const right = (b.dataset.k === '1') === q.a; if (right) G.score++;
+    $('#gdBody .opts').querySelectorAll('.opt').forEach(x => { x.disabled = true; if ((x.dataset.k === '1') === q.a) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    nextBtn(right, `Es ${q.a ? 'verdad' : 'un mito'}. ${esc(q.e)}`, () => { G.i++; G.i < G.items.length ? vmStep() : finish(G.score, G.items.length); });
   };
 }
 
-/* Detective de errores: reportes con una cifra mal calculada (datos ficticios) */
-const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
-const rr = (a, b, d) => +(a + Math.random() * (b - a)).toFixed(d);
-function makeReport() {
-  const kind = pick(['mora', 'ppto', 'crec'], 1)[0];
-  let title, head, rows, explainOf;
-  if (kind === 'mora') {
-    title = 'Morosidad por agencia · S/ millones';
-    head = ['Agencia', 'Colocaciones', 'Cartera atrasada', 'Morosidad'];
-    const ags = pick(AGENCIAS, 5);
-    rows = ags.map(a => { const c = rr(20, 95, 1); const at = +(c * rr(.02, .085, 3)).toFixed(1); return [a, c, at, +(at / c * 100).toFixed(1)]; });
-    const tc = +rows.reduce((s, r) => s + r[1], 0).toFixed(1), ta = +rows.reduce((s, r) => s + r[2], 0).toFixed(1);
-    rows.push(['Total', tc, ta, +(ta / tc * 100).toFixed(1)]);
-    const fmtRow = r => [r[0], fmt(r[1], 1), fmt(r[2], 1), fmt(r[3], 1) + ' %'];
-    const err = pick(['ratio', 'ratio', 'sumC', 'sumA'], 1)[0];
-    let ri, ci, good;
-    if (err === 'ratio') { ri = rint(0, 4); ci = 3; good = rows[ri][3]; const bad = +(good + (Math.random() < .5 ? -1 : 1) * rr(.8, 2.4, 1)).toFixed(1); rows[ri][3] = Math.max(.3, bad); explainOf = `La morosidad de ${rows[ri][0]} es ${fmt(rows[ri][2], 1)} / ${fmt(rows[ri][1], 1)} = ${fmt(good, 1)} %.`; }
-    else if (err === 'sumC') { ri = 5; ci = 1; good = tc; rows[5][1] = +(tc + (Math.random() < .5 ? -1 : 1) * rr(4, 12, 1)).toFixed(1); explainOf = `La suma de colocaciones es ${fmt(good, 1)}.`; }
-    else { ri = 5; ci = 2; good = ta; rows[5][2] = +(ta + (Math.random() < .5 ? -1 : 1) * rr(.8, 2.5, 1)).toFixed(1); explainOf = `La suma de la cartera atrasada es ${fmt(good, 1)}.`; }
-    return { title, head, rows: rows.map(fmtRow), wrong: [ri, ci], explain: explainOf, totalRow: true };
+/* Palabra oculta */
+const ABC = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+const MAX_FALLOS = 6;
+function startPalabra() { G.items = pick(PALABRAS, 3); G.i = 0; G.score = 0; palStart(); }
+function palStart() { G.used = new Set(); G.miss = 0; G.done = false; palRender(); }
+function palRender() {
+  const it = G.items[G.i], w = it.w;
+  const solved = w.split('').every(c => G.used.has(c));
+  const lost = G.miss >= MAX_FALLOS;
+  gbody(`${progress(G.i, G.items.length)}<p class="note">Pista: <b style="color:var(--ink)">${esc(it.h)}</b></p>
+    <div class="word" aria-live="polite">${w.split('').map(c => `<span class="${G.used.has(c) || lost ? 'on' : ''} ${lost && !G.used.has(c) ? 'miss' : ''}">${G.used.has(c) || lost ? c : ''}</span>`).join('')}</div>
+    <div class="note" style="margin:8px 0">Errores: <b class="${G.miss >= 4 ? 'neg' : ''}">${G.miss}</b> de ${MAX_FALLOS}${G.miss ? ' · ' + '●'.repeat(G.miss) : ''}</div>
+    <div class="keys">${ABC.map(c => `<button class="key ${G.used.has(c) ? (w.includes(c) ? 'hit' : 'fail') : ''}" data-c="${c}" ${G.used.has(c) || solved || lost ? 'disabled' : ''}>${c}</button>`).join('')}</div>
+    <div id="gfb"></div>`);
+  if (solved || lost) {
+    if (!G.done) { G.done = true; if (solved) G.score++; }
+    nextBtn(solved, solved ? `La palabra es <b>${w}</b>.` : `Era <b>${w}</b>: ${esc(it.h)}`, () => { G.i++; G.i < G.items.length ? palStart() : finish(G.score, G.items.length); });
+    return;
   }
-  if (kind === 'ppto') {
-    title = 'Ejecución presupuestal de gastos · S/ miles';
-    head = ['Rubro', 'Presupuesto', 'Real', 'Variación', 'Ejecución'];
-    rows = pick(RUBROS, 5).map(r => { const p = rint(40, 420); const re = Math.round(p * rr(.82, 1.18, 3)); return [r, p, re, re - p, +(re / p * 100).toFixed(1)]; });
-    const err = pick(['var', 'pct', 'pct'], 1)[0];
-    const ri = rint(0, 4); let ci, good;
-    if (err === 'var') { ci = 3; good = rows[ri][3]; rows[ri][3] = good === 0 ? 12 : -good; explainOf = `Variación = real − presupuesto = ${fmt(rows[ri][2])} − ${fmt(rows[ri][1])} = ${fmt(good)}.`; }
-    else { ci = 4; good = rows[ri][4]; rows[ri][4] = +(good + (Math.random() < .5 ? -1 : 1) * rr(6, 15, 1)).toFixed(1); explainOf = `Ejecución = real / presupuesto = ${fmt(rows[ri][2])} / ${fmt(rows[ri][1])} = ${fmt(good, 1)} %.`; }
-    return { title, head, rows: rows.map(r => [r[0], fmt(r[1]), fmt(r[2]), (r[3] > 0 ? '+' : '') + fmt(r[3]), fmt(r[4], 1) + ' %']), wrong: [ri, ci], explain: explainOf };
-  }
-  title = 'Saldo de colocaciones · S/ millones';
-  head = ['Mes', 'Saldo', 'Variación mensual'];
-  const ms = ['Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre'];
-  let v = rr(380, 520, 1); rows = ms.map((m, k) => { if (k) v = +(v * rr(.985, 1.03, 4)).toFixed(1); return [m, v, null]; });
-  rows.forEach((r, k) => { if (k) r[2] = +((r[1] / rows[k - 1][1] - 1) * 100).toFixed(1); });
-  const ri = rint(1, 4); const good = rows[ri][2];
-  rows[ri][2] = +(good + (Math.random() < .5 ? -1 : 1) * rr(1.2, 3, 1)).toFixed(1);
-  explainOf = `La variación de ${rows[ri][0]} es ${fmt(rows[ri][1], 1)} / ${fmt(rows[ri - 1][1], 1)} − 1 = ${fmt(good, 1)} %.`;
-  return { title, head, rows: rows.map(r => [r[0], fmt(r[1], 1), r[2] == null ? '—' : (r[2] > 0 ? '+' : '') + fmt(r[2], 1) + ' %']), wrong: [ri, 2], explain: explainOf };
+  $('#gdBody .keys').onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; const c = b.dataset.c; G.used.add(c); if (!w.includes(c)) G.miss++; palRender(); };
 }
-function startErrores() { G.items = Array.from({ length: 4 }, makeReport); G.i = 0; G.score = 0; errStep(); }
-function errStep() {
-  const R = G.items[G.i];
-  gbody(`${progress(G.i, G.items.length)}<p class="gq">${esc(R.title)}</p><p class="note">Hay <b>una</b> cifra mal calculada. Tócala. <span class="pill pendiente">Datos ficticios</span></p>
-    <div class="table-wrap"><table class="adm err-t"><thead><tr>${R.head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead>
-    <tbody>${R.rows.map((r, i) => `<tr class="${R.totalRow && i === R.rows.length - 1 ? 'tot' : ''}">${r.map((c, j) => j === 0 ? `<td>${esc(c)}</td>` : `<td><button class="cell" data-r="${i}" data-c="${j}">${esc(c)}</button></td>`).join('')}</tr>`).join('')}</tbody></table></div><div id="gfb"></div>`);
-  $('#gdBody .err-t').onclick = e => {
-    const b = e.target.closest('.cell'); if (!b) return;
-    const right = +b.dataset.r === R.wrong[0] && +b.dataset.c === R.wrong[1]; if (right) G.score++;
-    $('#gdBody .err-t').querySelectorAll('.cell').forEach(x => { x.disabled = true; if (+x.dataset.r === R.wrong[0] && +x.dataset.c === R.wrong[1]) x.classList.add('wrongcell'); else if (x === b) x.classList.add('miss'); });
-    nextBtn(right, (right ? '¡Bien visto! ' : 'La cifra con error es la marcada. ') + esc(R.explain), () => { G.i++; G.i < G.items.length ? errStep() : finish(G.score, G.items.length); });
-  };
-}
-
+document.addEventListener('keydown', e => {
+  if (!G || G.id !== 'palabra' || !dlg.open || e.ctrlKey || e.metaKey || e.altKey) return;
+  const c = e.key.toUpperCase(); if (c.length !== 1 || !ABC.includes(c)) return;
+  const b = document.querySelector(`#gdBody .key[data-c="${c}"]:not([disabled])`); if (b) { e.preventDefault(); b.click(); }
+});
 
 /* =========================================================
    PERSONAJE VIVO: necesidades, emociones, motivación y presencia
@@ -2402,14 +2684,66 @@ function needsOf(id) {
   const o = ordenOf(id);
   const away = L.any == null ? 1 : b('any');
   const presence = vacOf(id) ? 1 : away <= 1 ? 1 : away === 2 ? .8 : away === 3 ? .62 : away === 4 ? .45 : .3;
-  return { energia: Math.round(e), orden: Math.round(o), conocimiento: Math.round(k), animo: Math.round(a), presence, away, last: L };
+  return { energia: Math.round(e), orden: Math.round(o), conocimiento: Math.round(k), animo: Math.round(a), precision: precisionOf(id), presence, away, last: L };
+}
+/* Precisión: calidad de lo entregado en los dos últimos expedientes (el Comisario: cuánto ha validado) */
+const QUALITY = { ok: 100, obs: 75, tarde: 45, error: 30, tarde_error: 10 };
+function precisionOf(id) {
+  if (M(id).comisario) { const cl = CHECKPOINTS.filter(c => isClosed(c.status)).length, w = CHECKPOINTS.filter(c => c.status === 'entregado').length; return cl + w ? Math.round(cl / (cl + w) * 100) : 100; }
+  const ms = monthsList().slice(0, 2);
+  const mine = D.cps.filter(c => c.resp === id && ms.includes(c.mes) && QUALITY[c.status] != null);
+  return mine.length ? Math.round(mine.reduce((a, c) => a + QUALITY[c.status], 0) / mine.length) : 70;
 }
 const NEEDS = [
-  { k: 'energia', n: 'Energía', d: 'Pregunta del día' },
-  { k: 'orden', n: 'Orden', d: 'Reportes al día' },
-  { k: 'conocimiento', n: 'Conocimiento', d: 'Juegos y cursos' },
-  { k: 'animo', n: 'Ánimo', d: 'Ideas, reconocimientos y revisiones' }
+  { k: 'energia', n: 'Energía', d: 'Se recarga con la pregunta del día' },
+  { k: 'orden', n: 'Orden', d: 'Reportes al día y revisiones de copiloto' },
+  { k: 'conocimiento', n: 'Conocimiento', d: 'Minijuegos y cursos de la Academia' },
+  { k: 'animo', n: 'Ánimo', d: 'Ideas, apoyos y reconocimientos' },
+  { k: 'precision', n: 'Precisión', d: 'Reportes validados sin observaciones ni errores' }
 ];
+/* Gráfico de araña (pentágono) con las 5 cualidades del detective */
+function radarSVG(N) {
+  const W = 260, H = 230, cx = W / 2, cy = 120, R = 78, n = NEEDS.length;
+  const pt = (i, r) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; };
+  const poly = r => NEEDS.map((_, i) => pt(i, r).map(v => v.toFixed(1)).join(',')).join(' ');
+  const vals = NEEDS.map((nd, i) => pt(i, R * Math.max(.04, N[nd.k] / 100)));
+  const lab = NEEDS.map((nd, i) => { const [x, y] = pt(i, R + 22); const anchor = Math.abs(x - cx) < 8 ? 'middle' : x < cx ? 'end' : 'start'; const v = N[nd.k];
+    return `<g><title>${esc(nd.n)}: ${v} de 100. ${esc(nd.d)}</title><text x="${x.toFixed(1)}" y="${(y - 2).toFixed(1)}" text-anchor="${anchor}" class="rd-n">${nd.n}</text><text x="${x.toFixed(1)}" y="${(y + 12).toFixed(1)}" text-anchor="${anchor}" class="rd-v ${v < 35 ? 'low' : v < 70 ? 'mid' : 'hi'}">${v}</text></g>`; }).join('');
+  return `<svg class="radar" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cualidades de tu detective: ${NEEDS.map(nd => nd.n + ' ' + N[nd.k]).join(', ')}">
+    ${[.25, .5, .75, 1].map(f => `<polygon points="${poly(R * f)}" class="rd-grid${f === 1 ? ' out' : ''}"/>`).join('')}
+    ${NEEDS.map((_, i) => { const [x, y] = pt(i, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" class="rd-axis"/>`; }).join('')}
+    <polygon points="${vals.map(p => p.map(v => v.toFixed(1)).join(',')).join(' ')}" class="rd-area"/>
+    ${vals.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3.2" class="rd-dot"/>`).join('')}
+    ${lab}</svg>`;
+}
+/* Frase financiera del día (la misma para todo el equipo) */
+const FRASES = [
+  'Un presupuesto bien hecho es una promesa que el equipo puede cumplir.',
+  'Cada cifra conciliada es una mejor decisión en Gerencia.',
+  'La rentabilidad se construye mes a mes, igual que la confianza.',
+  'Detrás de cada indicador hay un emprendedor que confió en la Caja.',
+  'Un buen forecast no adivina el futuro: lo prepara.',
+  'La morosidad se previene antes de que aparezca en el reporte.',
+  'Pequeños ahorros de tiempo, sumados cada mes, se vuelven grandes mejoras.',
+  'El interés compuesto también aplica al aprendizaje: lo que estudias hoy rinde mañana.',
+  'Un reporte a tiempo y sin errores es la mejor carta de presentación del área.',
+  'Las variaciones no son problemas: son pistas que hay que explicar.',
+  'La liquidez da tranquilidad; la solvencia da futuro.',
+  'Planear es decidir hoy lo que queremos que pase en el cierre.',
+  'Sin control no hay crecimiento sostenible.',
+  'Cada sol bien asignado en el presupuesto impulsa a un emprendedor.',
+  'Revisar dos veces y enviar una sola: así se cuida la credibilidad.',
+  'La eficiencia no es gastar menos, es gastar mejor.',
+  'Las buenas decisiones financieras se toman con datos, no con corazonadas.',
+  'Un equipo que comparte lo que sabe multiplica su capital.',
+  'El cierre perfecto empieza el primer día del mes.',
+  'Aprender es la inversión con mejor rendimiento.',
+  'El riesgo no se elimina: se mide, se provisiona y se gestiona.',
+  'Un buen análisis convierte números en decisiones.',
+  'La puntualidad también es un indicador de gestión.',
+  'Ahorro, crédito y confianza: el ciclo que mueve a una caja municipal.'
+];
+function fraseDelDia() { const d = limaToday(); let h = 7; for (const ch of d) h = (h * 33 + ch.charCodeAt(0)) >>> 0; return FRASES[h % FRASES.length]; }
 const MOODS = {
   motivado:      { n: 'Motivado',          c: 'ok' },
   concentrado:   { n: 'Concentrado',       c: 'info' },
@@ -2488,10 +2822,10 @@ function renderMyDay() {
   const fading = md === 'desvaneciendo';
   $('#mdHead').innerHTML = `<div class="md-top">${avatar(v, 44)}<div style="min-width:0"><div class="eyebrow">Mi día · ${new Date().toLocaleDateString('es-PE', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
       <div class="md-title">Tu detective está ${moodChip(v, N)}${inStreak(v, N) ? ' <span class="mood ok">En racha</span>' : ''}</div></div></div>
-    <p class="md-motiv">«${esc(motivationOf(v))}»</p>
+    <p class="md-motiv"><span class="eyebrow">Frase financiera del día</span>«${esc(fraseDelDia())}»</p>
     ${fading ? `<div class="md-alert">Tu detective se está desvaneciendo: han pasado ${N.away} días hábiles sin noticias tuyas. Cualquier acción de abajo lo trae de vuelta.</div>` : ''}
     ${!D.v4 ? '<div class="md-alert soft">Falta la actualización 4 de la base de datos: el detective aún no puede registrar todo lo que haces.</div>' : ''}`;
-  $('#mdNeeds').innerHTML = NEEDS.map(n => `<div class="need-row" title="${esc(n.d)}"><span class="need-n">${n.n}</span>${bar(N[n.k])}<span class="mono need-v">${N[n.k]}</span></div>`).join('');
+  $('#mdNeeds').innerHTML = radarSVG(N) + `<p class="note rd-help">${(() => { const low = NEEDS.slice().sort((x, y) => N[x.k] - N[y.k])[0]; return N[low.k] >= 70 ? 'Todas las cualidades en buen nivel.' : `Lo que más necesita: <b>${low.n}</b> · ${esc(low.d.charAt(0).toLowerCase() + low.d.slice(1))}.`; })()}</p>`;
   const tasks = [];
   const today = limaToday();
   const dailyDone = (D.plays || []).some(p => p.member_key === v && p.game === 'diaria' && p.day === today);
@@ -2592,11 +2926,24 @@ function cpDetail(c) {
     if (canAdmin()) acts += `<button class="btn small primary" type="button" data-validate="${c.id}">${VALIDATED.includes(c.status) ? 'Cambiar sello' : 'Validar'}</button>`;
   } else if (isResp) acts = '<span class="note">Para marcar tu avance falta la actualización 4 de la base de datos.</span>';
   const ev = see ? (D.events || []).filter(e => e.cp_id === c.id) : [];
-  const hist = ev.length ? `<div class="hist"><div class="eyebrow">Historial</div>${ev.slice().reverse().map(e => `<div class="hist-row"><span class="mono note">${fmtDT(e.created_at)}</span><span>${esc(nombre(e.actor) || e.actor)} · ${e.kind === 'revision' ? 'revisó' : e.kind === 'validacion' ? 'validó' : 'actualizó'}${e.to_status && e.kind !== 'revision' ? ': <b>' + esc((STATUS[e.to_status] || { label: e.to_status }).label) + '</b>' : ''}${e.note ? ` — «${esc(e.note)}»` : ''}</span></div>`).join('')}</div>` : '';
+  const clearBtn = canAdmin() && ev.length ? `<button class="btn small danger" type="button" data-clearhist="${c.id}">${histArmed === c.id ? '¿Seguro? Borrar historial' : 'Borrar historial'}</button>` : '';
+  const hist = ev.length ? `<div class="hist"><div class="hist-head"><div class="eyebrow">Historial</div>${clearBtn}</div>${ev.slice().reverse().map(e => `<div class="hist-row"><span class="mono note">${fmtDT(e.created_at)}</span><span>${esc(nombre(e.actor) || e.actor)} · ${e.kind === 'revision' ? 'revisó' : e.kind === 'validacion' ? 'validó' : 'actualizó'}${e.to_status && e.kind !== 'revision' ? ': <b>' + esc((STATUS[e.to_status] || { label: e.to_status }).label) + '</b>' : ''}${e.note ? ` — «${esc(e.note)}»` : ''}</span></div>`).join('')}</div>` : '';
   return `<div class="cp-detail">${rows.length ? `<div class="hc-list">${rows.map(r => `<div class="hc-row"><span class="note">${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>` : ''}${acts ? `<div class="cp-acts">${acts}</div>` : ''}${hist}${!rows.length && !acts && !hist ? '<p class="note">Sin detalles adicionales.</p>' : ''}</div>`;
+}
+/* Borrar historial de un reporte (p_cp) o de todo un expediente (p_mes). No cambia sellos ni XP. */
+let histArmed = null, histTimer = null;
+function armHist(key, rerender) {
+  if (histArmed === key) { histArmed = null; clearTimeout(histTimer); return true; }
+  histArmed = key; clearTimeout(histTimer); histTimer = setTimeout(() => { histArmed = null; rerender(); }, 4000); rerender(); return false;
+}
+async function clearHistory(args, okMsg) {
+  busy = true; const { error } = await sb.rpc('clear_cp_history', args); busy = false;
+  if (error) { toast(/function|PGRST202|not find/i.test(String(error.message || '')) ? 'Falta la actualización 5 de la base de datos (supabase/actualizacion-5.sql).' : rpcErr(error), true); return; }
+  try { await fetchAll(); } catch (x) {} renderAll(); toast(okMsg);
 }
 $('#cpList').addEventListener('click', async e => {
   const b = e.target.closest('button');
+  if (b && b.dataset.clearhist) { if (armHist(b.dataset.clearhist, renderCasos)) await clearHistory({ p_cp: b.dataset.clearhist, p_mes: null }, 'Historial del reporte borrado'); return; }
   if (b && b.dataset.cpact) { await reportProgress(b.dataset.id, b.dataset.cpact); return; }
   if (b && b.dataset.validate) { openValidate(b.dataset.validate); return; }
   const row = e.target.closest('[data-cprow]');
@@ -2626,7 +2973,7 @@ function openValidate(id) {
       ${c.evidence ? `<div class="hc-row"><span class="note">Evidencia</span><span class="mono">${esc(c.evidence)}</span></div>` : ''}
       <div class="hc-row"><span class="note">Copiloto</span><span>${esc(label(c.co))} · ${c.reviewedAt ? 'revisó el ' + fmtDT(c.reviewedAt) : '<span class="neg">aún no registra su revisión</span>'}</span></div>
     </div>
-    <div class="field"><label>Sello</label><div class="seal-opts">${['ok', 'obs', 'tarde', 'error', 'tarde_error', 'entregado', 'curso', 'pendiente'].map(k => `<label class="seal"><input type="radio" name="st" value="${k}" ${k === sug ? 'checked' : ''}><span class="pill ${STATUS[k].cls}">${STATUS[k].label}</span><span class="mono note">${XP_RESP[k] ? signed(XP_RESP[k]) + ' XP' : ''}</span></label>`).join('')}</div></div>
+    <div class="field"><label>Sello</label><div class="seal-opts">${Object.keys(STATUS).map(k => `<label class="seal"><input type="radio" name="st" value="${k}" ${k === sug ? 'checked' : ''}><span class="pill ${STATUS[k].cls}">${STATUS[k].label}</span><span class="mono note">${XP_RESP[k] ? signed(XP_RESP[k]) + ' XP' : ''}</span></label>`).join('')}</div></div>
     ${late ? '<p class="note">Sugerencia: se entregó después de la fecha límite, por eso está marcado «Fuera de plazo».</p>' : ''}
     <div class="field"><label for="vdNote">Motivo o comentario <span class="note">(obligatorio si hay observaciones, errores o tardanza)</span></label><input id="vdNote" maxlength="280" value="${esc(c.valNote || '')}"></div>
     <p class="login-err" id="vdErr" hidden></p>
@@ -2768,13 +3115,14 @@ function renderPropose() {
       <div class="field" style="flex-basis:100%"><label for="ppQ">Pregunta</label><input id="ppQ" maxlength="300" required placeholder="Ej.: ¿Qué indicador mide la cobertura de la cartera atrasada?"></div>
       ${[0, 1, 2, 3].map(k => `<div class="field"><label for="ppO${k}">Opción ${'ABCD'[k]}</label><input id="ppO${k}" maxlength="120" required></div>`).join('')}
       <div class="field" style="flex:0 0 150px"><label for="ppA">Correcta</label><select id="ppA">${[0, 1, 2, 3].map(k => `<option value="${k}">Opción ${'ABCD'[k]}</option>`).join('')}</select></div>
-      <div class="field" style="flex-basis:100%"><label for="ppE">Explicación y fuente</label><input id="ppE" maxlength="400" placeholder="Ej.: Provisiones / cartera atrasada. Fuente: glosario SBS."></div>
+      <div class="field" style="flex-basis:100%"><label for="ppE">Sustento de la respuesta correcta y fuente (obligatorio)</label><input id="ppE" maxlength="400" required placeholder="Ej.: Provisiones / cartera atrasada. Fuente: glosario SBS."></div>
       <button class="btn primary" type="submit">Enviar a revisión</button></form>` : '<p class="note">Disponible cuando se ejecute la actualización 4 de la base de datos.</p>'}`;
 }
 $('#qPropose').addEventListener('submit', async e => {
   if (e.target.id !== 'propForm') return; e.preventDefault();
   const prompt = $('#ppQ').value.trim(), options = [0, 1, 2, 3].map(k => $('#ppO' + k).value.trim());
   if (prompt.length < 5 || options.some(x => !x) || new Set(options).size < 4) { toast('Completa la pregunta y cuatro opciones distintas.', true); return; }
+  if ($('#ppE').value.trim().length < 10) { toast('Escribe el sustento: es lo que verá quien responda mal.', true); return; }
   await write(() => sb.from('questions').insert({ prompt, options, answer: +$('#ppA').value, explain: $('#ppE').value.trim(), created_by: S.viewer, status: canAdmin() ? 'aprobada' : 'propuesta' }).select(), canAdmin() ? 'Pregunta agregada' : 'Pregunta enviada a revisión');
 });
 
@@ -2814,8 +3162,8 @@ function currentLook() { return preview || viewerLook(); }
 function wardrobeSync() { preview = null; wdOffset = Math.max(0, WARDROBE[wdSlot].findIndex(o => o.id === viewerLook()[wdSlot]) - 1); renderWardrobe(); if (window.__scene) { window.__scene.setLook(currentLook()); window.__scene.applyDesk(viewerLook().desk); } }
 function renderWardrobe() {
   if (!(SLOT_COLORS[wdSlot] || []).length && wdMode === 'colors') wdMode = 'items';
-  const list = WARDROBE[wdSlot];
   const look = currentLook();
+  const list = WARDROBE[wdSlot].filter(o => !o.only || o.only === look.body);   // la falda solo aparece con silueta femenina
   const rIdx = rankIdx(S.viewer);
   const narrow = window.matchMedia('(max-width: 900px)').matches;
   const maxOff = Math.max(0, list.length - WD_VISIBLE);
@@ -2854,6 +3202,8 @@ function renderWardrobe() {
 $('#wdOpts').addEventListener('click', e => {
   const b = e.target.closest('.wd-opt'); if (!b || b.classList.contains('locked')) return;
   preview = Object.assign({}, currentLook(), { [wdSlot]: b.dataset.id });
+  const of = WARDROBE.outfit.find(o => o.id === preview.outfit);
+  if (of && of.only && of.only !== preview.body) preview.outfit = preview.outfit === 'blazer-camel' ? 'blazer-camel-p' : 'blazer-tinta';
   renderWardrobe();
   if (window.__scene) window.__scene.setLook(currentLook());
 });
@@ -3067,7 +3417,8 @@ function makeFigureKit(T, WARDROBE) {
     geo.computeVertexNormals(); return geo;
   }
   // casco de cabello con línea de nacimiento: keep(yn, ang) → true si hay cabello
-  function hairGeo(k, hairline, flare) {
+  // upper (opcional): límite superior, para bandas como el pelo a los costados de una cabeza calva
+  function hairGeo(k, hairline, flare, upper) {
     const W = 128, H = 96; const pos = [], idx = [], map = new Map();
     const raw = [];
     for (let j = 0; j <= H; j++) for (let i = 0; i <= W; i++) {
@@ -3075,12 +3426,14 @@ function makeFigureKit(T, WARDROBE) {
       const xn = -Math.cos(ph) * Math.sin(th), yn = Math.cos(th), zn = Math.sin(ph) * Math.sin(th);
       raw.push([xn, yn, zn]);
     }
-    const ok = raw.map(([x, y, z]) => y >= hairline(Math.atan2(x, z)));
-    // todo lo que queda bajo la línea de nacimiento se aplasta sobre ella (borde suave, sin dientes)
+    const ok = raw.map(([x, y, z]) => { const a2 = Math.atan2(x, z); return y >= hairline(a2) && (!upper || y <= upper(a2)); });
+    // todo lo que queda fuera de los límites se aplasta sobre el borde (borde suave, sin dientes)
     for (let j = 0; j <= H; j++) for (let i = 0; i <= W; i++) {
       const a = j * (W + 1) + i; if (ok[a]) continue;
-      const ph = i / W * Math.PI * 2; const [x0, , z0] = raw[a];
-      const yl = hairline(Math.atan2(x0, z0)); const r = Math.sqrt(Math.max(0, 1 - yl * yl));
+      const ph = i / W * Math.PI * 2; const [x0, y0, z0] = raw[a]; const a2 = Math.atan2(x0, z0);
+      const lo = hairline(a2), hi = upper ? upper(a2) : 1;
+      if (lo > hi || lo >= 1) continue;   // en ese ángulo no hay cabello: no se dibuja
+      const yl = Math.max(-1, Math.min(1, y0 > hi ? hi : lo)); const r = Math.sqrt(Math.max(0, 1 - yl * yl));
       raw[a] = [-Math.cos(ph) * r, yl, Math.sin(ph) * r]; ok[a] = true;
     }
     const vid = i => { if (map.has(i)) return map.get(i); const [x, y, z] = raw[i]; const p = headXYZ(x, y, z, k, flare); map.set(i, pos.length / 3); pos.push(p.x, p.y, p.z); return map.get(i); };
@@ -3167,7 +3520,7 @@ function makeFigureKit(T, WARDROBE) {
     const col = k => (typeof CC[k] === 'string' && /^#[0-9a-f]{6}$/i.test(CC[k])) ? parseInt(CC[k].slice(1), 16) : null;
     const darker = (hex, f) => new T.Color(hex).multiplyScalar(f || .62).getHex();
     if (col('hair') != null) hairO = Object.assign({}, hairO, { color: col('hair'), brow: darker(col('hair'), .75) });
-    if (col('outfit') != null) o = Object.assign({}, o, { oc: col('outfit'), trim: darker(col('outfit')) }, o.outer === 'hoodie' ? { top: col('outfit') } : {});
+    if (col('outfit') != null) o = Object.assign({}, o, { oc: col('outfit'), trim: darker(col('outfit')) }, o.outer === 'hoodie' || o.outer === 'none' ? { top: col('outfit') } : {});
     if (col('bottom') != null) o = Object.assign({}, o, { bc: col('bottom') });
     if (col('hat') != null) hz = Object.assign({}, hz, { color: col('hat'), band: darker(col('hat'), .45) });
     const glC = col('glasses'), accC = col('acc');
@@ -3185,7 +3538,7 @@ function makeFigureKit(T, WARDROBE) {
     const browM = M(hairO.brow || hairO.color, { rough: .75 });
     const g = new T.Group();
     const upper = new T.Group(); g.add(upper);
-    const skirt = o.bottom === 'skirt';
+    const skirt = o.bottom === 'skirt' && fem;   // la silueta masculina siempre lleva pantalón
     const outer = o.outer || 'none';
     const W = sl;
 
@@ -3369,12 +3722,24 @@ function makeFigureKit(T, WARDROBE) {
       upper.add(new T.Mesh(loft(secs, { n: 72 }), outM));
       [Y(.95), Y(1.08), Y(1.21), Y(1.33)].forEach(y => { const s = secs.reduce((p, q) => Math.abs(q.y - y) < Math.abs(p.y - y) ? q : p); upper.add(new T.Mesh(loft([Object.assign({}, s, { y: y - .002, rx: s.rx + .002, rz: s.rz + .002, gap: s.gap }), Object.assign({}, s, { y: y + .002, rx: s.rx + .002, rz: s.rz + .002, gap: s.gap })], { sub: 1, n: 72 }), trimM)); });
       shirtCollar();
+    } else if (outer === 'sweater') {
+      // suéter de cuello redondo sobre camisa
+      const secs = [Y(.9), Y(.93), yW, Y(1.15), Y(1.28), Y(1.36), Y(1.41), Y(1.435), Y(1.452)].map(y => { const b = y < Y(.93) ? secAt(Y(.93)) : secAt(y); return Object.assign({}, b, { y, rx: b.rx + .012, rz: b.rz + .011, gap: 0 }); });
+      upper.add(new T.Mesh(loft(secs, { n: 72 }), outM));
+      const hb = secs[0]; upper.add(new T.Mesh(loft([Object.assign({}, hb, { y: hb.y - .028, rx: hb.rx - .004, rz: hb.rz - .004 }), Object.assign({}, hb, { y: hb.y + .004 })], { sub: 1, n: 72 }), trimM));
+      const ns = secAt(Y(1.452)); upper.add(new T.Mesh(loft([off(ns, .012, { y: Y(1.44) }), off(ns, .014, { y: Y(1.462) })], { sub: 1, n: 64 }), trimM));
+      shirtCollar();
+    } else if (outer === 'none') {
+      // camisa sola: cuello, botones y corbata si la lleva
+      shirtCollar();
+      [1.06, 1.16, 1.26, 1.36].forEach(y0 => { const y = Y(y0); const b = new T.Mesh(new T.CylinderGeometry(.006, .006, .004, 14), M(0xE8E4DC, { rough: .3 })); b.rotation.x = Math.PI / 2; b.position.set(0, y, front(y) + .003); upper.add(b); });
+      if (o.tie) tie(o.tie);
     }
 
     /* ---- brazos ---- */
     const sleeveM = outer === 'vest' || outer === 'none' ? topM : outM;
-    const sleeveD = outer === 'vest' || outer === 'none' ? 0 : (outer === 'coat' ? .012 : .008);
-    const holding = ['lupa', 'lupa-oro', 'tablet', 'cafe', 'libreta'].includes(a.id);
+    const sleeveD = outer === 'vest' || outer === 'none' ? 0 : (outer === 'coat' ? .012 : outer === 'sweater' ? .006 : .008);
+    const holding = ['lupa', 'lupa-oro', 'tablet', 'cafe', 'libreta', 'calculadora', 'expediente'].includes(a.id);
     const arms = {};
     const AR = (fem ? .038 : .046) * W;
     const shX = (fem ? .146 : .162) * W, shY = Y(1.375);
@@ -3498,25 +3863,71 @@ function makeFigureKit(T, WARDROBE) {
       bob: a2 => { const t = ang(a2) / Math.PI; return t < .12 ? .5 : t < .3 ? .5 - (t - .12) * 7 : -1.1; },
       recogido: a2 => { const t = ang(a2) / Math.PI; return t < .15 ? .5 - t * .4 : t < .45 ? .44 - (t - .15) * 2.0 : -.16 - (t - .45) * .9; }
     };
-    if (st === 'corto' || st === 'rapado' || st === 'ondulado') {
-      const k = st === 'rapado' ? 1.018 : st === 'ondulado' ? 1.05 : 1.035;
-      const flare = st === 'rapado' ? null : st === 'ondulado' ? ((yn, a2) => .03 + (yn > .1 ? .1 * Math.min(1, (yn - .1) / .5) : 0) + .05 * Math.max(0, Math.sin(a2 * 13 + yn * 4)) * Math.max(0, Math.sin(yn * 19 + a2 * 3))) : (yn, a2) => (yn > .35 ? .055 * (yn - .35) / .65 : 0) + (Math.abs(a2) < .6 && yn > .5 ? .03 : 0);
-      head.add(new T.Mesh(hairGeo(hatOn ? 1.02 : k, HL[st === 'ondulado' ? 'corto' : st], hatOn ? null : flare), hairM));
-      if (false) for (let i = 0; i < 22; i++) { const an = i / 22 * Math.PI * 2; const yy = .17 + (i % 3) * .018; const r = .12 + (i % 2) * .01; const b = ellipsoid(.042, .036, .042, hairM, 16); b.position.set(Math.sin(an) * r, yy, Math.cos(an) * r * 1.12 - .015); head.add(b); }
+    const sm = t => { t = clamp01(t); return t * t * (3 - 2 * t); };
+    const hairDark = new T.MeshBasicMaterial({ color: new T.Color(hairO.color).multiplyScalar(.55) });
+    if (st === 'corto' || st === 'ondulado') {
+      const k = st === 'ondulado' ? 1.05 : 1.035;
+      const flare = st === 'ondulado' ? ((yn, a2) => .03 + (yn > .1 ? .1 * Math.min(1, (yn - .1) / .5) : 0) + .05 * Math.max(0, Math.sin(a2 * 13 + yn * 4)) * Math.max(0, Math.sin(yn * 19 + a2 * 3))) : (yn, a2) => (yn > .35 ? .055 * (yn - .35) / .65 : 0) + (Math.abs(a2) < .6 && yn > .5 ? .03 : 0);
+      head.add(new T.Mesh(hairGeo(hatOn ? 1.02 : k, HL.corto, hatOn ? null : flare), hairM));
+      if (st === 'corto' && !hatOn) { // raya al costado
+        head.add(tube([.42, .6, .78].map((yn, i) => { const p = headXYZ(.42 - i * .03, yn, Math.sqrt(Math.max(0, 1 - yn * yn - .16)), k * 1.075); return p; }), .0022, hairDark, 10, 4));
+      }
+    } else if (st === 'tupe') {
+      // degradado: costados casi al ras y volumen arriba, peinado hacia adelante y arriba
+      head.add(new T.Mesh(hairGeo(1.014, HL.rapado), hairM));
+      if (!hatOn) {
+        // capa superior: más larga arriba y peinada hacia adelante; los costados quedan al ras
+        head.add(new T.Mesh(hairGeo(1.032, a2 => .4 + Math.abs(a2) / Math.PI * .32, (yn, a2) => .025 + .05 * sm((yn - .55) / .4) * Math.max(0, Math.cos(a2))), hairM));
+      }
+    } else if (st === 'atras') {
+      // peinado hacia atrás, con surcos del peine
+      const flare = (yn, a2) => .03 + .06 * sm((yn - .15) / .6) * (1 - .4 * Math.min(1, Math.abs(a2) / Math.PI)) + (Math.abs(a2) > 2.2 && yn > -.1 && yn < .45 ? .03 : 0);
+      const hl = a2 => { const t = Math.abs(a2) / Math.PI; return t < .2 ? .52 : t < .45 ? .52 - (t - .2) * 2.4 : -.16 - (t - .45) * 1.0; };
+      head.add(new T.Mesh(hairGeo(hatOn ? 1.02 : 1.03, hl, hatOn ? null : flare), hairM));
+      if (!hatOn) [-.32, -.16, 0, .16, .32].forEach(x0 => {
+        const pts = [.56, .75, .9, .75, .45].map((yn, i) => { const zs = i < 3 ? 1 : -1; const xn = x0 * (1 - Math.abs(yn - .9) * .2); const zn = zs * Math.sqrt(Math.max(.0, 1 - yn * yn - xn * xn)); return headXYZ(xn, yn, zn, 1.03 * (1 + flare(yn, Math.atan2(xn, zn))) + .006); });
+        head.add(tube(pts, .0018, hairDark, 24, 4));
+      });
+    } else if (st === 'rizos') {
+      head.add(new T.Mesh(hairGeo(hatOn ? 1.02 : 1.05, HL.corto), hairM));
+      if (!hatOn) {
+        let sd2 = 7; const r2 = () => (sd2 = (sd2 * 16807) % 2147483647) / 2147483647;
+        for (let i = 0; i < 150; i++) {
+          const yn = .05 + Math.pow(r2(), .7) * .95, a2 = (r2() * 2 - 1) * Math.PI;
+          if (yn < HL.corto(a2) + .04) continue;
+          const rr2 = Math.sqrt(Math.max(0, 1 - yn * yn)); const p = headXYZ(Math.sin(a2) * rr2, yn, Math.cos(a2) * rr2, 1.1 + r2() * .03);
+          const c = ellipsoid(.03 + r2() * .012, .026 + r2() * .01, .03, hairM, 10); c.position.copy(p); head.add(c);
+        }
+      }
+    } else if (st === 'calvo') {
+      // calvo arriba, cabello corto a los costados y en la nuca
+      head.add(new T.Mesh(hairGeo(1.024, a2 => { const t = Math.abs(a2) / Math.PI; return t < .34 ? 2 : -.06 - .42 * sm((t - .42) / .5); }, null, a2 => { const t = Math.abs(a2) / Math.PI; return t < .34 ? -2 : -.04 + .3 * sm((t - .34) / .62); }), hairM));
     } else {
-      const lng = st === 'largo', bob = st === 'bob';
-      const hl = (lng || bob) ? HL.largo : HL.recogido;
-      const flare = (yn, a2) => .045 + ((lng || bob) && yn < .35 ? .075 * Math.min(1, (.35 - yn) / .45) : 0) + (Math.abs(a2) < .55 && yn > .3 ? .015 : 0);
-      const line = (lng || bob)
-        ? (a2 => { const t = Math.abs(a2) / Math.PI; const front = a2 > 0 ? .3 : .47; return t < .1 ? front : t < .24 ? front - (t - .1) * (front + .1) / .14 : -.12; })
+      const lng = st === 'largo', bob = st === 'bob', med = st === 'media';
+      const hl = (lng || bob || med) ? HL.largo : HL.recogido;
+      const flare = (yn, a2) => .045 + ((lng || bob || med) && yn < .35 ? .075 * Math.min(1, (.35 - yn) / .45) : 0) + (Math.abs(a2) < .55 && yn > .3 ? .015 : 0);
+      const line = (lng || bob || med)
+        ? (a2 => { const t = Math.abs(a2) / Math.PI; const front = med ? .44 : a2 > 0 ? .3 : .47; return t < .1 ? front : t < .24 ? front - (t - .1) * (front + .1) / .14 : -.12; })
         : hl;
       head.add(new T.Mesh(hairGeo(hatOn ? 1.02 : 1.0, line, hatOn ? null : flare), hairM));
-      if (lng || bob) {
+      if (med && !hatOn) head.add(tube([.5, .72, .9].map(yn => headXYZ(0, yn, Math.sqrt(1 - yn * yn), 1.05 * (1 + flare(yn, 0)) + .002)), .0024, hairDark, 10, 4)); // raya al medio
+      if (lng || bob || med) {
         // melena: cortina que cae alrededor del rostro y sobre la espalda
         const secs = lng
           ? [{ y: -.66, rx: .17, rz: .085, cz: -.11 }, { y: -.5, rx: .205, rz: .125, cz: -.075 }, { y: -.3, rx: .2, rz: .165, cz: -.04 }, { y: -.12, rx: .19, rz: .19, cz: -.02 }, { y: .06, rx: .18, rz: .2, cz: -.012 }]
+          : med
+          ? [{ y: -.46, rx: .2, rz: .12, cz: -.06 }, { y: -.36, rx: .205, rz: .15, cz: -.045 }, { y: -.2, rx: .198, rz: .18, cz: -.03 }, { y: -.06, rx: .19, rz: .195, cz: -.018 }, { y: .06, rx: .18, rz: .2, cz: -.012 }]
           : [{ y: -.3, rx: .19, rz: .17, cz: -.03 }, { y: -.2, rx: .2, rz: .185, cz: -.025 }, { y: -.06, rx: .19, rz: .195, cz: -.018 }, { y: .06, rx: .18, rz: .2, cz: -.012 }];
         head.add(new T.Mesh(loft(secs, { range: q => [Math.PI * (q.y > -.2 ? .3 : .33), Math.PI * (q.y > -.2 ? 1.7 : 1.67)], n: 56, sub: 6 }), hairM));
+      }
+      if (st === 'trenza') {
+        // trenza que cae por delante del hombro izquierdo
+        const path = new T.CatmullRomCurve3([V3(-.1, -.02, -.17), V3(-.17, -.12, -.1), V3(-.19, -.3, -.02), V3(-.2, -.5, .04), V3(-.21, -.7, .06)]);
+        for (let i = 0; i < 13; i++) {
+          const t = i / 12, p = path.getPoint(t), w = .038 * (1 - t * .45);
+          const lob = ellipsoid(w, w * 1.15, w * .85, hairM, 12); lob.position.copy(p).add(V3((i % 2 ? 1 : -1) * w * .35, 0, 0)); lob.rotation.z = (i % 2 ? 1 : -1) * .5; head.add(lob);
+        }
+        const end = ellipsoid(.016, .03, .016, M(0x8E2F3A), 10); end.position.copy(path.getPoint(1)).add(V3(0, -.03, 0)); head.add(end);
       }
       if (st === 'cola') {
         const tie2 = ellipsoid(.028, .028, .028, M(0x8E2F3A), 16); tie2.position.set(0, .02, -.205); head.add(tie2);
@@ -3525,47 +3936,63 @@ function makeFigureKit(T, WARDROBE) {
       if (st === 'mono' && !hatOn) { const bun = ellipsoid(.075, .065, .075, hairM, 28); bun.position.set(0, .245, -.05); head.add(bun); }
     }
 
-    /* ---- lentes ---- */
+    /* ---- lentes ----
+       Cada montura es una forma 2D (superelipse) con grosor arriba, a los lados y abajo. */
+    const GL_SHAPES = {
+      redondos: { a: .031, b: .029, n: 2,   tT: .0034, tS: .0034, tB: .0034, col: 0x3A2E26 },
+      dorados:  { a: .032, b: .029, n: 2.2, tT: .0026, tS: .0026, tB: .0026, gold: true },
+      pasta:    { a: .041, b: .027, n: 4.2, tT: .0085, tS: .0075, tB: .0065, col: 0x15171A },
+      sol:      { a: .043, b: .029, n: 3.6, taper: .13, tT: .0095, tS: .0075, tB: .0055, col: 0x15171A, tint: 0x0B0D10, op: .88 },
+      aviador:  { a: .039, b: .031, n: 2.3, drop: .3, tT: .0028, tS: .0024, tB: .0022, gold: true, tint: 0x2A1E14, op: .72, brow: true },
+      browline: { a: .039, b: .027, n: 3.4, tT: .0125, tS: .0028, tB: .0016, col: 0x2A1E16 }
+    };
     if (gl.id !== 'none' && F !== 'none') {
-      const fm = glC != null ? M(glC, { rough: .3, clear: .5 }) : gl.id === 'dorados' ? M(0xD9B062, { metal: .85, rough: .25 }) : M(gl.id === 'redondos' ? 0x3A2E26 : 0x15171A, { rough: .3, clear: .5 });
-      const square = gl.id === 'pasta' || gl.id === 'sol';
+      const G = GL_SHAPES[gl.id] || GL_SHAPES.redondos;
+      const fm = glC != null ? M(glC, { rough: .3, clear: .5 }) : G.gold ? M(0xD9B062, { metal: .85, rough: .25 }) : M(G.col, { rough: .3, clear: .5 });
+      const curve = (a, b, n, tTop, tBot) => { const pts = []; for (let i = 0; i < 48; i++) { const th = i / 48 * Math.PI * 2, c = Math.cos(th), sn = Math.sin(th), e = 2 / n;
+        let x = a * Math.sign(c) * Math.pow(Math.abs(c), e), y = b * Math.sign(sn) * Math.pow(Math.abs(sn), e);
+        if (G.taper) x *= 1 + G.taper * y / b;
+        if (G.drop && y < 0) { y *= 1 + G.drop; x *= 1 - G.drop * .5 * (-y / b) * Math.max(0, -c); }
+        y += sn > 0 ? tTop * sn : tBot * sn; pts.push(V2(x, y)); } return pts; };
       const ez = faceZ(eyeX, eyeY) + .016;
       [-1, 1].forEach(s => {
-        const rim = new T.Mesh(new T.TorusGeometry(square ? .037 : .033, square ? .0055 : .0034, 8, square ? 4 : 40), fm);
-        rim.position.set(s * eyeX, eyeY, ez); rim.rotation.y = s * .12;
-        if (square) { rim.rotation.z = Math.PI / 4; rim.scale.set(1.28, .82, 1); }
-        head.add(rim);
-        const lens = new T.Mesh(new T.CircleGeometry(square ? .037 : .032, square ? 4 : 32), new T.MeshStandardMaterial({ color: gl.id === 'sol' ? 0x0E1114 : 0xCFE3F2, transparent: true, opacity: gl.id === 'sol' ? .88 : .1, roughness: .05, depthWrite: false }));
-        lens.position.set(s * eyeX, eyeY, ez - .002); lens.rotation.y = s * .12;
-        if (square) { lens.rotation.z = Math.PI / 4; lens.scale.set(1.28, .82, 1); }
-        head.add(lens);
-        head.add(tube([V3(s * (eyeX + .04), eyeY + .006, ez - .006), V3(s * .158, eyeY + .01, .03), V3(s * .163, eyeY - .006, -.06)], .003, fm, 10, 6));
+        const outer = new T.Shape(curve(G.a + G.tS, G.b, G.n, G.tT, G.tB).map(p => V2(p.x * s, p.y)));
+        const innerPts = curve(G.a, G.b, G.n, 0, 0).map(p => V2(p.x * s, p.y));
+        outer.holes.push(new T.Path(innerPts));
+        const fr = new T.Mesh(new T.ExtrudeGeometry(outer, { depth: .006, bevelEnabled: false, curveSegments: 4 }), fm);
+        fr.position.set(s * eyeX, eyeY, ez - .004); fr.rotation.y = s * .12; head.add(fr);
+        const lens = new T.Mesh(new T.ShapeGeometry(new T.Shape(innerPts)), G.tint ? new T.MeshBasicMaterial({ color: G.tint, transparent: true, opacity: G.op, depthWrite: false, side: T.DoubleSide }) : new T.MeshStandardMaterial({ color: 0xCFE3F2, transparent: true, opacity: .1, roughness: .05, depthWrite: false, side: T.DoubleSide }));
+        lens.position.set(s * eyeX, eyeY, ez - .001); lens.rotation.y = s * .12; head.add(lens);
+        head.add(tube([V3(s * (eyeX + G.a + .002), eyeY + G.b * .45, ez - .004), V3(s * .158, eyeY + .01, .03), V3(s * .163, eyeY - .006, -.06)], .0028, fm, 10, 6));
       });
-      head.add(tube([V3(-.026, eyeY + .006, ez + .001), V3(0, eyeY + .014, ez + .006), V3(.026, eyeY + .006, ez + .001)], .003, fm, 10, 6));
+      head.add(tube([V3(-(eyeX - G.a) - .002, eyeY + .006, ez), V3(0, eyeY + .012, ez + .005), V3(eyeX - G.a + .002, eyeY + .006, ez)], .0028, fm, 10, 6));
+      if (G.brow) head.add(tube([V3(-(eyeX - G.a * .4), eyeY + G.b + .004, ez), V3(0, eyeY + G.b * .8, ez + .006), V3(eyeX - G.a * .4, eyeY + G.b + .004, ez)], .0022, fm, 10, 6)); // doble puente del aviador
     }
 
     /* ---- sombrero ---- */
     if (hatOn) {
       const hm = M(hz.color, { rough: .8, bump: fb });
       const hg = new T.Group(); hg.position.set(0, -.005, -.01); hg.scale.set(1.0, 1, 1.12); head.add(hg);
-      if (hz.style === 'fedora') {
+      // los gorros se modelan como una capa sobre el cráneo: así cubren todo el cabello de arriba
+      const capShell = (k, lineFn, flare, mat) => { const m = new T.Mesh(hairGeo(k, lineFn, flare), mat || hm); head.add(m); return m; };
+      if (hz.style === 'beanie') {
+        capShell(1.1, a2 => .38 - Math.abs(a2) / Math.PI * .42, (yn, a2) => .02 + .05 * sm((yn - .6) / .4));
+        head.add(new T.Mesh(hairGeo(1.13, a2 => .3 - Math.abs(a2) / Math.PI * .42, null, a2 => .52 - Math.abs(a2) / Math.PI * .42), M(hz.band || hz.color, { rough: .9, side: T.DoubleSide }))); // doblez
+      } else if (hz.style === 'gorra') {
+        capShell(1.085, a2 => { const t = Math.abs(a2) / Math.PI; return .3 - t * .3; }, (yn, a2) => .02 * sm((yn - .5) / .5));
+        const vs = new T.Shape(); vs.moveTo(-.15, 0); vs.quadraticCurveTo(-.15, .14, 0, .17); vs.quadraticCurveTo(.15, .14, .15, 0); vs.lineTo(-.15, 0);
+        const visor = new T.Mesh(new T.ExtrudeGeometry(vs, { depth: .008, bevelEnabled: false, curveSegments: 16 }), M(hz.color, { side: T.DoubleSide }));
+        visor.rotation.x = Math.PI / 2 + .32; visor.position.set(0, .3 * HH + HY + .006, faceZ(0, .3 * HH + HY) * 1.08 - .035); head.add(visor);
+        const btn = ellipsoid(.016, .01, .016, hm, 12); btn.position.y = HH * 1.105 + HY; head.add(btn);
+      } else if (hz.style === 'boina') {
+        capShell(1.07, a2 => .4 - Math.abs(a2) / Math.PI * .2, (yn) => .03 * sm((yn - .6) / .4));
+        const b = ellipsoid(.215, .07, .225, hm, 40); b.position.set(-.03, .17, -.015); b.rotation.z = .2; head.add(b);
+        const tip2 = ellipsoid(.008, .016, .008, hm, 8); tip2.position.set(-.04, .245, -.015); head.add(tip2);
+      } else if (hz.style === 'fedora') {
         const brim = new T.Mesh(new T.LatheGeometry([V2(.16, .1), V2(.19, .099), V2(.22, .1), V2(.245, .104), V2(.258, .11), V2(.262, .114)], 72), M(hz.color, { rough: .8, side: T.DoubleSide })); brim.scale.z = 1.05; hg.add(brim);
         const crown = new T.Mesh(loft([{ y: .1, rx: .168, rz: .178, p: 2.4 }, { y: .18, rx: .157, rz: .168, p: 2.4 }, { y: .245, rx: .142, rz: .155, p: 2.3 }, { y: .278, rx: .122, rz: .135, p: 2.2 }, { y: .286, rx: .095, rz: .108 }, { y: .268, rx: .03, rz: .05 }], { n: 72, capTop: true }), hm); hg.add(crown);
         const band = new T.Mesh(loft([{ y: .102, rx: .17, rz: .178, p: 2.4 }, { y: .14, rx: .167, rz: .175, p: 2.45 }], { n: 64, sub: 2 }), M(hz.band, { rough: .55 })); hg.add(band);
         hg.rotation.x = -.06;
-      } else if (hz.style === 'gorra') {
-        const crown = new T.Mesh(new T.SphereGeometry(.178, 48, 24, 0, Math.PI * 2, 0, Math.PI * .5), hm); crown.scale.set(1, .95, 1); crown.position.y = .0; hg.add(crown);
-        const visor = new T.Mesh(new T.CylinderGeometry(.18, .18, .008, 48, 1, false, -Math.PI * .4, Math.PI * .8), hm);
-        visor.position.set(0, .015, .06); visor.rotation.x = .22; visor.scale.set(1, 1.5, 1.2); hg.add(visor);
-        const btn = ellipsoid(.014, .009, .014, hm, 12); btn.position.y = .17; hg.add(btn);
-        hg.rotation.x = -.1;
-      } else if (hz.style === 'beanie') {
-        const dome = new T.Mesh(new T.SphereGeometry(.18, 48, 24, 0, Math.PI * 2, 0, Math.PI * .55), hm); dome.scale.set(1, 1.12, 1); hg.add(dome);
-        const cuff = new T.Mesh(new T.CylinderGeometry(.184, .184, .06, 56, 1, true), M(hz.band || hz.color, { rough: .9, side: T.DoubleSide })); cuff.position.y = .03; hg.add(cuff);
-        hg.rotation.x = -.18;
-      } else if (hz.style === 'boina') {
-        const b = ellipsoid(.19, .06, .19, hm, 40); b.position.set(-.02, .13, -.01); b.rotation.z = .14; hg.add(b);
-        const bb = new T.Mesh(new T.TorusGeometry(.152, .012, 10, 48), hm); bb.rotation.x = Math.PI / 2; bb.position.y = .1; hg.add(bb);
       }
     }
 
@@ -3609,6 +4036,36 @@ function makeFigureKit(T, WARDROBE) {
       [-1, 1].forEach(s => upper.add(tube([V3(s * .055, Y(1.47), .02), V3(s * .04, Y(1.38), fz), V3(s * .01, Y(1.27), fz + .003)], .0035, lanyard, 14, 6)));
       const card = new T.Mesh(new T.BoxGeometry(.058, .082, .004), M(0xF4F1EA)); card.position.set(0, Y(1.22), fz + .006); upper.add(card);
       const cardTop = new T.Mesh(new T.BoxGeometry(.058, .02, .0045), M(0x16212C)); cardTop.position.set(0, Y(1.252), fz + .0062); upper.add(cardTop);
+    } else if (a.id === 'calculadora') {
+      const hg = holder(arms[-1]); const inner = new T.Group(); inner.position.set(.01, .055, .035); inner.rotation.x = -.5; hg.add(inner);
+      inner.add(new T.Mesh(new T.BoxGeometry(.08, .12, .014), M(accC != null ? accC : 0x24364F, { rough: .4 })));
+      const scr = new T.Mesh(new T.PlaneGeometry(.062, .024), new T.MeshBasicMaterial({ color: 0xB9C9A6 })); scr.position.set(0, .038, .0075); inner.add(scr);
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) { const k2 = new T.Mesh(new T.PlaneGeometry(.012, .01), new T.MeshBasicMaterial({ color: c === 3 ? 0xE3B868 : 0xE8E4DC })); k2.position.set(-.023 + c * .0155, .008 - r * .0155, .0075); inner.add(k2); }
+    } else if (a.id === 'expediente') {
+      const hg = holder(arms[-1]); const inner = new T.Group(); inner.position.set(0, .06, .045); inner.rotation.x = -.85; hg.add(inner);
+      inner.add(new T.Mesh(new T.BoxGeometry(.2, .25, .01), M(accC != null ? accC : 0xD9B97A, { rough: .7 })));
+      const tab = new T.Mesh(new T.BoxGeometry(.07, .025, .01), M(accC != null ? darker(accC, .85) : 0xC7A05C, { rough: .7 })); tab.position.set(-.05, .135, 0); inner.add(tab);
+      const lab = new T.Mesh(new T.PlaneGeometry(.1, .03), new T.MeshBasicMaterial({ color: 0xF4F0E6 })); lab.position.set(0, .05, .0055); inner.add(lab);
+    } else if (a.id === 'bufanda') {
+      const sc = M(accC != null ? accC : 0x8E2F3A, { rough: .9, bump: fb });
+      const ns = secAt(Y(1.46));
+      upper.add(new T.Mesh(loft([off(ns, .03, { y: Y(1.43), cz: ns.cz + .006 }), off(ns, .036, { y: Y(1.46), cz: ns.cz + .008 }), off(ns, .03, { y: Y(1.5), cz: ns.cz + .006 })], { n: 48, sub: 3 }), sc));
+      [[-.05, .05, 1.16], [.035, -.03, 1.22]].forEach(([x, tz, yEnd]) => {
+        const y0 = Y(1.44), y1 = Y(yEnd);
+        upper.add(new T.Mesh(loft([{ y: y1, rx: .02, rz: .006, cx: x + tz * .3, cz: front(y1) + .03 }, { y: (y0 + y1) / 2, rx: .021, rz: .007, cx: x + tz * .15, cz: front((y0 + y1) / 2) + .028 }, { y: y0, rx: .022, rz: .008, cx: x, cz: front(y0) + .03 }], { n: 16, sub: 4, capBot: true }), sc));
+      });
+    } else if (a.id === 'reloj') {
+      const s = holding ? 1 : -1, el2 = arms[s].el;
+      el2.add(new T.Mesh(loft([{ y: -.236, rx: AR * .55, rz: AR * .47 }, { y: -.22, rx: AR * .55, rz: AR * .47 }], { n: 24, sub: 1 }), M(0x2A1E16, { rough: .5 })));
+      const face = new T.Mesh(new T.CylinderGeometry(.013, .013, .006, 24), M(accC != null ? accC : 0xD9B062, { metal: .8, rough: .25 })); face.rotation.z = Math.PI / 2; face.position.set(s * AR * .56, -.228, 0); el2.add(face);
+      const dialW = new T.Mesh(new T.CircleGeometry(.0105, 20), new T.MeshBasicMaterial({ color: 0xF4F0E6 })); dialW.rotation.y = s * Math.PI / 2; dialW.position.set(s * (AR * .56 + .0035), -.228, 0); el2.add(dialW);
+    } else if (a.id === 'mochila') {
+      const bm = M(accC != null ? accC : 0x3A4150, { rough: .7, bump: fb });
+      const yb = Y(1.18), bs = secAt(yb), bz = bs.cz - bs.rz - (outer === 'none' ? .012 : .03);
+      const bag = new T.Mesh(loft([{ y: Y(.98), rx: .13, rz: .05, p: 3.2 }, { y: Y(1.05), rx: .14, rz: .06, p: 3.2 }, { y: Y(1.3), rx: .135, rz: .058, p: 3.2 }, { y: Y(1.38), rx: .11, rz: .045, p: 3 }].map(q => Object.assign(q, { cz: bz - .055 })), { n: 40, capTop: true, capBot: true }), bm); upper.add(bag);
+      const pocket = new T.Mesh(loft([{ y: Y(1.0), rx: .09, rz: .02, p: 3, cz: bz - .11 }, { y: Y(1.13), rx: .09, rz: .022, p: 3, cz: bz - .112 }], { n: 32, sub: 2, capTop: true, capBot: true }), M(accC != null ? darker(accC, .8) : 0x2E3440, { rough: .7 })); upper.add(pocket);
+      [-1, 1].forEach(s => { const fz = (y) => front(y) + (outer === 'none' || outer === 'vest' ? .01 : .028);
+        upper.add(tube([V3(s * .085, Y(1.36), bz), V3(s * .1, Y(1.47), -.01), V3(s * .095, Y(1.4), fz(Y(1.4))), V3(s * .09, Y(1.2), fz(Y(1.2))), V3(s * .1, Y(1.06), fz(Y(1.06)) - .02)], .009, bm, 30, 6)); });
     }
 
     /* ---- acabado ---- */
@@ -3895,13 +4352,13 @@ function initScene() {
     { id: 'board',   obj: board,    label: 'Tablero de pistas', focus: [-2.35, 2.1, -3.3], dist: 2.6 },
     { id: 'archive', obj: cabinets, label: 'Archivo de expedientes', focus: [-4.05, .9, -3.0], dist: 2.8 },
     { id: 'folders', obj: foldersG, label: 'Tu próximo expediente', focus: null, dist: 1.6, move: 'desk' },
-    { id: 'mug',     obj: mugG,     label: 'Café del cierre', focus: null, dist: 1.4, move: 'desk' },
-    { id: 'lamp',    obj: lampG,    label: 'Lámpara', focus: null, dist: 1.8, move: 'desk' },
+    { id: 'mug',     obj: mugG,     label: 'Café del cierre · tu energía', focus: null, dist: 1.4, move: 'desk' },
+    { id: 'lamp',    obj: lampG,    label: 'Lámpara · enciende o apaga', focus: null, dist: 1.8, move: 'desk' },
     { id: 'phone',   obj: phoneG,   label: 'Teléfono de la Comisaría', focus: null, dist: 1.5, move: 'desk' },
     { id: 'safe',    obj: safeG,    label: 'Caja fuerte de insignias', focus: [-2.95, .4, -2.85], dist: 2.0 },
     { id: 'easel',   obj: easel,    label: 'Sala de entrenamiento', focus: [-3.75, 1.25, -1.25], dist: 2.4 },
     { id: 'shelf',   obj: shelf,    label: 'Biblioteca de la Academia', focus: [4.95, 1.2, -1.2], dist: 2.8 },
-    { id: 'plant',   obj: plantG,   label: 'Planta', focus: null, dist: 2.0, move: 'floor' }
+    { id: 'plant',   obj: plantG,   label: 'Planta del conocimiento · riégala', focus: null, dist: 2.0, move: 'floor' }
   ];
 
   /* ---- Luces ---- */
@@ -4073,16 +4530,33 @@ function initScene() {
         <p class="note">Entregar tarde resta 10 XP; con errores, 15.</p><div class="hc-btns"><button class="btn small" data-go="casos">Ir a mis casos</button></div>`;
     }
     if (id === 'safe') {
-      const sk = skillsOf(v).filter(s => isDone(s.st)).map(s => s.name).concat(COMMON.filter(c => isDone(stOf(v, c.id))).map(c => c.name));
-      return `<div class="eyebrow">Caja fuerte</div><h3>${M(v).comisario ? 'Insignias del equipo' : sk.length + ' insignia' + (sk.length === 1 ? '' : 's') + ' guardada' + (sk.length === 1 ? '' : 's')}</h3>
-        <div class="hc-tags">${(M(v).comisario ? DETECTIVES.map(d => `${esc(d.nombre)}: ${skillCount(d.id)}/6`) : sk.map(esc)).map(t => `<span class="insignia"><span class="ic"><svg><use href="#i-star"/></svg></span>${t}</span>`).join('') || '<span class="note">Todavía vacía. Completa un curso de la Academia.</span>'}</div>
+      const got = insigniasOf(v), won = INSIGNIAS.filter(i => got[i.id].length);
+      const team = DETECTIVES.map(d => ({ d, n: INSIGNIAS.reduce((a, i) => a + insigniasOf(d.id)[i.id].length, 0) }));
+      return `<div class="eyebrow">Caja fuerte de insignias</div><h3>${M(v).comisario ? 'Insignias del equipo' : won.length ? won.length + ' insignia' + (won.length === 1 ? '' : 's') + ' guardada' + (won.length === 1 ? '' : 's') : 'Todavía vacía'}</h3>
+        <div class="hc-tags">${M(v).comisario ? team.map(t => `<span class="insignia"><span class="ic"><svg><use href="#i-star"/></svg></span>${esc(t.d.nombre)}: ${t.n}</span>`).join('')
+          : won.map(i => `<span class="insignia"><span class="ic"><svg><use href="#i-${i.ic}"/></svg></span>${esc(i.n)}${got[i.id].length > 1 ? ' ×' + got[i.id].length : ''}</span>`).join('') || '<span class="note">Las insignias se ganan cada mes: reportes a tiempo, sin errores, ideas, reconocimientos…</span>'}</div>
         <div class="hc-btns"><button class="btn small" data-go="credencial">Ver mi credencial</button></div>`;
     }
     if (id === 'easel') {
       const q = dailyQuestion(); const done = (D.plays || []).some(p => p.member_key === v && p.game === 'diaria' && p.day === limaToday());
       return `<div class="eyebrow">Sala de entrenamiento</div><h3>${done ? 'Ya respondiste la pregunta de hoy' : 'Tienes la pregunta del día pendiente'}</h3>
         <p class="note">${done ? 'Puedes seguir practicando con los minijuegos.' : esc(q.q)}</p>
-        <div class="hc-btns"><button class="btn small primary" data-go="entrenamiento">${done ? 'Ir a la sala' : 'Responder'}</button><button class="btn small" data-game="quiz">Interrogatorio</button><button class="btn small" data-game="errores">Detective de errores</button></div>`;
+        <div class="hc-btns"><button class="btn small primary" ${done ? 'data-go="sala"' : 'data-daily'}>${done ? 'Ir a la sala' : 'Responder'}</button><button class="btn small" data-game="quiz">Interrogatorio</button><button class="btn small" data-game="verdad">¿Verdad o mito?</button></div>`;
+    }
+    if (id === 'plant') {
+      const k = (vida.N || {}).conocimiento; const kk = k == null ? 70 : k;
+      return `<div class="eyebrow">Planta del conocimiento</div><h3>${kk >= 70 ? 'Está frondosa' : kk >= 40 ? 'Le falta agua' : 'Se está secando'}</h3>
+        <div class="hc-list">${row('Conocimiento de tu detective', `<b>${kk}%</b>`)}</div>
+        <p class="note">Crece cuando juegas en la Sala de entrenamiento o avanzas un curso. Si pasan días sin entrenar, se marchita.</p>
+        <div class="hc-btns"><button class="btn small primary" data-game="${['quiz', 'subebaja', 'verdad', 'palabra', 'ordena'][Math.floor(Math.random() * 5)]}">Entrenar 2 minutos</button><button class="btn small" data-go="academia">Ir a la Academia</button></div>`;
+    }
+    if (id === 'mug') {
+      const e = (vida.N || {}).energia; const ee = e == null ? 70 : e;
+      const done = (D.plays || []).some(p => p.member_key === v && p.game === 'diaria' && p.day === limaToday());
+      return `<div class="eyebrow">Café del cierre</div><h3>${ee >= 60 ? 'Energía en buen nivel' : 'Energía baja'}</h3>
+        <div class="hc-list">${row('Energía de tu detective', `<b>${ee}%</b>`)}${row('Pregunta del día', done ? '<span class="ok-t">respondida</span>' : '<span class="neg">pendiente</span>')}</div>
+        <p class="note">La energía se recarga cada día con la pregunta del día. El café vacío y la lámpara tenue avisan que está baja.</p>
+        ${done ? '' : '<div class="hc-btns"><button class="btn small primary" data-daily>Responder la pregunta</button></div>'}`;
     }
     if (id === 'shelf') {
       if (M(v).comisario) return `<div class="eyebrow">Biblioteca de la Academia</div><h3>Avance del equipo</h3><div class="hc-list">${DETECTIVES.map(d => row(esc(d.nombre), skillCount(d.id) + ' / 6')).join('')}</div><div class="hc-btns"><button class="btn small" data-go="academia">Ir a la Academia</button></div>`;
@@ -4098,17 +4572,39 @@ function initScene() {
     if (b.dataset.act === 'close') { unfocus(); closeProps(); return; }
     if (b.dataset.month) { S.month = b.dataset.month; applyMonth(); renderAll(); unfocus(); closeProps(); location.hash = 'casos'; return; }
     if (b.dataset.game) { unfocus(); closeProps(); openGame(b.dataset.game); return; }
+    if (b.hasAttribute('data-daily')) { unfocus(); closeProps(); const el = $('#daily'); if (el) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); const o = el.querySelector('.opt'); if (o) setTimeout(() => o.focus(), 400); } return; }
     if (b.dataset.go) { unfocus(); closeProps(); location.hash = b.dataset.go; }
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && (focused || !card.hidden) && !document.querySelector('dialog[open]')) { unfocus(); closeProps(); } });
 
+  /* Gotas de la regadera (planta) */
+  const drops = [];
+  for (let i = 0; i < 14; i++) { const d2 = new T.Mesh(new T.SphereGeometry(.018, 8, 6), new T.MeshBasicMaterial({ color: 0x8FC3E8, transparent: true, opacity: 0 })); scene.add(d2); drops.push(d2); }
+  function steamAnim() { play(2600, k => { mugG.position.y = DESK_Y + Math.sin(Math.min(1, k * 3) * Math.PI) * .06; steam.forEach((p, i) => { const q = (k * 1.6 + i / 6) % 1; p.position.set(Math.sin(i * 2.1 + q * 6) * .02, .14 + q * .32, Math.cos(i * 1.7) * .02); p.material.opacity = (1 - k) * Math.sin(q * Math.PI) * .55; p.scale.setScalar(.6 + q * 1.4); }); }); }
   function interact(h) {
     hideTip();
-    if (h.id === 'lamp') { setLamp(!lampOn); play(260, k => { lampG.rotation.y = Math.sin(k * Math.PI) * .12; }); return; }
-    if (h.id === 'plant') { play(700, k => { leaves.rotation.z = Math.sin(k * Math.PI * 4) * .12 * (1 - k); }); return; }
+    const N = vida.N || { energia: 70, conocimiento: 70, orden: 70, animo: 70 };
+    if (h.id === 'lamp') {
+      setLamp(!lampOn); applyNeeds(vida.N); play(260, k => { lampG.rotation.y = Math.sin(k * Math.PI) * .12; });
+      say(lampOn ? (N.energia >= 60 ? 'Buena luz para trabajar.' : 'La lámpara titila: me falta energía. ¿Pregunta del día?') : 'Luz apagada. Descansemos la vista.', 3.2);
+      return;
+    }
+    if (h.id === 'plant' || h.id === 'mug') closeProps();
+    if (h.id === 'plant') {
+      // se riega: caen gotas, las hojas se sacuden y se yerguen un momento
+      const base = new T.Vector3(); plantG.getWorldPosition(base);
+      play(1500, k => {
+        drops.forEach((d2, i) => { const q = (k * 2.2 + i / drops.length) % 1; d2.position.set(base.x + Math.sin(i * 2.4) * .12, base.y + 1.15 - q * .75, base.z + Math.cos(i * 1.9) * .12); d2.material.opacity = k < .92 ? .85 * Math.sin(q * Math.PI) : 0; });
+        leaves.rotation.z = Math.sin(k * Math.PI * 5) * .1 * (1 - k); leaves.scale.y = (.55 + .45 * N.conocimiento / 100) * (1 + .12 * Math.sin(k * Math.PI));
+      });
+      focusOn(h); showCard(cardFor('plant'));
+      say(N.conocimiento >= 70 ? 'Gracias. Está frondosa: vamos bien con el entrenamiento.' : 'El agua ayuda, pero lo que la hace crecer es entrenar.', 3.6);
+      return;
+    }
     if (h.id === 'mug') {
-      play(2600, k => { mugG.position.y = DESK_Y + Math.sin(Math.min(1, k * 3) * Math.PI) * .06; steam.forEach((p, i) => { const q = (k * 1.6 + i / 6) % 1; p.position.set(Math.sin(i * 2.1 + q * 6) * .02, .14 + q * .32, Math.cos(i * 1.7) * .02); p.material.opacity = (1 - k) * Math.sin(q * Math.PI) * .55; p.scale.setScalar(.6 + q * 1.4); }); });
-      toast('Café servido. Que el cierre sea leve.'); return;
+      steamAnim(); focusOn(h); showCard(cardFor('mug'));
+      say(N.energia >= 60 ? 'Un café y a seguir con el cierre.' : 'El café ayuda, pero mi energía vuelve con la pregunta del día.', 3.6);
+      return;
     }
     closeProps();
     if (h.id === 'archive') { drawerOpen = true; drawerAnim(true); }
